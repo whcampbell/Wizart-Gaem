@@ -3,3 +3,4 @@ libs/
 *.dll
 *.so
 *.exe
+*.DS_Store
