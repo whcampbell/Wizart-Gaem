@@ -1,3 +1,5 @@
 #pragma once
 
-void start();
+namespace engine {
+    void start();
+}
