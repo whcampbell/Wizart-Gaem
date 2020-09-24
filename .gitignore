@@ -3,4 +3,4 @@ libs/
 *.dll
 *.so
 *.exe
-*.DS_Store
+**/.DS_Store
