@@ -4,3 +4,5 @@ libs/
 *.so
 *.exe
 **/.DS_Store
+*.ase
+*.aseprite

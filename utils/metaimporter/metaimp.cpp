@@ -119,9 +119,6 @@ void recurseDir(std::string path) {
     }
 }
 
-//TODO:
-//  https://stackoverflow.com/questions/10873382/write-and-read-string-to-binary-file-c
-
 int main(int argc, char* argv[]) {
     std::string path = "./";
     std::vector<char*> params;
