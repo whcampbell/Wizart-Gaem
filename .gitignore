@@ -6,3 +6,7 @@ libs/
 **/.DS_Store
 *.ase
 *.aseprite
+build/build_win/CMakeFiles/
+build/build_win/cmake_install.cmake
+build/build_win/CMakeCache.txt
+build/build_win/Makefile

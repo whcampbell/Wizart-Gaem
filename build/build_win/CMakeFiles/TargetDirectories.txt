@@ -1,3 +1,0 @@
-E:/Scripts 'n' Stuff/Wizard Game/Wizart-Gaem/build/build_win/CMakeFiles/edit_cache.dir
-E:/Scripts 'n' Stuff/Wizard Game/Wizart-Gaem/build/build_win/CMakeFiles/WizartGaem.dir
-E:/Scripts 'n' Stuff/Wizard Game/Wizart-Gaem/build/build_win/CMakeFiles/rebuild_cache.dir
