@@ -130,6 +130,9 @@ WizartGaem.exe: CMakeFiles/WizartGaem.dir/E_/Scripts_'n'_Stuff/Wizard_Game/Wizar
 WizartGaem.exe: CMakeFiles/WizartGaem.dir/E_/Scripts_'n'_Stuff/Wizard_Game/Wizart-Gaem/Engine/Screen.cpp.obj
 WizartGaem.exe: CMakeFiles/WizartGaem.dir/E_/Scripts_'n'_Stuff/Wizard_Game/Wizart-Gaem/Rendering/Sprite.cpp.obj
 WizartGaem.exe: CMakeFiles/WizartGaem.dir/build.make
+WizartGaem.exe: E:/Scripts\ 'n'\ Stuff/Wizard\ Game/Wizart-Gaem/libs/SDL2-2.0.12/lib/x64/SDL2.lib
+WizartGaem.exe: E:/Scripts\ 'n'\ Stuff/Wizard\ Game/Wizart-Gaem/libs/SDL2_mixer-2.0.4/lib/x64/SDL2_mixer.lib
+WizartGaem.exe: E:/Scripts\ 'n'\ Stuff/Wizard\ Game/Wizart-Gaem/libs/SDL2_image-2.0.5/lib/x64/SDL2_image.lib
 WizartGaem.exe: CMakeFiles/WizartGaem.dir/linklibs.rsp
 WizartGaem.exe: CMakeFiles/WizartGaem.dir/objects1.rsp
 WizartGaem.exe: CMakeFiles/WizartGaem.dir/link.txt
