@@ -1,4 +1,4 @@
-#include <SDL.h>
+#include "SDL.h"
 
 struct Alignment
 {
@@ -9,6 +9,7 @@ public:
 	int* x_internal;
 	int* y_internal;
 	double theta;
+	SDL_RendererFlip flip;
 
 	SDL_Point* getPoint();
 };

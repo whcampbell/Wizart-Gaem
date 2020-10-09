@@ -1,7 +1,7 @@
-#include <SDL.h>
-#include <SDL_image.h>
-#include "headers/Screen.h"
-#include "headers/Alignment.h"
+#include "SDL.h"
+#include "SDL_image.h"
+#include "Screen.h"
+#include "Alignment.h"
 
 struct Texture {
 public:
@@ -81,7 +81,7 @@ public:
 				frame = 0;
 		}
 		*/
-		SDL_RenderCopyEx(getRenderer(), texture.sheet, texture.clips[frame], &renderQuad, align->theta, align->getPoint);
+		SDL_RenderCopyEx(getRenderer(), texture.sheet, texture.clips[frame], &renderQuad, align->theta, align->getPoint(), align->flip);
 	}
 
 };
