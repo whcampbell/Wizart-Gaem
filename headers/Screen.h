@@ -4,4 +4,6 @@
 
 bool initWindow();
 
+void closeWindow();
+
 SDL_Renderer* getRenderer();

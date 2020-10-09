@@ -1,11 +1,99 @@
 #include "Screen.h"
 #include <iostream>
 #include "Engine.h"
+#include "SDL2/SDL_thread.h"
+#include <SDL2/SDL.h>
+
+bool running = false;
+static unsigned int fps, ups;
+static unsigned int avgu;
+SDL_Thread* rThread;
+
+static void checkEvents() {
+	SDL_Event e;
+	while(SDL_PollEvent(&e))
+	    switch (e.type) {
+	    case SDL_QUIT:
+		    running = false;
+		    break;
+	    default:
+		    break;
+	    }
+}
+
+void update() {
+
+}
+
+void run() {
+    int lastu = SDL_GetTicks();
+    int lastp = SDL_GetTicks();
+    std::cout << "Starting game" << std::endl;
+
+    int startu = 0;
+    int pdel = 0;
+
+    int delta = 1000 / 60;
+    int deltap = 1000;
+
+    fps = 0;
+    ups = 0;
+    avgu = 0;
+
+    while (running)
+    {
+        if ((SDL_GetTicks() - lastu) >= delta) {
+            ups++;
+            startu = SDL_GetTicks();
+            checkEvents();
+            update();
+            avgu += SDL_GetTicks() - startu;
+
+            if ((pdel = SDL_GetTicks() - lastp) >= deltap) {
+                std::cout << pdel << "ms since last update" << "\n\tFPS: " << (int)(fps * ((float)deltap / pdel))
+                 << "\n\tUPS: " << (int)(ups * ((float)deltap / pdel)) << "\n\tAvg utime: " << (avgu / ups) << "ms" << std::endl;
+                ups = 0;
+                fps = 0;
+                avgu = 0;
+                lastp = SDL_GetTicks();
+            }
+            lastu = SDL_GetTicks();
+        }
+    }
+}
+
+void render() {
+		SDL_RenderClear(getRenderer());
+
+		SDL_RenderPresent(getRenderer());
+		fps++;
+}
+
+int runSDL(void* data) {
+	while (running) {
+        render();
+	}
+    return 0;
+}
+
 
 void engine::start() {
     if (!initWindow()) {
         std::cout << "Window initialization failed" << std::endl;
+        return;
     }
+    running = true;
+    rThread = SDL_CreateThread(runSDL, "renderThread", (void*)NULL);
+    run();
+}
+
+
+void engine::stop() {
+    std::cout << "Closing game" << std::endl;
+    running = false;
+    int threadReturn;
+    SDL_WaitThread(rThread, &threadReturn);
+    closeWindow();
 }
 
 

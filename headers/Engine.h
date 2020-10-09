@@ -2,4 +2,5 @@
 
 namespace engine {
     void start();
+    void stop();
 }

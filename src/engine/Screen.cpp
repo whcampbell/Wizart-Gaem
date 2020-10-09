@@ -29,6 +29,19 @@ bool initWindow() {
     return true;
 }
 
+void closeWindow() {
+	SDL_DestroyRenderer(renderer);
+    renderer = NULL;
+    
+    SDL_FreeSurface(surface);
+	surface = NULL;
+
+	SDL_DestroyWindow(window);
+	window = NULL;
+
+	SDL_Quit();
+}
+
 SDL_Renderer* getRenderer() {
     return renderer;
 }
