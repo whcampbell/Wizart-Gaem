@@ -12,6 +12,6 @@ OBJ_NAME = game
 
 #Compilation command
 all : $(SRC)
-	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) -w -Wl,-subsystem,windows $(LINK) -o $(OBJ_NAME)
+	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) -Wall $(LINK) -o $(OBJ_NAME)
 	-rm -r res
 	cp -r ../../res .

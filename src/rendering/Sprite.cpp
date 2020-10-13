@@ -7,7 +7,7 @@
 
 
 
-int time;
+unsigned int time;
 
 std::unordered_map<const char*, Texture> spriteMap;
 
@@ -53,7 +53,7 @@ void Sprite::lazyload() {
 
 }
 
-void  Sprite::render(float x, float y) {
+void  Sprite::render(int x, int y) {
 	SDL_Rect renderQuad = {x, y, texture.w, texture.h};
 	if (time - anim_time >= animDelta) {
 		frame++;

@@ -10,8 +10,6 @@ SDL_Surface* surface = NULL;
 SDL_Renderer* renderer = NULL;
 
 bool initWindow() {
-    bool success = true;
-
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         std::cout << "SDL failed to initialize. Error: \n" << SDL_GetError() << std::endl;
         return false;

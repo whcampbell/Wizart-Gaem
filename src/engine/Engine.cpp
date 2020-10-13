@@ -31,15 +31,15 @@ void manageResources() {
 }
 
 void run() {
-    int lastu = SDL_GetTicks();
-    int lastp = SDL_GetTicks();
+    unsigned int lastu = SDL_GetTicks();
+    unsigned int lastp = SDL_GetTicks();
     std::cout << "Starting game" << std::endl;
 
-    int startu = 0;
-    int pdel = 0;
+    unsigned int startu = 0;
+    unsigned int pdel = 0;
 
-    int delta = 1000 / 60;
-    int deltap = 1000;
+    unsigned int delta = 1000 / 60;
+    unsigned int deltap = 1000;
 
     fps = 0;
     ups = 0;
