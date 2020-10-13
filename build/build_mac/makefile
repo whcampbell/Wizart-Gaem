@@ -16,3 +16,5 @@ all : $(SRC)
 	install_name_tool -add_rpath @executable_path/. game
 	-rm -r res
 	cp -r ../../res .
+	find ./res -type f -name '*.aseprite' -exec rm {} +
+	@echo "Build successful!"

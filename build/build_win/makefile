@@ -15,3 +15,5 @@ all : $(SRC)
 	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) -Wall $(LINK) -o $(OBJ_NAME)
 	-rm -r res
 	cp -r ../../res .
+	find ./res -type f -name '*.aseprite' -exec rm {} +
+	@echo "Build successful!"
