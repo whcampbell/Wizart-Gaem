@@ -6,14 +6,24 @@ enum AudioContext {
     Scene, Engine
 };
 
-struct Sound {
-private:
-    Mix_Chunk* sound;
+struct Mix {
+    Mix_Chunk* data;
+    const char* path;
+    
+    Mix(const char* path) : path(path) {}
+    
     void lazyload();
 
     void update();
 
     void unload();
+};
+
+struct Sound {
+private:
+    Mix sound;
+public:
+    
 };
 
 class AudioSource {

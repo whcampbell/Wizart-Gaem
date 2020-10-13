@@ -9,10 +9,10 @@
 
 unsigned int RenderTime;
 
-std::unordered_map<const char*, Texture> spriteMap;
+std::unordered_map<const char*, Texture*> spriteMap;
 
 Texture getTexture(const char* name) {
-	return spriteMap.at(name);
+	return *spriteMap.at(name);
 }
 
 void imp::importSprite(const char* path) {
@@ -40,10 +40,10 @@ void imp::importSprite(const char* path) {
 		texture->clips[i] = new SDL_Rect{texture->w * i, 0, texture->w, texture->h};
 	}
 
-	spriteMap[name] = *texture;
+	spriteMap[name] = texture;
 }
 
-Sprite::Sprite(const char* name) : texture(spriteMap[name]), frame{0}, anim_time{SDL_GetTicks()} {}
+Sprite::Sprite(const char* name) : texture(*spriteMap[name]), frame{0}, anim_time{SDL_GetTicks()} {}
 
 void Sprite::init() {
 

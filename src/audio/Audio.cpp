@@ -3,37 +3,40 @@
 #include<unordered_map>
 #include "Audio.h"
 
-std::unordered_map<const char*, Sound> soundMap;
+std::unordered_map<const char*, Mix*> soundMap;
 
 void imp::importAudio(const char* path) {
+    imp_i::SoundData data = imp_i::parseSound(path);
+    const char* name = data.name;
+    Mix* sound = new Mix(data.path);
+    soundMap[name] = sound;
+}
+
+void Mix::lazyload() {
 
 }
 
-void Sound::lazyload() {
+void Mix::update() {
 
 }
 
-void Sound::update() {
-
-}
-
-void Sound::unload() {
+void Mix::unload() {
         
 }
 
 
 Sound* AudioSource::play(const char* name) {
-    return &soundMap[name];
+    return nullptr;
 }
 
 Sound* AudioSource::play(const char* name, AudioContext ctx) {
-    return &soundMap[name];
+    return nullptr;
 }
 
 Sound* AudioSource::loop(const char* name, int loops) {
-    return &soundMap[name];
+    return nullptr;
 }
 
 Sound* AudioSource::loop(const char* name, int loops, AudioContext ctx) {
-    return &soundMap[name];
+    return nullptr;
 }
