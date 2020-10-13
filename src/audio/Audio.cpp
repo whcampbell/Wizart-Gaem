@@ -1,47 +1,39 @@
-#include "SDL2/SDL_mixer.h"
 
-const int LOOP_INFINITELY = -1;
+#include "Import.h"
+#include<unordered_map>
+#include "Audio.h"
 
-enum AudioContext {
-    Scene, Engine
-};
+std::unordered_map<const char*, Sound> soundMap;
 
-struct Sound {
-    Mix_Chunk* sound;
+void imp::importAudio(const char* path) {
 
-    void init() {
+}
 
-    }
+void Sound::lazyload() {
 
-    void lazyload() {
+}
 
-    }
+void Sound::update() {
 
-    void update() {
+}
 
-    }
-
-    void unload() {
+void Sound::unload() {
         
-    }
-};
+}
 
-class AudioSource {
 
-    Sound* play(const char* str) {
+Sound* AudioSource::play(const char* str) {
 
-    }
+}
 
-    Sound* play(const char* str, AudioContext ctx) {
+Sound* AudioSource::play(const char* str, AudioContext ctx) {
         
-    }
+}
 
-    Sound* loop(const char* str, int loops) {
+Sound* AudioSource::loop(const char* str, int loops) {
 
-    }
+}
 
-    Sound* loop(const char* str, int loops, AudioContext ctx) {
+Sound* AudioSource::loop(const char* str, int loops, AudioContext ctx) {
         
-    }
-
-};
+}

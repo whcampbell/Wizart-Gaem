@@ -3,6 +3,7 @@
 #include "Engine.h"
 #include "SDL2/SDL_thread.h"
 #include <SDL2/SDL.h>
+#include  "Sprite.h"
 
 bool running = false;
 static unsigned int fps, ups;
@@ -22,6 +23,10 @@ static void checkEvents() {
 }
 
 void update() {
+    spr_i::update();
+}
+
+void manageResources() {
 
 }
 
@@ -47,9 +52,12 @@ void run() {
             startu = SDL_GetTicks();
             checkEvents();
             update();
+            
             avgu += SDL_GetTicks() - startu;
 
             if ((pdel = SDL_GetTicks() - lastp) >= deltap) {
+                manageResources();
+
                 std::cout << pdel << "ms since last update" << "\n\tFPS: " << (int)(fps * ((float)deltap / pdel))
                  << "\n\tUPS: " << (int)(ups * ((float)deltap / pdel)) << "\n\tAvg utime: " << (avgu / ups) << "ms" << std::endl;
                 ups = 0;

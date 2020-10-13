@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
             searchDir(path + params[i]);
         }
     } else {
-        recurseDir(path);
+        recurseDir("./res");
     }
     std::cout << "metafile generation complete" << std::endl;
 }
