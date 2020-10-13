@@ -1,4 +1,4 @@
-#include "SDL2/SDL_mixer.h"
+#include <SDL_mixer.h>
 
 const int LOOP_INFINITELY = -1;
 

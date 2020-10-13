@@ -1,8 +1,8 @@
 #include "Screen.h"
 #include <iostream>
 #include "Engine.h"
-#include "SDL2/SDL_thread.h"
-#include <SDL2/SDL.h>
+#include <SDL_thread.h>
+#include <SDL.h>
 #include  "Sprite.h"
 
 bool running = false;

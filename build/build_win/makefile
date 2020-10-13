@@ -3,7 +3,7 @@ rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(su
 
 #Source files and dependencies
 SRC = $(call rwildcard,../../src,*.cpp)
-INCLUDE = -I../../headers -I../../libs/libs_win/include 
+INCLUDE = -I../../headers -I../../libs/libs_win/include/SDL2 
 LIBS = -L../../libs/libs_win/lib
 LINK = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer
 
