@@ -17,14 +17,17 @@ public:
 struct Sprite {
 private:
     Texture texture;
-	int frame, anim_time;
+	int frame;
+    unsigned int anim_time;
     void init();
     void lazyload();
+
 public:
-    int animDelta = 100;
+    unsigned int animDelta = 100;
     Sprite(const char* name);
-    void render(float x, float y);
+    void render(int x, int y);
     void render(Alignment* align);
+    
 };
 
 namespace spr_i {
