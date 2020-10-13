@@ -17,6 +17,7 @@ namespace imp_i {
     };
 
     struct SoundData {
+        bool isMus;
         const char* path;
         const char* name;
     };

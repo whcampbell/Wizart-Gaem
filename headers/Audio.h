@@ -7,23 +7,44 @@ enum AudioContext {
 };
 
 struct Mix {
-    Mix_Chunk* data;
+private:
+    int* loaded;
+protected:
     const char* path;
-    
-    Mix(const char* path) : path(path) {}
-    
-    void lazyload();
-
+    virtual void unload() {}
+    virtual void lazyload() {}
+public:
+    Mix(const char* path) : path(path) {
+        loaded = new int;
+        *loaded = 0;
+    }
     void update();
+    void ping();
+};
 
+struct Mus : public Mix {
+protected:
     void unload();
+    void lazyload();
+public:
+    Mus(const char* path) : Mix(path) {}
+    Mix_Music* data = nullptr;
+};
+
+struct Sfx : public Mix{
+protected:
+    void unload();
+    void lazyload();
+public:
+    Sfx(const char* path) : Mix(path) {}
+    Mix_Chunk* data = nullptr;
 };
 
 struct Sound {
 private:
     Mix sound;
 public:
-    
+    Sound(const char* name);
 };
 
 class AudioSource {

@@ -3,7 +3,7 @@
 #include "Engine.h"
 #include <SDL_thread.h>
 #include <SDL.h>
-#include  "Sprite.h"
+#include  "ResourceManager.h"
 
 bool running = false;
 static unsigned int fps, ups;
@@ -27,7 +27,8 @@ void update() {
 }
 
 void manageResources() {
-
+    spr_i::clean();
+    sfx_i::clean();
 }
 
 void run() {

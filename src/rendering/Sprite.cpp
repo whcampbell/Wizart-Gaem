@@ -4,6 +4,7 @@
 #include "Import.h"
 #include "Sprite.h"
 #include<unordered_map>
+#include "ResourceManager.h"
 
 
 
@@ -12,7 +13,8 @@ unsigned int RenderTime;
 std::unordered_map<const char*, Texture*> spriteMap;
 
 Texture getTexture(const char* name) {
-	return *spriteMap.at(name);
+	Texture* ptr = spriteMap.at(name);
+	return *ptr;
 }
 
 void imp::importSprite(const char* path) {
@@ -28,9 +30,11 @@ void imp::importSprite(const char* path) {
 	}
 
 	texture->sheet = SDL_CreateTextureFromSurface(getRenderer(), surface);
-	if (texture == NULL) {
+	if (texture->sheet == NULL) {
 		return;
 	}
+	SDL_FreeSurface(surface);
+
 	texture->frames = data.frames;
 	SDL_QueryTexture(texture->sheet, NULL, NULL, &(texture->w), &(texture->h));
 	texture->w /= texture->frames;
@@ -40,18 +44,12 @@ void imp::importSprite(const char* path) {
 		texture->clips[i] = new SDL_Rect{texture->w * i, 0, texture->w, texture->h};
 	}
 
+	SDL_DestroyTexture(texture->sheet);
+	
 	spriteMap[name] = texture;
 }
 
-Sprite::Sprite(const char* name) : texture(*spriteMap[name]), frame{0}, anim_time{SDL_GetTicks()} {}
-
-void Sprite::init() {
-
-}
-
-void Sprite::lazyload() {
-
-}
+Sprite::Sprite(const char* name) : texture(getTexture(name)), frame{0}, anim_time{SDL_GetTicks()} {}
 
 void  Sprite::render(int x, int y) {
 	SDL_Rect renderQuad = {x, y, texture.w, texture.h};
@@ -60,7 +58,7 @@ void  Sprite::render(int x, int y) {
 		frame %= texture.frames;
 		anim_time = RenderTime;
 	}
-		
+	texture.ping();
 	SDL_RenderCopy(getRenderer(), texture.sheet, texture.clips[frame], &renderQuad);
 }
 
@@ -77,4 +75,41 @@ void  Sprite::render(Alignment* align) {
 
 void spr_i::update() {
 	RenderTime = SDL_GetTicks();
+}
+
+void spr_i::clean() {
+	RenderTime = SDL_GetTicks();
+}
+
+
+void Texture::lazyload() {
+	SDL_Surface* surface = IMG_Load(path);
+	if (surface == NULL) {
+		return;
+	}
+
+	sheet = SDL_CreateTextureFromSurface(getRenderer(), surface);
+	if (sheet == NULL) {
+		return;
+	}
+	SDL_FreeSurface(surface);
+}
+
+void Texture::update() {
+	if(*loaded) {
+		(*loaded)--;
+		if (!(*loaded))
+			unload();
+	}
+}
+
+void Texture::unload() {
+	SDL_DestroyTexture(sheet);
+}
+
+void Texture::ping() {
+	if (!(*loaded)) {
+		lazyload();
+	}
+	*loaded = 60;
 }
