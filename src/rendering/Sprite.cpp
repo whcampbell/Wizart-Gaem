@@ -7,7 +7,7 @@
 
 
 
-unsigned int time;
+unsigned int RenderTime;
 
 std::unordered_map<const char*, Texture> spriteMap;
 
@@ -55,10 +55,10 @@ void Sprite::lazyload() {
 
 void  Sprite::render(int x, int y) {
 	SDL_Rect renderQuad = {x, y, texture.w, texture.h};
-	if (time - anim_time >= animDelta) {
+	if (RenderTime - anim_time >= animDelta) {
 		frame++;
 		frame %= texture.frames;
-		anim_time = time;
+		anim_time = RenderTime;
 	}
 		
 	SDL_RenderCopy(getRenderer(), texture.sheet, texture.clips[frame], &renderQuad);
@@ -66,15 +66,15 @@ void  Sprite::render(int x, int y) {
 
 void  Sprite::render(Alignment* align) {
 	SDL_Rect renderQuad = { align->x, align->y, texture.w, texture.h };
-	if (time - anim_time >= animDelta) {
+	if (RenderTime - anim_time >= animDelta) {
 		frame++;
 		frame %= texture.frames;
-		anim_time = time;
+		anim_time = RenderTime;
 	}
 	SDL_RenderCopyEx(getRenderer(), texture.sheet, texture.clips[frame], &renderQuad, align->theta, align->getPoint(), align->flip);
 }
 
 
 void spr_i::update() {
-	time = SDL_GetTicks();
+	RenderTime = SDL_GetTicks();
 }
