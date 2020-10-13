@@ -5,7 +5,7 @@ rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(su
 SRC = $(call rwildcard,../../src,*.cpp)
 INCLUDE = -I../../headers -I../../libs/libs_win/include/SDL2 
 LIBS = -L../../libs/libs_win/lib
-LINK = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer
+LINK = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
 #Executeable name
 OBJ_NAME = game
