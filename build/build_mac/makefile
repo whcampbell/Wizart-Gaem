@@ -6,13 +6,14 @@ SRC = $(call rwildcard,../../src,*.cpp)
 INCLUDE = -I../../headers -I../../libs/libs_mac/SDL2.framework/Headers -I../../libs/libs_mac/SDL2_image.framework/Headers -I../../libs/libs_mac/SDL2_ttf.framework/Headers -I../../libs/libs_mac/SDL2_mixer.framework/Headers
 LIBS = -F../../libs/libs_mac
 LINK = -framework SDL2 -framework SDL2_image -framework SDL2_mixer -framework SDL2_ttf
+FLAGS = -Wall -fdiagnostics-color=always
 
 #Executeable name
 OBJ_NAME = game
 
 #Compilation command
 all : $(SRC)
-	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) $(LINK) -Wall -o $(OBJ_NAME)
+	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -o $(OBJ_NAME)
 	install_name_tool -add_rpath @executable_path/. game
 	-rm -r res
 	cp -r ../../res .
