@@ -1,7 +1,8 @@
-void render() {
+#include "Handler.h"
+void hnd::render() {
 
 }
 
-void update() {
+void hnd::update() {
 
 }
