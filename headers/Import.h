@@ -1,28 +1,29 @@
-
+#pragma once
+#include <string>
 
 namespace imp {
 
-    void importSprite(const char* path);
+    void importSprite(std::string path);
 
 
 
-    void importAudio(const char* path);
+    void importAudio(std::string path);
 }
 
 namespace imp_i {
     struct SpriteData {
         int frames;
-        const char* path;
-        const char* name;
+        std::string path;
+        std::string name;
     };
 
     struct SoundData {
         bool isMus;
-        const char* path;
-        const char* name;
+        std::string path;
+        std::string name;
     };
 
-    SpriteData parseSprite(const char* path);
+    SpriteData parseSprite(std::string path);
 
-    SoundData parseSound(const char* path);
+    SoundData parseSound(std::string path);
 }

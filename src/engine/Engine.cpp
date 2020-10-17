@@ -4,6 +4,7 @@
 #include <SDL_thread.h>
 #include <SDL.h>
 #include  "ResourceManager.h"
+#include "Handler.h"
 
 bool running = false;
 static unsigned int fps, ups;
@@ -23,6 +24,7 @@ static void checkEvents() {
 }
 
 void update() {
+    hnd_i::update();
     spr_i::update();
 }
 
@@ -74,6 +76,8 @@ void run() {
 void render() {
 		SDL_RenderClear(getRenderer());
 
+        hnd_i::render();
+
 		SDL_RenderPresent(getRenderer());
 		fps++;
 }
@@ -86,13 +90,15 @@ int runSDL(void* data) {
 }
 
 
-void engine::start() {
+void engine::start(void (*initfunc)()) {
     if (!initWindow()) {
         std::cout << "Window initialization failed" << std::endl;
         return;
     }
+    res::init();
     running = true;
     rThread = SDL_CreateThread(runSDL, "renderThread", (void*)NULL);
+    initfunc();
     run();
 }
 
@@ -102,6 +108,7 @@ void engine::stop() {
     running = false;
     int threadReturn;
     SDL_WaitThread(rThread, &threadReturn);
+    res::close();
     closeWindow();
 }
 

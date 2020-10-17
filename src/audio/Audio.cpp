@@ -1,30 +1,37 @@
-
+#include <iostream>
 #include "Import.h"
 #include<unordered_map>
 #include "Audio.h"
 #include "ResourceManager.h"
+#include <string>
+#include "Handler.h"
 
-std::unordered_map<const char*, Mix*> soundMap;
+std::unordered_map<std::string, Mix*>* soundMap = new std::unordered_map<std::string, Mix*>();
 
-Mix getMix(const char* name) {
-    Mix* ptr = soundMap[name];
+Mix getMix(std::string name) {
+    Mix* ptr = (*soundMap)[name];
     return *ptr;
 }
 
-void imp::importAudio(const char* path) {
+void imp::importAudio(std::string path) {
     imp_i::SoundData data = imp_i::parseSound(path);
-    const char* name = data.name;
+
+    std::cout << "\tcollecting data" << std::endl;
+    
+    std::string name = data.name;
     if (data.isMus) {
         Mus* sound = new Mus(data.path);
-        soundMap[name] = sound;
+        (*soundMap)[name] = sound;
     } else {
         Sfx* sound = new Sfx(data.path);
-        soundMap[name] = sound;
+        (*soundMap)[name] = sound;
     }
+
+    std::cout << "\tmapping sound" << std::endl;
 }
 
 void Mus::lazyload() {
-    data = Mix_LoadMUS(path);
+    data = Mix_LoadMUS(path.c_str());
 }
 
 void Mus::unload() {
@@ -32,12 +39,13 @@ void Mus::unload() {
 }
 
 int Mus::play(int loops) {
+    ping();
     Mix_PlayMusic(data, loops);
     return -2;
 }
 
 void Sfx::lazyload() {
-    data = Mix_LoadWAV(path);
+    data = Mix_LoadWAV(path.c_str());
 }
 
 void Sfx::unload() {
@@ -45,6 +53,7 @@ void Sfx::unload() {
 }
 
 int Sfx::play(int loops) {
+    ping();
     return Mix_PlayChannel(-1, data, loops);
 }
 
@@ -63,31 +72,35 @@ void Mix::ping() {
 	*loaded = 60;
 }
 
-Sound* AudioSource::play(const char* name) {
+Sound* AudioSource::play(std::string name) {
     Sound* sound = new Sound(name);
     sound->play(0);
     sound->setVolume(volume);
+    hnd_sfx::addSound(sound, ADUIOCTX_engine);
     return sound;
 }
 
-Sound* AudioSource::play(const char* name, AudioContext ctx) {
+Sound* AudioSource::play(std::string name, AudioContext ctx) {
         Sound* sound = new Sound(name);
     sound->play(0);
     sound->setVolume(volume);
+    hnd_sfx::addSound(sound, ctx);
     return sound;
 }
 
-Sound* AudioSource::loop(const char* name, int loops) {
+Sound* AudioSource::loop(std::string name, int loops) {
     Sound* sound = new Sound(name);
     sound->play(loops);
     sound->setVolume(volume);
+    hnd_sfx::addSound(sound, ADUIOCTX_engine);
     return sound;
 }
 
-Sound* AudioSource::loop(const char* name, int loops, AudioContext ctx) {
+Sound* AudioSource::loop(std::string name, int loops, AudioContext ctx) {
     Sound* sound = new Sound(name);
     sound->play(loops);
     sound->setVolume(volume);
+    hnd_sfx::addSound(sound, ctx);
     return sound;
 }
 
@@ -95,7 +108,7 @@ void sfx_i::clean() {
 
 }
 
-Sound::Sound(const char* name) : sound(getMix(name)) {}
+Sound::Sound(std::string name) : sound(getMix(name)) {}
 
 void Sound::play(int loops) {
     channel = sound.play(loops);

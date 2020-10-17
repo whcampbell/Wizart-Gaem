@@ -1,20 +1,22 @@
+#pragma once
 #include <SDL_mixer.h>
+#include <string>
 
 const int LOOP_INFINITELY = -1;
 
 enum AudioContext {
-    Scene, Engine
+    ADUIOCTX_scene, ADUIOCTX_engine
 };
 
 struct Mix {
 private:
     int* loaded;
 protected:
-    const char* path;
+    std::string path;
     virtual void unload() {}
     virtual void lazyload() {}
 public:
-    Mix(const char* path) : path(path) {
+    Mix(std::string path) : path(path) {
         loaded = new int;
         *loaded = 0;
     }
@@ -28,7 +30,7 @@ protected:
     void unload();
     void lazyload();
 public:
-    Mus(const char* path) : Mix(path) {}
+    Mus(std::string path) : Mix(path) {}
     Mix_Music* data = nullptr;
     int play(int loops);
 };
@@ -38,7 +40,7 @@ protected:
     void unload();
     void lazyload();
 public:
-    Sfx(const char* path) : Mix(path) {}
+    Sfx(std::string path) : Mix(path) {}
     Mix_Chunk* data = nullptr;
     int play(int loops);
 };
@@ -48,7 +50,7 @@ private:
     Mix sound;
     int channel;
 public:
-    Sound(const char* name);
+    Sound(std::string name);
 
     int setVolume(int vol);
 
@@ -58,15 +60,23 @@ public:
 };
 
 class AudioSource {
-
+public:
     int volume;
 
-    Sound* play(const char* str);
+    Sound* play(std::string str);
 
-    Sound* play(const char* str, AudioContext ctx);
+    Sound* play(std::string str, AudioContext ctx);
 
-    Sound* loop(const char* str, int loops);
+    Sound* loop(std::string str, int loops);
 
-    Sound* loop(const char* str, int loops, AudioContext ctx);
+    Sound* loop(std::string str, int loops, AudioContext ctx);
 
 };
+
+namespace hnd_sfx {
+    void addSound(Sound* sound, AudioContext ctx);
+}
+
+namespace engine {
+    AudioSource* getAudioSource(std::string name);
+}

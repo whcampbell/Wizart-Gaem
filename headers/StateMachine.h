@@ -1,3 +1,4 @@
+#pragma once
 
 template <int states, typename T = int>
 class StateMachine {

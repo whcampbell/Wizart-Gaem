@@ -1,9 +1,10 @@
 #pragma once
 #include "Alignment.h"
+#include <string>
 
 struct Texture {
 private:
-	const char* path;
+	std::string path;
     int* loaded;
 
     void lazyload();
@@ -14,7 +15,7 @@ public:
 	SDL_Texture* sheet;
 	SDL_Rect** clips;
 
-	Texture(const char* path) : path(path) {
+	Texture(std::string path) : path(path) {
         loaded = new int;
         *loaded = 0;
     }
@@ -32,7 +33,7 @@ private:
     unsigned int anim_time;
 public:
     unsigned int animDelta = 100;
-    Sprite(const char* name);
+    Sprite(std::string name);
     void render(int x, int y);
     void render(Alignment* align);
 };

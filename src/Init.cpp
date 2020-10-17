@@ -1,7 +1,15 @@
 #include "Engine.h"
-#include <iostream>
+#include "Handler.h"
+#include "scenes/TestScene.h"
 
-int main() {
-    engine::start();
-    engine::stop();
+void init() { 
+    scene::Test* scene = new scene::Test();
+    hnd::initScene(scene);
 }
+
+int main(int argv, char** args) {
+    engine::start(init);
+    engine::stop();
+    return 0;
+}
+

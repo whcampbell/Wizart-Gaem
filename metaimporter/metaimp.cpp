@@ -3,6 +3,8 @@
 #include <string>
 #include <filesystem>
 #include <vector>
+#include <algorithm>
+#include <cctype>
 
 namespace fs = std::filesystem;
 
@@ -55,6 +57,18 @@ void logData(fs::path path, std::string ref, int frames) {
     std::cout << "created new metafile: " << path.filename() << std::endl;
 }
 
+void logData(fs::path path, std::string ref, bool isMus) {
+    if (fs::remove(path))
+        std::cout << "Removed existing metafile: " << path.filename() << std::endl;
+    std::ofstream file(path, std::ofstream::out | std::ofstream::binary);
+    int ref_size = ref.size();
+    file.write(reinterpret_cast<char*>(&isMus), sizeof(bool));
+    file.write(reinterpret_cast<char*>(&ref_size), sizeof(int));
+    file.write(ref.c_str(), ref.size());
+    file.close();
+    std::cout << "created new metafile: " << path.filename() << std::endl;
+}
+
 std::string getExtention(fs::directory_entry entry) {
     return entry.path().extension().string();
 }
@@ -79,7 +93,27 @@ void parseFile(fs::directory_entry entry) {
             logData(path, referenceName, frames);
         } else if (extflag == (int)OGG) {
 
+            std::string mus;
+            std::cout << "Is this sound effect a musical track? (y/n)" << std::endl;
+            std::cin >> mus;
+            std::transform(mus.begin(), mus.end(), mus.begin(), [](unsigned char c){ return std::tolower(c); });
+            bool isMus = mus.compare("no") | mus.compare("n") | mus.compare("false") | mus.compare("0") | mus.compare("f");
+            std::cout << "Enter the name this animation will be referred to in code" << std::endl;
+            std::string referenceName;
+            std::cin >> referenceName;
+            logData(path, referenceName, isMus);
+
         } else if (extflag == (int)WAV) {
+
+            std::string mus;
+            std::cout << "Is this sound effect a musical track? (y/n)" << std::endl;
+            std::cin >> mus;
+            std::transform(mus.begin(), mus.end(), mus.begin(), [](unsigned char c){ return std::tolower(c); });
+            bool isMus = mus.compare("no") | mus.compare("n") | mus.compare("false") | mus.compare("0") | mus.compare("f");
+            std::cout << "Enter the name this animation will be referred to in code" << std::endl;
+            std::string referenceName;
+            std::cin >> referenceName;
+            logData(path, referenceName, isMus);
 
         } else {
             std::cout << "beanboy says: NO MORE BEANS :(";
