@@ -8,9 +8,13 @@
 
 std::unordered_map<std::string, Mix*>* soundMap = new std::unordered_map<std::string, Mix*>();
 
-Mix getMix(std::string name) {
+Mix* getMix(std::string name) {
+    if (soundMap->find(name) == soundMap->end()) {
+        std::cout << name << " is not present in the sound map" << std::endl;
+        exit(1);
+    }
     Mix* ptr = (*soundMap)[name];
-    return *ptr;
+    return ptr;
 }
 
 void imp::importAudio(std::string path) {
@@ -19,15 +23,18 @@ void imp::importAudio(std::string path) {
     std::cout << "\tcollecting data" << std::endl;
     
     std::string name = data.name;
+    
     if (data.isMus) {
         Mus* sound = new Mus(data.path);
         (*soundMap)[name] = sound;
+        std::cout << "\tmapping music at " << name << std::endl;
     } else {
         Sfx* sound = new Sfx(data.path);
         (*soundMap)[name] = sound;
+        std::cout << "\tmapping sound at " << name << std::endl;
     }
 
-    std::cout << "\tmapping sound" << std::endl;
+    
 }
 
 void Mus::lazyload() {
@@ -39,6 +46,7 @@ void Mus::unload() {
 }
 
 int Mus::play(int loops) {
+    std::cout << "playing music" << std::endl;
     ping();
     Mix_PlayMusic(data, loops);
     return -2;
@@ -53,6 +61,7 @@ void Sfx::unload() {
 }
 
 int Sfx::play(int loops) {
+    std::cout << "playing sound" << std::endl;
     ping();
     return Mix_PlayChannel(-1, data, loops);
 }
@@ -73,6 +82,7 @@ void Mix::ping() {
 }
 
 Sound* AudioSource::play(std::string name) {
+   
     Sound* sound = new Sound(name);
     sound->play(0);
     sound->setVolume(volume);
@@ -111,7 +121,7 @@ void sfx_i::clean() {
 Sound::Sound(std::string name) : sound(getMix(name)) {}
 
 void Sound::play(int loops) {
-    channel = sound.play(loops);
+    channel = sound->play(loops);
 }
 
 int Sound::setVolume(int vol) {
@@ -126,4 +136,19 @@ void Sound::stop() {
         Mix_HaltMusic();
     else
         Mix_HaltChannel(channel);
+}
+
+void sfx_i::init() {
+    int audio_rate = 44100;
+    Uint16 audio_format = AUDIO_S16; /* 16-bit stereo */
+    int audio_channels = 8;
+    int audio_buffers = 4096;
+
+    if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) < 0) {
+        std::cout << "Unable to open audio!\n" << std::endl;
+        exit(1);
+    }
+
+    if(Mix_Init(MIX_INIT_MOD) != MIX_INIT_MOD)
+        std::cout << "error initializing sdl mixer" << std::endl;
 }

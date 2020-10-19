@@ -16,8 +16,9 @@ imp_i::SpriteData imp_i::parseSprite(std::string path) {
     stream.read(reinterpret_cast<char*>(&(data.frames)), sizeof(int));
     int name;
     stream.read(reinterpret_cast<char*>(&name), sizeof(int));
-    char* str_name = new char[name];
+    char* str_name = new char[name + 1];
     stream.read(str_name, name);
+    str_name[name + 1] = (char)NULL;
     data.name = str_name;
     data.path = path.substr(0, path.length() - 5).c_str();
     stream.close();
@@ -30,8 +31,9 @@ imp_i::SoundData imp_i::parseSound(std::string path) {
     stream.read(reinterpret_cast<char*>(&data.isMus), sizeof(bool));
     int name;
     stream.read(reinterpret_cast<char*>(&name), sizeof(int));
-    char* str_name = new char[name];
+    char* str_name = new char[name + 1];
     stream.read(str_name, name);
+    str_name[name + 1] = (char)NULL;
     data.name = str_name;
     data.path = path.substr(0, path.length() - 5).c_str();
     stream.close();
@@ -56,6 +58,7 @@ void recurseDir(std::string path) {
 }
 
 void res::init() {
+    sfx_i::init();
     std::cout << "starting resource import" << std::endl;
     std::string path = "./res";
     recurseDir(path);

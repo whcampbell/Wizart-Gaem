@@ -7,7 +7,7 @@ void scene::Test::init() {
     sprite = new Sprite("load_splash");
     align.x = 1;
     align.y = 1;
-    engine::getAudioSource("test")->play("test_mus");
+    engine::getAudioSource("test")->play("test_mus_wav");
 }
 
 void scene::Test::update() {

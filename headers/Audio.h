@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL_mixer.h>
 #include <string>
+#include <iostream>
 
 const int LOOP_INFINITELY = -1;
 
@@ -13,8 +14,8 @@ private:
     int* loaded;
 protected:
     std::string path;
-    virtual void unload() {}
-    virtual void lazyload() {}
+    virtual void unload() = 0;
+    virtual void lazyload() = 0;
 public:
     Mix(std::string path) : path(path) {
         loaded = new int;
@@ -22,10 +23,10 @@ public:
     }
     void update();
     void ping();
-    virtual int play(int loops) {return -1;}
+    virtual int play(int loops) = 0;
 };
 
-struct Mus : public Mix {
+struct Mus : Mix {
 protected:
     void unload();
     void lazyload();
@@ -35,7 +36,7 @@ public:
     int play(int loops);
 };
 
-struct Sfx : public Mix{
+struct Sfx : Mix{
 protected:
     void unload();
     void lazyload();
@@ -47,7 +48,7 @@ public:
 
 struct Sound {
 private:
-    Mix sound;
+    Mix* sound;
     int channel;
 public:
     Sound(std::string name);
@@ -61,7 +62,7 @@ public:
 
 class AudioSource {
 public:
-    int volume;
+    int volume = 64;
 
     Sound* play(std::string str);
 

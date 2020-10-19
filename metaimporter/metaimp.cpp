@@ -97,7 +97,7 @@ void parseFile(fs::directory_entry entry) {
             std::cout << "Is this sound effect a musical track? (y/n)" << std::endl;
             std::cin >> mus;
             std::transform(mus.begin(), mus.end(), mus.begin(), [](unsigned char c){ return std::tolower(c); });
-            bool isMus = mus.compare("no") | mus.compare("n") | mus.compare("false") | mus.compare("0") | mus.compare("f");
+            bool isMus = mus.at(0) != 'n';
             std::cout << "Enter the name this animation will be referred to in code" << std::endl;
             std::string referenceName;
             std::cin >> referenceName;
@@ -109,7 +109,7 @@ void parseFile(fs::directory_entry entry) {
             std::cout << "Is this sound effect a musical track? (y/n)" << std::endl;
             std::cin >> mus;
             std::transform(mus.begin(), mus.end(), mus.begin(), [](unsigned char c){ return std::tolower(c); });
-            bool isMus = mus.compare("no") | mus.compare("n") | mus.compare("false") | mus.compare("0") | mus.compare("f");
+            bool isMus = mus.at(0) != 'n';
             std::cout << "Enter the name this animation will be referred to in code" << std::endl;
             std::string referenceName;
             std::cin >> referenceName;

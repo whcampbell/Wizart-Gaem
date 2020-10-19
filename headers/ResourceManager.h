@@ -2,11 +2,11 @@
 
 namespace sfx_i {
     void clean();
+    void init();
 }
 
 namespace spr_i {
     void update();
-
     void clean();
 }
 

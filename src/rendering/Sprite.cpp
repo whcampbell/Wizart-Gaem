@@ -14,6 +14,10 @@ unsigned int RenderTime;
 std::unordered_map<std::string, Texture*>*  spriteMap = new std::unordered_map<std::string, Texture*>();
 
 Texture getTexture(std::string name) {
+	if (spriteMap->find(name) == spriteMap->end()) {
+        std::cout << name << " is not present in the sound map" << std::endl;
+        exit(1);
+    }
 	Texture* ptr = (*spriteMap)[name];
 	return *ptr;
 }
@@ -55,7 +59,7 @@ void imp::importSprite(std::string path) {
 	
 	(*spriteMap)[name] = texture;
 
-	std::cout << "\tmapping texture" << std::endl;
+	std::cout << "\tmapping texture at " << name << std::endl;
 	
 }
 

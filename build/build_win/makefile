@@ -12,8 +12,22 @@ FLAGS = -Wall -fdiagnostics-color=always
 OBJ_NAME = game
 
 #Compilation command
-all : $(SRC)
+build : $(SRC)
 	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -o $(OBJ_NAME)
+	-rm -r res
+	cp -r ../../res .
+	find ./res -type f -name '*.aseprite' -exec rm {} +
+	@echo "Build successful!"
+
+debug : $(SRC)
+	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -g -o $(OBJ_NAME)
+	-rm -r res
+	cp -r ../../res .
+	find ./res -type f -name '*.aseprite' -exec rm {} +
+	@echo "Build successful!"
+
+optimize : $(SRC)
+	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -O3 -o $(OBJ_NAME)
 	-rm -r res
 	cp -r ../../res .
 	find ./res -type f -name '*.aseprite' -exec rm {} +
