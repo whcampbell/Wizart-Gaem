@@ -10,3 +10,11 @@ namespace key {
     
     void init();
 }
+
+namespace mouse {
+    void move(SDL_MouseMotionEvent e); 
+
+    void keyup(SDL_MouseButtonEvent e);
+
+    void keydown(SDL_MouseButtonEvent e);
+}

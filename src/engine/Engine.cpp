@@ -22,10 +22,13 @@ static void checkEvents() {
         case SDL_MOUSEWHEEL:
             break;
         case SDL_MOUSEBUTTONUP:
+            mouse::keyup(e.button);
             break;
         case SDL_MOUSEBUTTONDOWN:
+            mouse::keydown(e.button);
             break;  
         case SDL_MOUSEMOTION:
+            mouse::move(e.motion);
             break;
         case SDL_CONTROLLERDEVICEADDED:
             break;

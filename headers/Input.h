@@ -5,6 +5,9 @@ struct Gamepad;
 namespace mouse {
     int x();
     int y();
+    bool down(const char* name);
+    bool press(const char* name);
+    bool release(const char* name);
 }
 
 namespace key {

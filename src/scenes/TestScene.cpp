@@ -23,6 +23,9 @@ void scene::Test::update() {
     }
     if (key::press("W"))
         flip = !flip;
+
+    if (mouse::press("MouseRight"))
+        flip = !flip;
 }
 
 void scene::Test::render() {
