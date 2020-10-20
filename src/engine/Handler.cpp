@@ -3,6 +3,7 @@
 #include "Audio.h"
 #include <string>
 #include <unordered_map>
+#include <EventPump.h>
 
 Scene* activeScene = nullptr;
 
@@ -17,8 +18,11 @@ void hnd_i::render() {
 }
 
 void hnd_i::update() {
-        if (activeScene != nullptr)
+    if (activeScene != nullptr)
         activeScene->update();
+
+
+    key::update();
 }
 
 void hnd::setScene(Scene* scene) {

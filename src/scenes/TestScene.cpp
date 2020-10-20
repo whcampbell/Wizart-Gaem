@@ -1,5 +1,6 @@
 #include "scenes/TestScene.h"
 #include "Audio.h"
+#include "Input.h"
 
 bool flip = true;
 
@@ -20,7 +21,8 @@ void scene::Test::update() {
         if (align.x <= 0)
             flip = !flip;
     }
-
+    if (key::press("W"))
+        flip = !flip;
 }
 
 void scene::Test::render() {

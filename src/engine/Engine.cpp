@@ -3,8 +3,9 @@
 #include "Engine.h"
 #include <SDL_thread.h>
 #include <SDL.h>
-#include  "ResourceManager.h"
+#include "ResourceManager.h"
 #include "Handler.h"
+#include "EventPump.h"
 
 bool running = false;
 static unsigned int fps, ups;
@@ -18,6 +19,32 @@ static void checkEvents() {
 	    case SDL_QUIT:
 		    running = false;
 		    break;
+        case SDL_MOUSEWHEEL:
+            break;
+        case SDL_MOUSEBUTTONUP:
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            break;  
+        case SDL_MOUSEMOTION:
+            break;
+        case SDL_CONTROLLERDEVICEADDED:
+            break;
+        case SDL_CONTROLLERDEVICEREMOVED:
+            break;
+        case SDL_CONTROLLERDEVICEREMAPPED:
+            break;
+        case SDL_CONTROLLERAXISMOTION:
+            break;
+        case SDL_CONTROLLERBUTTONUP:
+            break;  
+        case SDL_CONTROLLERBUTTONDOWN:
+            break;
+        case SDL_KEYUP:
+            key::keyup(e.key);
+            break;
+        case SDL_KEYDOWN:
+            key::keydown(e.key);
+            break;
 	    default:
 		    break;
 	    }
@@ -55,7 +82,6 @@ void run() {
             startu = SDL_GetTicks();
             checkEvents();
             update();
-            
             avgu += SDL_GetTicks() - startu;
 
             if ((pdel = SDL_GetTicks() - lastp) >= deltap) {
@@ -89,19 +115,18 @@ int runSDL(void* data) {
     return 0;
 }
 
-
 void engine::start(void (*initfunc)()) {
     if (!initWindow()) {
         std::cout << "Window initialization failed" << std::endl;
         return;
     }
+    key::init();
     res::init();
     running = true;
     rThread = SDL_CreateThread(runSDL, "renderThread", (void*)NULL);
     initfunc();
     run();
 }
-
 
 void engine::stop() {
     std::cout << "Closing game" << std::endl;
