@@ -19,7 +19,9 @@ imp_i::SpriteData imp_i::parseSprite(std::string path) {
     char* str_name = new char[name + 1];
     stream.read(str_name, name);
     str_name[name + 1] = (char)NULL;
-    data.name = str_name;
+    std::string str_name_val(str_name);
+    str_name_val = str_name_val.substr(0, name);
+    data.name = str_name_val.c_str();
     data.path = path.substr(0, path.length() - 5).c_str();
     stream.close();
     return data;
@@ -34,7 +36,9 @@ imp_i::SoundData imp_i::parseSound(std::string path) {
     char* str_name = new char[name + 1];
     stream.read(str_name, name);
     str_name[name + 1] = (char)NULL;
-    data.name = str_name;
+    std::string str_name_val(str_name);
+    str_name_val = str_name_val.substr(0, name);
+    data.name = str_name_val.c_str();
     data.path = path.substr(0, path.length() - 5).c_str();
     stream.close();
     return data;
