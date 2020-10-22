@@ -15,7 +15,7 @@ static std::unordered_map<std::string, Texture*>*  spriteMap = new std::unordere
 
 Texture getTexture(std::string name) {
 	if (spriteMap->find(name) == spriteMap->end()) {
-        std::cout << name << " is not present in the sound map" << std::endl;
+        std::cout << name << " is not present in the sprite map" << std::endl;
         exit(1);
     }
 	Texture* ptr = (*spriteMap)[name];
@@ -33,11 +33,13 @@ void imp::importSprite(std::string path) {
 
 	SDL_Surface* surface = IMG_Load(data.path.c_str());
 	if (surface == NULL) {
+		std::cout << "\tfailed to generate surface for image at " << data.path << std::endl;
 		return;
 	}
 
 	texture->sheet = SDL_CreateTextureFromSurface(getRenderer(), surface);
 	if (texture->sheet == NULL) {
+		std::cout << "\tfailed to generate texture for image at " << data.path << std::endl;
 		return;
 	}
 	SDL_FreeSurface(surface);
