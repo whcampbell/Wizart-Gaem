@@ -33,13 +33,13 @@ void imp::importSprite(std::string path) {
 
 	SDL_Surface* surface = IMG_Load(data.path.c_str());
 	if (surface == NULL) {
-		std::cout << "\tfailed to generate surface for image at " << data.path << std::endl;
+		std::cout << "\tfailed to generate surface for image at " << data.path << "\n" << SDL_GetError() << std::endl;
 		return;
 	}
 
 	texture->sheet = SDL_CreateTextureFromSurface(getRenderer(), surface);
 	if (texture->sheet == NULL) {
-		std::cout << "\tfailed to generate texture for image at " << data.path << std::endl;
+		std::cout << "\tfailed to generate texture for image at " << data.path << "\n" << SDL_GetError() << std::endl;
 		return;
 	}
 	SDL_FreeSurface(surface);

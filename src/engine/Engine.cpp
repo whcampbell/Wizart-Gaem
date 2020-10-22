@@ -10,7 +10,7 @@
 static bool running = false;
 static unsigned int fps, ups;
 static unsigned int avgu;
-static SDL_Thread* rThread;
+static SDL_Thread* eThread;
 
 static void checkEvents() {
 	SDL_Event e;
@@ -137,7 +137,7 @@ void engine::start(void (*initfunc)()) {
     gamepad::locateControllers();
     key::init();
     running = true;
-    rThread = SDL_CreateThread(run, "engineThread", (void*)NULL);
+    eThread = SDL_CreateThread(run, "engineThread", (void*)NULL);
     res::init();
     initfunc();
     flag_reswait = false;
@@ -148,7 +148,7 @@ void engine::stop() {
     std::cout << "Closing game" << std::endl;
     running = false;
     int threadReturn;
-    SDL_WaitThread(rThread, &threadReturn);
+    SDL_WaitThread(eThread, &threadReturn);
     res::close();
     closeWindow();
 }
