@@ -69,7 +69,11 @@ void manageResources() {
     sfx_i::clean();
 }
 
-void run() {
+bool flag_reswait = true;
+
+int run(void* data) {
+    while(flag_reswait);
+
     unsigned int lastu = SDL_GetTicks();
     unsigned int lastp = SDL_GetTicks();
     std::cout << "Starting game" << std::endl;
@@ -89,7 +93,6 @@ void run() {
         if ((SDL_GetTicks() - lastu) >= delta) {
             ups++;
             startu = SDL_GetTicks();
-            checkEvents();
             update();
             avgu += SDL_GetTicks() - startu;
 
@@ -106,6 +109,7 @@ void run() {
             lastu = SDL_GetTicks();
         }
     }
+    return 0;
 }
 
 void render() {
@@ -117,12 +121,9 @@ void render() {
 		fps++;
 }
 
-bool flag_reswait = true;
-
 int runSDL(void* data) {
-    res::init();
-    flag_reswait = false;
 	while (running) {
+        checkEvents();
         render();
 	}
     return 0;
@@ -136,10 +137,11 @@ void engine::start(void (*initfunc)()) {
     gamepad::locateControllers();
     key::init();
     running = true;
-    rThread = SDL_CreateThread(runSDL, "renderThread", (void*)NULL);
-    while(flag_reswait);
+    rThread = SDL_CreateThread(run, "engineThread", (void*)NULL);
+    res::init();
     initfunc();
-    run();
+    flag_reswait = false;
+    runSDL((void*)NULL);
 }
 
 void engine::stop() {
