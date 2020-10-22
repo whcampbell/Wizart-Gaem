@@ -133,11 +133,12 @@ void readfile(fs::directory_entry entry) {
 
 void searchDir(std::string path) {
     for (const auto & entry : fs::directory_iterator(path))
-        if (!entry.is_directory())
+        if (!entry.is_directory()) {
             if (flag_o)
                 readfile(entry);
             else
                 parseFile(entry);
+        }
 }
 
 void recurseDir(std::string path) {
