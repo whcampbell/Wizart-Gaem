@@ -20,7 +20,15 @@ bool initWindow() {
             std::cout << "Window creation failed. Error: \n" << SDL_GetError() << std::endl;
         } else {
             surface = SDL_GetWindowSurface(window);
+            if (surface == NULL) {
+                std::cout << "Failed to create surface" << SDL_GetError() << std::endl;
+                return false;
+            }
             renderer = SDL_CreateRenderer(window, -1, 0);
+            if (renderer == NULL) {
+                std::cout << "Failed to create renderer" << SDL_GetError() << std::endl;
+                return false;
+            }
         }
 
     }
