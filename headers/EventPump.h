@@ -18,3 +18,17 @@ namespace mouse {
 
     void keydown(SDL_MouseButtonEvent e);
 }
+
+namespace gamepad {
+    void update();
+
+    void move(SDL_ControllerAxisEvent e);
+    void keyup(SDL_ControllerButtonEvent e);
+    void keydown(SDL_ControllerButtonEvent e);
+
+    void connect(SDL_ControllerDeviceEvent e);
+    void disconnect(SDL_ControllerDeviceEvent e);
+    void remap(SDL_ControllerDeviceEvent e);
+
+    void locateControllers();
+}

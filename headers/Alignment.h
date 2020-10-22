@@ -1,12 +1,13 @@
 #pragma once
 #include <SDL.h>
+#include "Vector.h"
 
 struct Alignment
 {
 private:
 	SDL_Point point;
 public:
-	int x, y;
+	Vector pos;
 	int* x_internal = &point.x;
 	int* y_internal = &point.y;
 	double theta;

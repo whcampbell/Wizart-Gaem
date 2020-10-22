@@ -77,7 +77,7 @@ void  Sprite::render(int x, int y) {
 }
 
 void  Sprite::render(Alignment* align) {
-	SDL_Rect renderQuad = { align->x, align->y, texture.w, texture.h };
+	SDL_Rect renderQuad = { align->pos.x, align->pos.y, texture.w, texture.h };
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
 		frame %= texture.frames;

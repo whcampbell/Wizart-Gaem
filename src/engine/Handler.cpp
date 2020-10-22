@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <EventPump.h>
+#include "Camera.h"
 
 Scene* activeScene = nullptr;
 
@@ -21,8 +22,9 @@ void hnd_i::update() {
     if (activeScene != nullptr)
         activeScene->update();
 
-
+    camera_i::update();
     key::update();
+    gamepad::update();
 }
 
 void hnd::setScene(Scene* scene) {

@@ -31,16 +31,22 @@ static void checkEvents() {
             mouse::move(e.motion);
             break;
         case SDL_CONTROLLERDEVICEADDED:
+            gamepad::connect(e.cdevice);
             break;
         case SDL_CONTROLLERDEVICEREMOVED:
+            gamepad::disconnect(e.cdevice);
             break;
         case SDL_CONTROLLERDEVICEREMAPPED:
+            gamepad::remap(e.cdevice);
             break;
         case SDL_CONTROLLERAXISMOTION:
+            gamepad::move(e.caxis);
             break;
         case SDL_CONTROLLERBUTTONUP:
+            gamepad::keyup(e.cbutton);
             break;  
         case SDL_CONTROLLERBUTTONDOWN:
+            gamepad::keydown(e.cbutton);
             break;
         case SDL_KEYUP:
             key::keyup(e.key);
@@ -123,6 +129,7 @@ void engine::start(void (*initfunc)()) {
         std::cout << "Window initialization failed" << std::endl;
         return;
     }
+    gamepad::locateControllers();
     key::init();
     res::init();
     running = true;

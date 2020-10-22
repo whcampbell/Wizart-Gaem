@@ -1,7 +1,7 @@
 #include "Eventpump.h"
 #include "Input.h" 
 
-int X = 0, Y = 0;
+static int X = 0, Y = 0;
 
 void mouse::move(SDL_MouseMotionEvent e) {
     X = e.x;
