@@ -18,7 +18,7 @@ bool initWindow() {
         if (window == NULL) {
             std::cout << "Window creation failed. Error: \n" << SDL_GetError() << std::endl;
         } else {
-            renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+            renderer = SDL_CreateRenderer(window, -1, 0);
             if (renderer == NULL) {
                 std::cout << "Failed to create renderer" << SDL_GetError() << std::endl;
                 return false;
