@@ -9,9 +9,9 @@
 #include <string>
 
 
-unsigned int RenderTime;
+static unsigned int RenderTime;
 
-std::unordered_map<std::string, Texture*>*  spriteMap = new std::unordered_map<std::string, Texture*>();
+static std::unordered_map<std::string, Texture*>*  spriteMap = new std::unordered_map<std::string, Texture*>();
 
 Texture getTexture(std::string name) {
 	if (spriteMap->find(name) == spriteMap->end()) {
@@ -65,7 +65,7 @@ void imp::importSprite(std::string path) {
 
 Sprite::Sprite(std::string name) : texture(getTexture(name)), frame{0}, anim_time{SDL_GetTicks()} {}
 
-void  Sprite::render(int x, int y) {
+void  Sprite::render(int x, int y, int z) {
 	SDL_Rect renderQuad = {x, y, texture.w, texture.h};
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
@@ -76,7 +76,7 @@ void  Sprite::render(int x, int y) {
 	SDL_RenderCopy(getRenderer(), texture.sheet, texture.clips[frame], &renderQuad);
 }
 
-void  Sprite::render(Alignment* align) {
+void  Sprite::render(Alignment* align, int z) {
 	SDL_Rect renderQuad = { align->pos.x, align->pos.y, texture.w, texture.h };
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;

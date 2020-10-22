@@ -7,10 +7,10 @@
 #include "Handler.h"
 #include "EventPump.h"
 
-bool running = false;
+static bool running = false;
 static unsigned int fps, ups;
 static unsigned int avgu;
-SDL_Thread* rThread;
+static SDL_Thread* rThread;
 
 static void checkEvents() {
 	SDL_Event e;

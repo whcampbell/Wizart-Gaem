@@ -3,7 +3,7 @@
 #include <algorithm>
 
 static int X = 0, Y = 0;
-std::vector<Alignment*> targets;
+static std::vector<Alignment*> targets;
 
 int camera::x() {
     return X;

@@ -13,7 +13,7 @@ struct Gamepad {
     int id;
 };
 
-std::vector<Gamepad*> controllers;
+static std::vector<Gamepad*> controllers;
 
 void gamepad::locateControllers() {
     controllers.clear();
@@ -31,8 +31,10 @@ void gamepad::locateControllers() {
     }
 }
 
-Gamepad* controller::getController(int index) {
-    return controllers[index];
+Gamepad* controller::getController(unsigned int index) {
+    if (index < controllers.size())
+        return controllers[index];
+    return nullptr;
 }
 
 void gamepad::move(SDL_ControllerAxisEvent e) {
@@ -71,19 +73,27 @@ void gamepad::update() {
 }
 
 bool controller::down(Gamepad* gamepad, SDL_GameControllerButton button) {
+    if (gamepad == nullptr)
+        return false;
     return gamepad->key[button];
 }
 
 bool controller::press(Gamepad* gamepad, SDL_GameControllerButton button) {
+    if (gamepad == nullptr)
+        return false;
     return !gamepad->key0[button] && gamepad->key[button];
 }
 
 bool controller::release(Gamepad* gamepad, SDL_GameControllerButton button) {
+    if (gamepad == nullptr)
+        return false;
     return gamepad->key0[button] && !gamepad->key[button];
 }
 
 Vector controller::axis(Gamepad* gamepad, const char* name) {
     Vector pos = {0, 0};
+    if (gamepad == nullptr)
+        return pos;
     if (!strcmp(name, "left")) {
         pos.x = SDL_GameControllerGetAxis(gamepad->controller, SDL_CONTROLLER_AXIS_LEFTX);
         pos.y = SDL_GameControllerGetAxis(gamepad->controller, SDL_CONTROLLER_AXIS_LEFTY);

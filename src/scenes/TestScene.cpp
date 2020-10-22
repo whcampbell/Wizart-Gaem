@@ -38,5 +38,5 @@ void scene::Test::update() {
 }
 
 void scene::Test::render() {
-    sprite->render(&align);
+    sprite->render(&align, 0);
 }

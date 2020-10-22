@@ -5,20 +5,23 @@
 #include <unordered_map>
 #include <EventPump.h>
 #include "Camera.h"
+#include "EntityManager.h"
 
-Scene* activeScene = nullptr;
+static Scene* activeScene = nullptr;
 
-std::vector<Sound*> engine_sounds;
-std::vector<Sound*> scene_sounds;
+static std::vector<Sound*> engine_sounds;
+static std::vector<Sound*> scene_sounds;
 
-std::unordered_map<std::string, AudioSource*>* audio_sources = new std::unordered_map<std::string, AudioSource*>();
+static std::unordered_map<std::string, AudioSource*>* audio_sources = new std::unordered_map<std::string, AudioSource*>();
 
 void hnd_i::render() {
     if (activeScene != nullptr)
         activeScene->render();
+    entity_i::render();
 }
 
 void hnd_i::update() {
+    entity_i::update();
     if (activeScene != nullptr)
         activeScene->update();
 

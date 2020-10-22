@@ -2,12 +2,12 @@
 #include <iostream>
 
 
-const int WIDTH = 1200;
-const int HEIGHT = 675;
+static const int WIDTH = 1200;
+static const int HEIGHT = 675;
 
-SDL_Window* window = NULL;
-SDL_Surface* surface = NULL;
-SDL_Renderer* renderer = NULL;
+static SDL_Window* window = NULL;
+static SDL_Surface* surface = NULL;
+static SDL_Renderer* renderer = NULL;
 
 bool initWindow() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {

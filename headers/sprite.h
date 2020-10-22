@@ -34,6 +34,6 @@ private:
 public:
     unsigned int animDelta = 100;
     Sprite(std::string name);
-    void render(int x, int y);
-    void render(Alignment* align);
+    void render(int x, int y, int z);
+    void render(Alignment* align, int z);
 };

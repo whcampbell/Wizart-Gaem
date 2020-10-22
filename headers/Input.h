@@ -20,7 +20,7 @@ namespace key {
 }
 
 namespace controller {
-    Gamepad* getController(int index);
+    Gamepad* getController(unsigned int index);
 
     bool down(Gamepad* gamepad, SDL_GameControllerButton button);
     bool press(Gamepad* gamepad, SDL_GameControllerButton button);

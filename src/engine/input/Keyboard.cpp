@@ -5,9 +5,9 @@
 
 #define MOUSE_SCANCODES 384
 
-bool keys[SDL_NUM_SCANCODES];
-bool keys0[SDL_NUM_SCANCODES];
-Uint16 map[SDL_NUM_SCANCODES];
+static bool keys[SDL_NUM_SCANCODES];
+static bool keys0[SDL_NUM_SCANCODES];
+static Uint16 map[SDL_NUM_SCANCODES];
 
 Uint16 mouseCode(const char* name) {
     if (!strcmp(name, "MouseLeft"))

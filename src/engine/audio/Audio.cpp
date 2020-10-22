@@ -6,7 +6,7 @@
 #include <string>
 #include "Handler.h"
 
-std::unordered_map<std::string, Mix*>* soundMap = new std::unordered_map<std::string, Mix*>();
+static std::unordered_map<std::string, Mix*>* soundMap = new std::unordered_map<std::string, Mix*>();
 
 Mix* getMix(std::string name) {
     if (soundMap->find(name) == soundMap->end()) {
