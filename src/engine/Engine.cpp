@@ -117,7 +117,11 @@ void render() {
 		fps++;
 }
 
+bool flag_reswait = true;
+
 int runSDL(void* data) {
+    res::init();
+    flag_reswait = false;
 	while (running) {
         render();
 	}
@@ -131,9 +135,9 @@ void engine::start(void (*initfunc)()) {
     }
     gamepad::locateControllers();
     key::init();
-    res::init();
     running = true;
     rThread = SDL_CreateThread(runSDL, "renderThread", (void*)NULL);
+    while(flag_reswait);
     initfunc();
     run();
 }
