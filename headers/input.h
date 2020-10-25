@@ -1,5 +1,5 @@
 #pragma once
-#include "vector.h"
+#include "vec.h"
 #include <SDL.h>
 
 struct Gamepad;

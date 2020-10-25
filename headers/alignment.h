@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL.h>
-#include "vector.h"
+#include "vec.h"
 
 /**
  * Contains data representing position and orientation
