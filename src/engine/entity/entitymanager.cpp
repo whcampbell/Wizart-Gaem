@@ -1,4 +1,4 @@
-#include "EntityManager.h"
+#include "entitymanager.h"
 #include <vector>
 #include <algorithm>
 

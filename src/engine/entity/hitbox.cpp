@@ -1,4 +1,4 @@
-#include "Hitbox.h"
+#include "hitbox.h"
 
 bool hitbox::collision(Hitbox* a1, Hitbox* a2) {
     if (a1->w < a2->w) {

@@ -1,6 +1,6 @@
 #include <SDL.h>
-#include "EventPump.h"
-#include "Input.h"
+#include "eventpump.h"
+#include "input.h"
 #include <string.h>
 
 #define MOUSE_SCANCODES 384

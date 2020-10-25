@@ -1,5 +1,5 @@
-#include "Input.h"
-#include "EventPump.h"
+#include "input.h"
+#include "eventpump.h"
 #include <SDL.h>
 #include <vector>
 #include <iostream>

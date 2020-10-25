@@ -1,6 +1,6 @@
-#include "Engine.h"
-#include "Handler.h"
-#include "scenes/TestScene.h"
+#include "engine.h"
+#include "handler.h"
+#include "scenes/test.h"
 
 void init() { 
     scene::Test* scene = new scene::Test();

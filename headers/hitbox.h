@@ -1,5 +1,5 @@
 #pragma once
-#include "Alignment.h"
+#include "alignment.h"
 
 struct Hitbox
 {

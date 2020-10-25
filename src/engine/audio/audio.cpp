@@ -1,10 +1,10 @@
 #include <iostream>
-#include "Import.h"
+#include "import.h"
 #include<unordered_map>
-#include "Audio.h"
-#include "ResourceManager.h"
+#include "audio.h"
+#include "resource.h"
 #include <string>
-#include "Handler.h"
+#include "handler.h"
 
 static std::unordered_map<std::string, Mix*>* soundMap = new std::unordered_map<std::string, Mix*>();
 
@@ -46,7 +46,6 @@ void Mus::unload() {
 }
 
 int Mus::play(int loops) {
-    std::cout << "playing music" << std::endl;
     ping();
     Mix_PlayMusic(data, loops);
     return -2;
@@ -61,7 +60,6 @@ void Sfx::unload() {
 }
 
 int Sfx::play(int loops) {
-    std::cout << "playing sound" << std::endl;
     ping();
     return Mix_PlayChannel(-1, data, loops);
 }

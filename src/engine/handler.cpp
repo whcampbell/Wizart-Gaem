@@ -1,11 +1,11 @@
-#include "Handler.h"
+#include "handler.h"
 #include <vector>
-#include "Audio.h"
+#include "audio.h"
 #include <string>
 #include <unordered_map>
 #include <EventPump.h>
-#include "Camera.h"
-#include "EntityManager.h"
+#include "camera.h"
+#include "entitymanager.h"
 
 static Scene* activeScene = nullptr;
 

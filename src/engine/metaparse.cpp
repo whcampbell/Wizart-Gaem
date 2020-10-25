@@ -1,5 +1,5 @@
-#include "Import.h"
-#include "ResourceManager.h"
+#include "import.h"
+#include "resource.h"
 #include <filesystem>
 #include <fstream>
 #include <string>

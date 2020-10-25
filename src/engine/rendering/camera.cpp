@@ -1,17 +1,12 @@
-#include "Camera.h"
+#include "camera.h"
 #include <vector>
 #include <algorithm>
 
-static int X = 0, Y = 0;
 static std::vector<Alignment*> targets;
-
-int camera::x() {
-    return X;
+namespace camera {
+    int x = 0, y = 0, x_raw = 0, y_raw = 0;
 }
-
-int camera::y() {
-    return Y;
-}
+static int w = 1200, h = 675;
 
 void camera::bind(Alignment* a) {
     targets.push_back(a);
@@ -33,7 +28,9 @@ void camera_i::update() {
         dx /= targets.size();
         dy /= targets.size();
     }
-
-    X += dx;
-    Y += dy;
+    
+    camera::x_raw += (dx - camera::x_raw) / 4;
+    camera::y_raw += (dy - camera::y_raw) / 4;
+    camera::x = camera::x_raw - w/2;
+    camera::y = camera::y_raw - h/2;
 }

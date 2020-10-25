@@ -1,5 +1,5 @@
 #pragma once
-#include "Alignment.h"
+#include "alignment.h"
 #include <string>
 
 struct Texture {
@@ -36,4 +36,5 @@ public:
     Sprite(std::string name);
     void render(int x, int y, int z);
     void render(Alignment* align, int z);
+    void render(Alignment* align, int xoff, int yoff, int z);
 };

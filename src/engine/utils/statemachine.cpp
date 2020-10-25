@@ -1,4 +1,4 @@
-#include "StateMachine.h"
+#include "statemachine.h"
 
 template <int states, typename T> StateMachine<states, T>::StateMachine() {
     for (int i = 0; i < states; i++) {

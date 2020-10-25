@@ -1,7 +1,10 @@
 #pragma once
 #include <SDL.h>
-#include "Vector.h"
+#include "vector.h"
 
+/**
+ * Contains data representing position and orientation
+ */
 struct Alignment
 {
 private:
@@ -13,6 +16,9 @@ public:
 	double theta;
 	SDL_RendererFlip flip;
 
+	/**
+ 	* Returns the internal point of this alignment
+ 	*/
 	SDL_Point* getPoint() {
 		return &point;
 	}

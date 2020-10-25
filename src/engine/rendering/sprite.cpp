@@ -1,15 +1,16 @@
 #include <SDL.h>
 #include <SDL_image.h>
-#include "Screen.h"
-#include "Import.h"
-#include "Sprite.h"
+#include "screen.h"
+#include "import.h"
+#include "sprite.h"
 #include <unordered_map>
-#include "ResourceManager.h"
+#include "resource.h"
 #include <iostream>
 #include <string>
 
 
 static unsigned int RenderTime;
+int GAME_SCALE = 3;
 
 static std::unordered_map<std::string, Texture*>*  spriteMap = new std::unordered_map<std::string, Texture*>();
 
@@ -55,9 +56,13 @@ void imp::importSprite(std::string path) {
 		texture->clips[i] = new SDL_Rect{texture->w * i, 0, texture->w, texture->h};
 	}
 
+	texture->w *= GAME_SCALE;
+	texture->h *= GAME_SCALE;
 	std::cout << "\tcreating frame data" << std::endl;
 
 	SDL_DestroyTexture(texture->sheet);
+
+
 	
 	(*spriteMap)[name] = texture;
 
@@ -80,6 +85,17 @@ void  Sprite::render(int x, int y, int z) {
 
 void  Sprite::render(Alignment* align, int z) {
 	SDL_Rect renderQuad = { align->pos.x, align->pos.y, texture.w, texture.h };
+	if (RenderTime - anim_time >= animDelta) {
+		frame++;
+		frame %= texture.frames;
+		anim_time = RenderTime;
+	}
+	texture.ping();
+	SDL_RenderCopyEx(getRenderer(), texture.sheet, texture.clips[frame], &renderQuad, align->theta, align->getPoint(), align->flip);
+}
+
+void  Sprite::render(Alignment* align, int xoff, int yoff, int z) {
+	SDL_Rect renderQuad = { align->pos.x - xoff, align->pos.y - yoff, texture.w, texture.h };
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
 		frame %= texture.frames;

@@ -1,11 +1,11 @@
-#include "Screen.h"
+#include "screen.h"
 #include <iostream>
-#include "Engine.h"
+#include "engine.h"
 #include <SDL_thread.h>
 #include <SDL.h>
-#include "ResourceManager.h"
-#include "Handler.h"
-#include "EventPump.h"
+#include "resource.h"
+#include "handler.h"
+#include "eventpump.h"
 
 static bool running = false;
 static unsigned int fps, ups;
