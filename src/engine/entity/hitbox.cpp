@@ -1,7 +1,8 @@
 #include "hitbox.h"
 
 bool hitbox::collision(Hitbox* a1, Hitbox* a2) {
-
+    if (!a1 || !a2)
+        return false;
     int x1 = a1->align->pos.x - *(a1->align->x_internal);
     int x2 = a2->align->pos.x - *(a2->align->x_internal);
     int y1 = a1->align->pos.y - *(a1->align->y_internal);

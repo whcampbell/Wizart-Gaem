@@ -13,13 +13,13 @@
 
     void AttackSlash::update() {
 
-        /*
-        for (auto iterator : entities::all()) {
+        
+        for (auto iterator : *entities::all()) {
             if (hitbox::collision(iterator->hitbox("hurtbox"), hitbox("hitbox"))) {
                 entities::remove(iterator);
             }
         }
-        */
+        
         
         ticks--;
         if (!ticks)

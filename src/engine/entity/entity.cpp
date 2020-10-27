@@ -15,10 +15,13 @@ Alignment* Entity::pos() {
 Entity::~Entity() {
     for (auto iterator = hitboxes.begin(); iterator != hitboxes.end(); iterator++)
         delete(iterator->second);
+    delete(align);
 }
 
 Hitbox* Entity::hitbox(std::string name) {
-    return hitboxes[name];
+    if (hitboxes.find(name) != hitboxes.end())
+        return hitboxes[name];
+    return nullptr;
 }
 
 Hitbox* Entity::registerHitbox(std::string name) {

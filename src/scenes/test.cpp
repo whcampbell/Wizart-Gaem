@@ -20,23 +20,20 @@ void scene::Test::init() {
     initTiles();
     Player* player = new Player();
     entities::add(player);
-
-    Crate* crate1 = new Crate();
-    crate1->pos()->pos.x = 0;
-    crate1->pos()->pos.y = 0;
-    entities::add(crate1);
-    Crate* crate2 = new Crate();
-    crate2->pos()->pos.x = 32;
-    crate2->pos()->pos.y = 32;
-    entities::add(crate2);
-    Crate* crate3 = new Crate();
-    crate3->pos()->pos.x = 64;
-    crate3->pos()->pos.y = 64;
-    entities::add(crate3);
 }
 
-void scene::Test::update() {
 
+void scene::Test::update() {
+    static int i = 0;
+
+    if (!(i % 300)) {
+    Crate* crate = new Crate();
+    crate->pos()->pos.x = 64;
+    crate->pos()->pos.y = 64;
+    entities::add(crate);
+    }
+
+    i++;
 }
 
 void scene::Test::render() {
