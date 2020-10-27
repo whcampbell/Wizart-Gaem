@@ -9,7 +9,7 @@ namespace entity_i {
 };
 
 namespace entities {
-    std::vector<Entity*>* Entities();
+    std::vector<Entity*>* all();
     void add(Entity* e);
     void remove(Entity* e);
     void clear();

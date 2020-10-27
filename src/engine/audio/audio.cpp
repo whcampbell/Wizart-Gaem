@@ -39,10 +39,12 @@ void imp::importAudio(std::string path) {
 
 void Mus::lazyload() {
     data = Mix_LoadMUS(path.c_str());
+    std::cout << "lazyloaded music at " << path << std::endl;
 }
 
 void Mus::unload() {
     Mix_FreeMusic(data);
+    std::cout << "unloaded music at " << path << std::endl;
 }
 
 int Mus::play(int loops) {
@@ -53,10 +55,12 @@ int Mus::play(int loops) {
 
 void Sfx::lazyload() {
     data = Mix_LoadWAV(path.c_str());
+    std::cout << "lazyloaded sound at " << path << std::endl;
 }
 
 void Sfx::unload() {
     Mix_FreeChunk(data);
+    std::cout << "unloaded sound at " << path << std::endl;
 }
 
 int Sfx::play(int loops) {
@@ -113,7 +117,9 @@ Sound* AudioSource::loop(std::string name, int loops, AudioContext ctx) {
 }
 
 void sfx_i::clean() {
-
+	for (auto iterator = soundMap->begin(); iterator != soundMap->end(); iterator++) {
+		iterator->second->update();
+	}
 }
 
 Sound::Sound(std::string name) : sound(getMix(name)) {}

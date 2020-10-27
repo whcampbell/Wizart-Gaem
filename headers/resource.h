@@ -8,6 +8,7 @@ namespace sfx_i {
 namespace spr_i {
     void update();
     void clean();
+    void push();
 }
 
 namespace res {

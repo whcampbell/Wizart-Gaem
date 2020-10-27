@@ -1,20 +1,28 @@
 #include "hitbox.h"
 
 bool hitbox::collision(Hitbox* a1, Hitbox* a2) {
+
+    int x1 = a1->align->pos.x - *(a1->align->x_internal);
+    int x2 = a2->align->pos.x - *(a2->align->x_internal);
+    int y1 = a1->align->pos.y - *(a1->align->y_internal);
+    int y2 = a2->align->pos.y - *(a2->align->y_internal);
+
     if (a1->w < a2->w) {
-        if (a1->align->pos.x > a2->align->pos.x + a2->w || a1->align->pos.x + a1->w < a2->align->pos.x)
+        if (x1 > x2 + a2->w || x1 + a1->w < x2)
             return false;        
     } else {
-        if (a2->align->pos.x > a1->align->pos.x + a1->w || a2->align->pos.x + a2->w < a1->align->pos.x)
+        if (x2 > x1 + a1->w || x2 + a2->w < x1)
             return false;            
     }
+
     if (a1->h < a2->h) {
-        if (a1->align->pos.y > a2->align->pos.y + a2->h || a1->align->pos.y + a1->h < a2->align->pos.y)
+        if (y1 > y2 + a2->h || y1 + a1->h < y2)
             return false;        
     } else {
-        if (a2->align->pos.y > a1->align->pos.y + a1->h || a2->align->pos.y + a2->h < a1->align->pos.y)
+        if (y2 > y1 + a1->h || y2 + a2->h < y1)
             return false;
     }
+
     return true;
 }
 

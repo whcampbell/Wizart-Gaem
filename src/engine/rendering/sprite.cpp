@@ -7,20 +7,23 @@
 #include "resource.h"
 #include <iostream>
 #include <string>
-
+#include "globals.h"
+#include <vector>
+#include "renderrequest.h"
+#include <algorithm>
 
 static unsigned int RenderTime;
-int GAME_SCALE = 3;
 
 static std::unordered_map<std::string, Texture*>*  spriteMap = new std::unordered_map<std::string, Texture*>();
+static std::vector<RenderRequest> requests;
 
-Texture getTexture(std::string name) {
+Texture* getTexture(std::string name) {
 	if (spriteMap->find(name) == spriteMap->end()) {
         std::cout << name << " is not present in the sprite map" << std::endl;
         exit(1);
     }
 	Texture* ptr = (*spriteMap)[name];
-	return *ptr;
+	return ptr;
 }
 
 void imp::importSprite(std::string path) {
@@ -56,8 +59,6 @@ void imp::importSprite(std::string path) {
 		texture->clips[i] = new SDL_Rect{texture->w * i, 0, texture->w, texture->h};
 	}
 
-	texture->w *= GAME_SCALE;
-	texture->h *= GAME_SCALE;
 	std::cout << "\tcreating frame data" << std::endl;
 
 	SDL_DestroyTexture(texture->sheet);
@@ -73,36 +74,69 @@ void imp::importSprite(std::string path) {
 Sprite::Sprite(std::string name) : texture(getTexture(name)), frame{0}, anim_time{SDL_GetTicks()} {}
 
 void  Sprite::render(int x, int y, int z) {
-	SDL_Rect renderQuad = {x, y, texture.w, texture.h};
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
-		frame %= texture.frames;
+		frame %= texture->frames;
 		anim_time = RenderTime;
 	}
-	texture.ping();
-	SDL_RenderCopy(getRenderer(), texture.sheet, texture.clips[frame], &renderQuad);
+	texture->ping();
+	RenderRequest req;
+	req.image.frame = frame;
+	req.image.x = x;
+	req.image.y = y;
+	req.image.z = z;
+	req.image.w = texture->w;
+	req.image.h = texture->h;
+	req.image.texture = texture;
+	req.image.type = REQ_IMAGE;
+	req.image.scale = GAME_SCALE;
+	requests.push_back(req);
 }
 
 void  Sprite::render(Alignment* align, int z) {
-	SDL_Rect renderQuad = { align->pos.x, align->pos.y, texture.w, texture.h };
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
-		frame %= texture.frames;
+		frame %= texture->frames;
 		anim_time = RenderTime;
 	}
-	texture.ping();
-	SDL_RenderCopyEx(getRenderer(), texture.sheet, texture.clips[frame], &renderQuad, align->theta, align->getPoint(), align->flip);
+	texture->ping();
+	RenderRequest req;
+	req.sprite.frame = frame;
+	req.sprite.x = align->pos.x - *align->x_internal;
+	req.sprite.y = align->pos.y - *align->y_internal;
+	req.sprite.z = z;
+	req.sprite.w = texture->w;
+	req.sprite.h = texture->h;
+	req.sprite.texture = texture;
+	req.sprite.type = REQ_SPRITE;
+	req.sprite.scale = GAME_SCALE;
+	req.sprite.theta = align->theta;
+	req.sprite.point = *(align->getPoint());
+	req.sprite.flip = align->flip;
+	requests.push_back(req);
 }
 
 void  Sprite::render(Alignment* align, int xoff, int yoff, int z) {
-	SDL_Rect renderQuad = { align->pos.x - xoff, align->pos.y - yoff, texture.w, texture.h };
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
-		frame %= texture.frames;
+		frame %= texture->frames;
 		anim_time = RenderTime;
 	}
-	texture.ping();
-	SDL_RenderCopyEx(getRenderer(), texture.sheet, texture.clips[frame], &renderQuad, align->theta, align->getPoint(), align->flip);
+	texture->ping();
+	RenderRequest req;
+	req.sprite.frame = frame;
+	req.sprite.x = align->pos.x - xoff - *align->x_internal;
+	req.sprite.y = align->pos.y - yoff - *align->y_internal;
+	req.sprite.z = z;
+	req.sprite.w = texture->w;
+	req.sprite.h = texture->h;
+	req.sprite.texture = texture;
+	req.sprite.type = REQ_SPRITE;
+	req.sprite.scale = GAME_SCALE;
+	req.sprite.theta = align->theta;
+	req.sprite.point = *(align->getPoint());
+	req.sprite.flip = align->flip;
+	requests.push_back(req);
 }
 
 
@@ -111,7 +145,9 @@ void spr_i::update() {
 }
 
 void spr_i::clean() {
-	
+	for (auto iterator = spriteMap->begin(); iterator != spriteMap->end(); iterator++) {
+		iterator->second->update();
+	}
 }
 
 
@@ -126,23 +162,36 @@ void Texture::lazyload() {
 		return;
 	}
 	SDL_FreeSurface(surface);
+	std::cout << "lazyloaded sprite at " << path << std::endl;
 }
 
 void Texture::update() {
-	if(*loaded) {
-		(*loaded)--;
-		if (!(*loaded))
+	if(loaded) {
+		(loaded)--;
+		if (!(loaded))
 			unload();
 	}
 }
 
 void Texture::unload() {
 	SDL_DestroyTexture(sheet);
+	std::cout << "unloaded sprite at " << path << std::endl;
 }
 
 void Texture::ping() {
-	if (!(*loaded)) {
+	if (!(loaded)) {
 		lazyload();
 	}
-	*loaded = 60;
+	loaded = 30;
+}
+
+bool compareRequest(RenderRequest r1, RenderRequest r2) {
+	return r1.z < r2.z || (r1.z == r2.z && r1.request.y < r2.request.y);
+}
+
+void spr_i::push() {
+	std::sort(requests.begin(), requests.end(), compareRequest);
+	for (unsigned int i = 0; i < requests.size(); i++)
+		drawRequest(requests[i]);
+	requests.clear();
 }

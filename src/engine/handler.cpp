@@ -24,7 +24,6 @@ void hnd_i::update() {
     entity_i::update();
     if (activeScene != nullptr)
         activeScene->update();
-
     camera_i::update();
     key::update();
     gamepad::update();

@@ -7,6 +7,8 @@
 #include "handler.h"
 #include "eventpump.h"
 
+float GAME_SCALE = 3;
+
 static bool running = false;
 static unsigned int fps, ups;
 static unsigned int avgu;
@@ -116,6 +118,7 @@ void render() {
 		SDL_RenderClear(getRenderer());
 
         hnd_i::render();
+        spr_i::push();
 
 		SDL_RenderPresent(getRenderer());
 		fps++;

@@ -5,7 +5,7 @@
 struct Texture {
 private:
 	std::string path;
-    int* loaded;
+    int loaded;
 
     void lazyload();
     void unload();
@@ -16,8 +16,7 @@ public:
 	SDL_Rect** clips;
 
 	Texture(std::string path) : path(path) {
-        loaded = new int;
-        *loaded = 0;
+        loaded = 0;
     }
 
     Texture() : path(NULL) {}
@@ -28,7 +27,7 @@ public:
 
 struct Sprite {
 private:
-    Texture texture;
+    Texture* texture;
 	int frame;
     unsigned int anim_time;
 public:

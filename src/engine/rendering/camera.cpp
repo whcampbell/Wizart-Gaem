@@ -1,10 +1,11 @@
 #include "camera.h"
 #include <vector>
 #include <algorithm>
+#include "globals.h"
 
 static std::vector<Alignment*> targets;
 namespace camera {
-    int x = 0, y = 0, x_raw = 0, y_raw = 0;
+    int x = 0, y = 0, x_raw = 0, y_raw = 0, x_adj = 0, y_adj = 0;
 }
 static int w = 1200, h = 675;
 
@@ -31,6 +32,8 @@ void camera_i::update() {
     
     camera::x_raw += (dx - camera::x_raw) / 4;
     camera::y_raw += (dy - camera::y_raw) / 4;
-    camera::x = camera::x_raw - w/2;
-    camera::y = camera::y_raw - h/2;
+    camera::x = camera::x_raw - w/2/GAME_SCALE;
+    camera::y = camera::y_raw - h/2/GAME_SCALE;
+    camera::x_adj = camera::x_raw - w/2;
+    camera::y_adj = camera::y_raw - h/2;
 }
