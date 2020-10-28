@@ -9,6 +9,7 @@ namespace spr_i {
     void update();
     void clean();
     void push();
+    void init();
 }
 
 namespace res {

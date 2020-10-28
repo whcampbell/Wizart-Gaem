@@ -11,6 +11,7 @@
 #include <vector>
 #include "renderrequest.h"
 #include <algorithm>
+#include <SDL_ttf.h>
 
 static unsigned int RenderTime;
 
@@ -185,6 +186,117 @@ void Texture::ping() {
 	loaded = 30;
 }
 
+Text::Text(std::string text, int size, SDL_Color color) {
+	valid = new bool;
+	reading = new int;
+	*reading = 0;
+	*valid = true;
+
+	update(text);
+	update(size);
+	update(color);
+}
+
+void Text::update(std::string text) {
+	this->text = text;
+	u_flag = true;
+}
+
+void Text::update(int size) {
+	this->size = size;
+	u_flag = true;
+}
+
+void Text::update(SDL_Color color) {
+	this->color = color;
+	u_flag = true;
+}
+
+void Text::refresh() {
+	if (u_flag)  {
+
+		if (texture != nullptr)
+			SDL_DestroyTexture(texture);
+		u_flag = false;
+		TTF_Font* font = TTF_OpenFont("./res/IndieFantasy.ttf", size);
+		SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
+
+		texture = SDL_CreateTextureFromSurface(getRenderer(), surface);
+		SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+
+		SDL_FreeSurface(surface);
+		TTF_CloseFont(font);
+	}
+}
+
+void Text::render(int x, int y, int z){
+	refresh();
+	(*reading)++;
+
+	RenderRequest req;
+	req.text.h = h;
+	req.text.point = {w/2, h/2};
+	req.text.reading = reading;
+	req.text.scale = GAME_SCALE;
+	req.text.texture = texture;
+	req.text.theta = 0;
+	req.text.type = REQ_TEXT;
+	req.text.valid = valid;
+	req.text.flip = SDL_FLIP_NONE;
+	req.text.w = w;
+	req.text.x = x;
+	req.text.y = y;
+	req.text.z = z;
+	requests.push_back(req);
+}
+void Text::render(Alignment* align, int z){
+	refresh();
+	(*reading)++;
+
+	RenderRequest req;
+	req.text.h = h;
+	req.text.point = {w/2, h/2};
+	req.text.reading = reading;
+	req.text.scale = GAME_SCALE;
+	req.text.texture = texture;
+	req.text.theta = align->theta;
+	req.text.type = REQ_TEXT;
+	req.text.valid = valid;
+	req.text.flip = align->flip;
+	req.text.w = w;
+	req.text.x = align->pos.x - w/2;
+	req.text.y = align->pos.y - h/2;
+	req.text.z = z;
+	requests.push_back(req);
+}
+void Text::render(Alignment* align, int xoff, int yoff, int z) {
+	refresh();
+	(*reading)++;
+
+	RenderRequest req;
+	req.text.h = h;
+	req.text.point = {w/2, h/2};
+	req.text.reading = reading;
+	req.text.scale = GAME_SCALE;
+	req.text.texture = texture;
+	req.text.theta = align->theta;
+	req.text.type = REQ_TEXT;
+	req.text.valid = valid;
+	req.text.flip = align->flip;
+	req.text.w = w;
+	req.text.x = align->pos.x - w/2 - xoff;
+	req.text.y = align->pos.y - h/2 - yoff;
+	req.text.z = z;
+	requests.push_back(req);
+}
+
+Text::~Text() {
+	SDL_SemWait(textsync);
+	*valid = false;
+	SDL_DestroyTexture(texture);
+	SDL_SemPost(textsync);
+}
+
 bool compareRequest(RenderRequest r1, RenderRequest r2) {
 	return r1.z < r2.z || (r1.z == r2.z && r1.request.y < r2.request.y);
 }
@@ -192,6 +304,10 @@ bool compareRequest(RenderRequest r1, RenderRequest r2) {
 void spr_i::push() {
 	std::sort(requests.begin(), requests.end(), compareRequest);
 	for (unsigned int i = 0; i < requests.size(); i++)
-		drawRequest(requests[i]);
+		drawRequest(&requests[i]);
 	requests.clear();
+}
+
+void spr_i::init() {
+	initRequestSystem();
 }

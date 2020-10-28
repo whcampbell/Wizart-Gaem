@@ -1,10 +1,10 @@
 #include "particle.h"
 
-ParticleSource::ParticleSource(int size, Sprite* sprite, Vector (*pos)(), Vector (*behavior)(Alignment* align, int t), int (*lifetime)()) {
+ParticleSource::ParticleSource(int size, Sprite* sprite, int (*lifetime)()) {
 
 }
 
-ParticleSource::ParticleSource(int size, Sprite* sprite, Vector (pos)(), Vector (*behavior)(Alignment* align, int t), int (*lifetime)(), int loops) {
+ParticleSource::ParticleSource(int size, Sprite* sprite, int (*lifetime)(), int loops) {
 
 }
 

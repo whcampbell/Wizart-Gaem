@@ -13,7 +13,8 @@ enum AudioContext {
 };
 
 /**
- * 
+ * INTENRAL USE ONLY
+ * generic audio data, virtual class
  */
 struct Mix {
 private:
@@ -41,8 +42,9 @@ public:
 };
 
 /**
-* 
-*/
+ * INTENRAL USE ONLY
+ * Audio data representing music
+ */
 struct Mus : Mix {
 protected:
     void unload();   
@@ -58,8 +60,9 @@ public:
 };
 
 /**
-* 
-*/
+ * INTENRAL USE ONLY
+ * Audio data representing a sound effect
+ */
 struct Sfx : Mix{
 protected:
     void unload();
@@ -130,8 +133,9 @@ public:
 };
 
 /**
-* 
-*/
+ * INTENRAL USE ONLY
+ * adds a sound to the list of playing sounds
+ */
 namespace hnd_sfx {
 
     /**

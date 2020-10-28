@@ -1,4 +1,4 @@
-#include "Alignment.h"
+#include "alignment.h"
     Includes the Alignment struct, which is used to represent the position and orientation of an object
     Alignment has these members:
         - pos: A vector representing the x, y position
@@ -7,7 +7,7 @@
         - theta: angle at which the object should be rotated
         - flip: sdl_flip value, determines if the object should be reversed either horizontally or vertically
 
-#include "Audio.h"
+#include "audio.h"
     Includes the AudioContext enum with the values:
         - AUDIOCTX_scene
         - AUDIOCTX_engine
@@ -28,15 +28,30 @@
     engine has  these  members:
         - AudioSource* getAudioSource(const char* name): returns the audiosource with the specific name, or creates it if it does not exist
 
-#include "Camera.h"
-    Includes the camera namespace which holds functions related to the camera
+#include "camera.h"
+    Includes the camera namespace which holds functions related to the camera. The camera namespace holds the following functions.
+        - void bind(Alignment* a): Adds this alignment to the list of alignments which the camera uses to calculate its position
+        - void unbind(Alignment* a): Removes this alignment from the list of alignments which the camera uses to calculate its position
+    The camera namespace holds the following members:
+        - x: the x offset for rendering things with respect to the camera
+        - y: the y offset for rendering things with respect to the camera
+        - x_adj: the x offset adjusted for scale
+        - y_adj: the y offset adjusted for scale
+        - x_raw: the x offset without any changes based on screen size
+        - y_raw: the x offset without any changes based on screen size
+
     
-#include "Entity.h"
-#include "EntityManager.h"
-#include "Handler.h"
-#include "Hitbox.h"
-#include "Input.h"
-#include "Scene.h"
-#include "Sprite.h"
-#include "StateMachine.h"
-#include "Vector.h"
+#include "entity.h"
+
+#include "entitymanager.h"
+#include "fastmath.h"
+#include "globals.h"
+#include "handler.h"
+#include "hitbox.h"
+#include "input.h"
+#include "particle.h"
+#include "scene.h"
+#include "sprite.h"
+#include "statemachine.h"
+#include "tween.h"
+#include "vec.h"

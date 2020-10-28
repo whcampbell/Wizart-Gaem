@@ -65,6 +65,7 @@ void res::init() {
     sfx_i::init();
     std::cout << "starting resource import" << std::endl;
     std::string path = "./res";
+    spr_i::init();
     recurseDir(path);
     std::cout << "finished resource import" << std::endl;
 }

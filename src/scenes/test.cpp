@@ -8,6 +8,7 @@
 Player* player;
 
 Sprite* tile_test;
+Text* words;
 int tile_size;
 
 void initTiles() {
@@ -20,6 +21,7 @@ void scene::Test::init() {
     initTiles();
     Player* player = new Player();
     entities::add(player);
+    words = new Text("hello there", 28, {255, 255, 255});
 }
 
 
@@ -37,6 +39,7 @@ void scene::Test::update() {
 }
 
 void scene::Test::render() {
+    words->render(0, 0, 5);
     for (int y = 0; y < 10; y++)
         for (int x = 0; x < 10; x++)
             tile_test->render(x * tile_size - camera::x, y * tile_size - camera::y, 0);

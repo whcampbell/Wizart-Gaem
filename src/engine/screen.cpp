@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <iostream>
+#include <SDL_ttf.h>
 
 
 static const int WIDTH = 1200;
@@ -12,8 +13,12 @@ bool initWindow() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         std::cout << "SDL failed to initialize. Error: \n" << SDL_GetError() << std::endl;
         return false;
-    }
-    else {
+    } else {
+        if (TTF_Init() == -1) {
+            std::cout << "SDL_TTF failed to initialize. Error: \n" << SDL_GetError() << std::endl;
+            return false;
+        }
+
         window = SDL_CreateWindow("Wizart Gaem", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
         if (window == NULL) {
             std::cout << "Window creation failed. Error: \n" << SDL_GetError() << std::endl;

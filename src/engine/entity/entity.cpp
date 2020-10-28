@@ -37,3 +37,5 @@ Hitbox* Entity::registerHitbox(std::string name, int w, int h, Alignment* alignm
     hitboxes[name] = hitbox;
     return hitbox;
 }
+
+//void Entity::renderDevMode() {}

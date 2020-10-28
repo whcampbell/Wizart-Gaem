@@ -3,6 +3,7 @@
 
 namespace scene {
     class Test : public Scene {
+        
     public:
         void init();
         void update();

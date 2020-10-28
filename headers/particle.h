@@ -8,12 +8,13 @@ private:
         Alignment align;
         int lifetime;
     };
+    int size;
     Particle* particles;
     Sprite* sprite;
-    int loops;
+    
 public:
-    ParticleSource(int size, Sprite* sprite, Vector (*pos)(), Vector (*behavior)(Alignment* align, int t), int (*lifetime)());
-    ParticleSource(int size, Sprite* sprite, Vector (pos)(), Vector (*behavior)(Alignment* align, int t), int (*lifetime)(), int loops);
+    ParticleSource(int size, Sprite* sprite, int (*lifetime)());
+    ParticleSource(int size, Sprite* sprite, int (*lifetime)(), int loops);
     void update();
     void render();
     ~ParticleSource();

@@ -15,6 +15,7 @@ public:
     virtual void update() = 0;
     void tick();
     virtual void render() = 0;
+    //void renderDevMode();
     Alignment* pos();
     virtual ~Entity() = 0;
     Hitbox* hitbox(std::string name);
