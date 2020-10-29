@@ -8,6 +8,9 @@
 #include <iostream>
 #include "fastmath.h"
 
+#include "components/hitpoints.h"
+#include "components/mana.h"
+
     Player::Player() {
         idle = new Sprite("player1_idle");
         run = new Sprite("player1_run");
@@ -17,6 +20,16 @@
         camera::bind(align);
         align->pos.x = 0;
         align->pos.y = 0;
+
+        Hitpoints hp;
+        hp.healthMax = 3;
+        hp.health = hp.healthMax;
+        *set<Hitpoints>() = hp;
+
+        Mana mp;
+        mp.manaMax = 3;
+        mp.mana = mp.manaMax;
+        *set<Mana>() = mp;
     }
 
     void Player::update() {

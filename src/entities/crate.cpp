@@ -1,6 +1,8 @@
 #include "entities/crate.h"
 #include "camera.h"
 
+#include "components/hitpoints.h"
+
     static int i = 0;
 
     Crate::Crate() {
@@ -15,6 +17,11 @@
         else
             activeSprite = new Sprite("barrel");
         i++;
+
+        Hitpoints hitpoints;
+        hitpoints.healthMax = 3;
+        hitpoints.health = hitpoints.healthMax;
+        *set<Hitpoints>() = hitpoints;
     }
 
     void Crate::update() {}
