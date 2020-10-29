@@ -1,3 +1,4 @@
+#pragma once
 #include "component.h"
 
 struct Mana : public Component {

@@ -1,3 +1,4 @@
+#pragma once
 #include "sprite.h"
 
 extern SDL_sem* textsync;
