@@ -9,6 +9,9 @@ private:
     Sprite* idle;
     Sprite* run;
 
+    Sprite* hp_icon;
+    Sprite* mp_icon;
+
     Sprite* activeSprite;
     int speed = 1;
     enum animstates {

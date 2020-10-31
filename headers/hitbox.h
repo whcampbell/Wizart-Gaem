@@ -3,6 +3,7 @@
 
 struct Hitbox
 {
+    int xoff = 0, yoff = 0;
     int w, h;
     Alignment* align;
 };

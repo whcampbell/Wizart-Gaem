@@ -31,7 +31,6 @@
                 if (hp->health <= 0)
                     entities::remove(iterator);
                 }
-
             }
         }
         

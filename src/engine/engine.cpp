@@ -2,7 +2,7 @@
 #include <iostream>
 #include "engine.h"
 #include <SDL_thread.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "resource.h"
 #include "handler.h"
 #include "eventpump.h"

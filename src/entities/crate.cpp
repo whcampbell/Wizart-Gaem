@@ -1,5 +1,7 @@
 #include "entities/crate.h"
 #include "camera.h"
+#include "entitymanager.h"
+#include "entities/manadrop.h"
 
 #include "components/hitpoints.h"
 
@@ -30,5 +32,9 @@
         activeSprite->render(align, camera::x, camera::y, 1);
     }
 
-    Crate::~Crate() {}
+    Crate::~Crate() {
+        ManaDrop* drop = new ManaDrop();
+        drop->pos()->pos = align->pos;
+        entities::add(drop);
+    }
 

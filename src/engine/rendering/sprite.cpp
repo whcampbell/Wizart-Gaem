@@ -140,6 +140,26 @@ void  Sprite::render(Alignment* align, int xoff, int yoff, int z) {
 	requests.push_back(req);
 }
 
+void Sprite::render(int x, int y, int w, int h, int z) {
+	if (RenderTime - anim_time >= animDelta) {
+		frame++;
+		frame %= texture->frames;
+		anim_time = RenderTime;
+	}
+	texture->ping();
+	RenderRequest req;
+	req.image.frame = frame;
+	req.image.x = x;
+	req.image.y = y;
+	req.image.z = z;
+	req.image.w = w;
+	req.image.h = h;
+	req.image.texture = texture;
+	req.image.type = REQ_IMAGE;
+	req.image.scale = GAME_SCALE;
+	requests.push_back(req);
+}
+
 
 void spr_i::update() {
 	RenderTime = SDL_GetTicks();

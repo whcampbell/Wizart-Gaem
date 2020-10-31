@@ -7,19 +7,32 @@
 #include "entities/slash.h"
 #include <iostream>
 #include "fastmath.h"
+#include "hitbox.h"
 
 #include "components/hitpoints.h"
 #include "components/mana.h"
 
-    Player::Player() {
+
+Player::Player() {
         idle = new Sprite("player1_idle");
         run = new Sprite("player1_run");
+        hp_icon = new Sprite("health_icon");
+        mp_icon = new Sprite("mana_icon");
+
         *align->x_internal = 16;
         *align->y_internal = 16;
         activeSprite = idle;
         camera::bind(align);
         align->pos.x = 0;
         align->pos.y = 0;
+
+        Hitbox* pickup = registerHitbox("pickupbox");
+        pickup->xoff = -8;
+        pickup->yoff = -8;
+        pickup->w = 32;
+        pickup->h = 32;
+        pickup->align = align;
+
 
         Hitpoints hp;
         hp.healthMax = 3;
@@ -69,6 +82,7 @@
             *align_attack->y_internal = 16;
             align_attack->theta = angle(dx, dy);
             entities::add(attack);
+            get<Mana>()->mana--;
         }
             
     }
@@ -78,6 +92,22 @@
     }
 
     void Player::render() {
+
+        Hitpoints* health = get<Hitpoints>();
+        Mana* mana = get<Mana>();
+        for (int i = 0; i < health->healthMax; i++) {
+            if (i < health->health)
+                hp_icon->render(16 * i, 0, 5);
+            else
+                ;
+            
+        }
+        for (int i = 0; i < mana->manaMax; i++) {
+            if (i < mana->mana)
+                mp_icon->render(16 * i, 16, 5);
+            else
+                ;
+        }
         activeSprite->render(align, camera::x, camera::y,  1);
     }
 

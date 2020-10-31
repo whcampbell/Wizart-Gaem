@@ -44,6 +44,7 @@ public:
     void render(int x, int y, int z);
     void render(Alignment* align, int z);
     void render(Alignment* align, int xoff, int yoff, int z);
+    void render(int x, int y, int w, int h, int z);
 };
 
 struct Text : public Renderable {
