@@ -1,26 +1,24 @@
-#include "entities/projectile.h"
+#include "entities/slash.h"
 #include "camera.h"
 #include "entitymanager.h"
 #include "components/hitpoints.h"
 #include "components/entitylist.h"
 #include <iostream>
-#include <cmath>
 
-    AttackProjectile::AttackProjectile() {
+
+    AttackSlash::AttackSlash() {
         Hitbox* box = registerHitbox("hitbox");
         box->align = align;
         box->w = 16;
         box->h = 16;
-        activeSprite = new Sprite("projectile");
-        ticks = 12;
+        activeSprite = new Sprite("slash");
+        ticks = 18;
         EntityList hit;
         *set<EntityList>() = hit;
     }
 
-    void AttackProjectile::update() {
+    void AttackSlash::update() {
 
-        align->pos.x += 5 * cos(align->theta * M_PI / 180);
-        align->pos.y += 5 * sin(align->theta * M_PI / 180);
         EntityList* hit = get<EntityList>();
 
         for (auto iterator : *entities::all()) {
@@ -29,11 +27,8 @@
                 hit->list.push_back(iterator);
                 Hitpoints* hp = iterator->get<Hitpoints>();
                 hp->health--;
-                std::cout << hp->health << std::endl;
                 if (hp->health <= 0)
                     entities::remove(iterator);
-                entities::remove(this);
-                break;
                 }
             }
         }
@@ -43,10 +38,10 @@
             entities::remove(this);
     }
 
-    void AttackProjectile::render() {
+    void AttackSlash::render() {
         activeSprite->render(align, camera::x, camera::y, 2);
     }
 
-    AttackProjectile::~AttackProjectile() {
+    AttackSlash::~AttackSlash() {
         
     }

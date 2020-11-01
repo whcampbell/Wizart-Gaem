@@ -3,7 +3,8 @@ rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(su
 
 #Source files and dependencies
 SRC = $(call rwildcard,../../src,*.cpp)
-INCLUDE = -I../../headers -I../../libs/libs_mac/SDL2.framework/Headers -I../../libs/libs_mac/SDL2_image.framework/Headers -I../../libs/libs_mac/SDL2_ttf.framework/Headers -I../../libs/libs_mac/SDL2_mixer.framework/Headers
+GAME_SRC = $(call rwildcard,../../game/src,*.cpp)
+INCLUDE = -I../../game/headers -I../../engine/headers -I../../libs/libs_mac/SDL2.framework/Headers -I../../libs/libs_mac/SDL2_image.framework/Headers -I../../libs/libs_mac/SDL2_ttf.framework/Headers -I../../libs/libs_mac/SDL2_mixer.framework/Headers
 LIBS = -F../../libs/libs_mac
 LINK = -framework SDL2 -framework SDL2_image -framework SDL2_mixer -framework SDL2_ttf
 FLAGS = -Wall -fdiagnostics-color=always
@@ -13,7 +14,7 @@ OBJ_NAME = game
 
 #Compilation command
 build : $(SRC)
-	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -o $(OBJ_NAME)
+	g++ -std=c++17 $(SRC) $(GAME_SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -o $(OBJ_NAME)
 	install_name_tool -add_rpath @executable_path/. game
 	-rm -r res
 	cp -r ../../res .
@@ -21,7 +22,7 @@ build : $(SRC)
 	@echo "Build successful!"
 
 debug : $(SRC)
-	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -g -o $(OBJ_NAME)
+	g++ -std=c++17 $(SRC) $(GAME_SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -g -o $(OBJ_NAME)
 	install_name_tool -add_rpath @executable_path/. game
 	-rm -r res
 	cp -r ../../res .
@@ -29,7 +30,7 @@ debug : $(SRC)
 	@echo "Build successful!"
 
 optimize : $(SRC)
-	g++ -std=c++17 $(SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -O3 -o $(OBJ_NAME)
+	g++ -std=c++17 $(SRC) $(GAME_SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -O3 -o $(OBJ_NAME)
 	install_name_tool -add_rpath @executable_path/. game
 	-rm -r res
 	cp -r ../../res .
