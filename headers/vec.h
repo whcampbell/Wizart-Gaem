@@ -2,5 +2,5 @@
 
 
 struct Vector {
-    int x, y;
+    float x, y;
 };

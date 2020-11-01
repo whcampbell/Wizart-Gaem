@@ -22,7 +22,6 @@ void ManaDrop::update() {
                 if (mp->mana == mp->manaMax)
                     continue;
                 mp->mana += 2;
-                std::cout << mp->mana << std::endl;
                 if (mp->mana > mp->manaMax)
                     mp->mana = mp->manaMax;
                 entities::remove(this);

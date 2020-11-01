@@ -41,7 +41,8 @@ void entities::add(Entity* e) {
 }
 
 void entities::remove(Entity* e) {
-    to_remove.push_back(e);
+    if (std::find(to_remove.begin(), to_remove.end(), e) == to_remove.end())
+        to_remove.push_back(e);
 }
 
 void entities::clear() {

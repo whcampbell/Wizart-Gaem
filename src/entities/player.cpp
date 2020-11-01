@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "globals.h"
 #include "entities/slash.h"
+#include "entities/projectile.h"
 #include <iostream>
 #include "fastmath.h"
 #include "hitbox.h"
@@ -82,7 +83,22 @@ Player::Player() {
             *align_attack->y_internal = 16;
             align_attack->theta = angle(dx, dy);
             entities::add(attack);
-            get<Mana>()->mana--;
+        }
+
+        if (mouse::press(SDL_BUTTON_RIGHT)){
+            if (get<Mana>()->mana >= 1) {
+                AttackProjectile* attack = new AttackProjectile();
+                int dx = mouse::x() + camera::x_adj - align->pos.x;
+                int dy = mouse::y() + camera::y_adj - align->pos.y;
+                Alignment* align_attack = attack->pos();
+                align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
+                align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
+                *align_attack->x_internal = 16;
+                *align_attack->y_internal = 16;
+                align_attack->theta = angle(dx, dy);
+                entities::add(attack);
+                get<Mana>()->mana--;
+            }
         }
             
     }
