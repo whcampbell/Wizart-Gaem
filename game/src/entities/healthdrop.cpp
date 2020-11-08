@@ -20,7 +20,7 @@ void HealthDrop:: update() {
 
                 Hitpoints* hp = iterator->get<Hitpoints>();
                 if (hp->health == hp->healthMax) 
-                    hp->health = 1;
+                    continue;
                 hp->health += 2;
                 if (hp->health > hp->healthMax) 
                     hp->health = hp->healthMax;
