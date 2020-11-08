@@ -35,6 +35,13 @@ void scene::Test::update() {
     entities::add(crate);
     }
 
+    if (!(i % 360)) {
+    XPDrop* xpd = new XPDrop();
+    xpd->pos()->pos.x = 96;
+    xpd->pos()->pos.y = 96;
+    entities::add(xpd);
+    }
+
     i++;
 }
 
