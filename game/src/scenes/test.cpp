@@ -1,5 +1,6 @@
 #include "scenes/test.h"
 #include "entities/player.h"
+#include "entities/healthdrop.h"
 #include "entitymanager.h"
 #include "camera.h"
 #include "globals.h"
@@ -21,6 +22,10 @@ void scene::Test::init() {
     initTiles();
     Player* player = new Player();
     entities::add(player);
+    HealthDrop* hpDrop = new HealthDrop();
+    hpDrop->pos()->pos.x = 100;
+    hpDrop->pos()->pos.y = 64;
+    entities::add(hpDrop);
     words = new Text("hello there", 28, {255, 255, 255});
 }
 

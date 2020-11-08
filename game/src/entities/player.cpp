@@ -12,6 +12,7 @@
 
 #include "components/hitpoints.h"
 #include "components/mana.h"
+#include "components/movespeed.h"
 
 
 Player::Player() {
@@ -44,6 +45,10 @@ Player::Player() {
         mp.manaMax = 3;
         mp.mana = mp.manaMax;
         *set<Mana>() = mp;
+
+        Movespeed move;
+        move.speed = 1;
+        *set<Movespeed>() = move;
     }
 
     void Player::update() {
@@ -52,7 +57,7 @@ Player::Player() {
 
     void Player::move_keyboard() {
         activeSprite = idle;
-
+        float speed = get<Movespeed>()->speed;
         if (key::down(SDL_SCANCODE_W) || key::down(SDL_SCANCODE_UP)) {
             align->pos.y -= speed;
             activeSprite = run;
