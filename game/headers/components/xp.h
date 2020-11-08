@@ -2,7 +2,7 @@
 #include "component.h"
 
 struct XP : public Component {
-    int toNextLev;
+    int neededXP;
     int level;
-    int xp;
+    int currXP;
 };
