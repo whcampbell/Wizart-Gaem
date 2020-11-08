@@ -13,7 +13,6 @@ private:
     Sprite* mp_icon;
 
     Sprite* activeSprite;
-    int speed = 1;
     enum animstates {
     anim_idle, anim_run, ANIM_MAX  
     };
