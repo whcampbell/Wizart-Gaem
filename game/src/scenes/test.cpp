@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "globals.h"
 #include "entities/crate.h"
+#include "entities/xpdrop.h"
 
 Player* player;
 

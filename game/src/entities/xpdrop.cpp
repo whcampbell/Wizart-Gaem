@@ -2,6 +2,8 @@
 #include "components/xp.h"
 #include "camera.h"
 #include "entitymanager.h"
+#include <iostream>
+
 
 XPDrop::XPDrop() {
     activeSprite = new Sprite("exp_drop");
@@ -20,8 +22,8 @@ void XPDrop::update() {
                 XP* xpt = iterator->get<XP>(); // gets xp of entity that collided
                 if (xpt->currXP == (xpt->neededXP-1)) { // are they ready to level up?
                     for (auto allPlay : *entities::all()) { // levels up all players
-                        XP* all = allPlay->get<XP>(); // gets xp of entity that collided
-                        if (all->has<XP>()) {
+                        if (allPlay->has<XP>()) {
+                            XP* all = allPlay->get<XP>(); // gets xp of entity that collided
                             all->level++; 
                             all->neededXP = all->level*10; 
                             all->currXP = 0;
@@ -29,12 +31,13 @@ void XPDrop::update() {
                     }
                 } else { // otherwise, gives player 10 xp on collision
                     for (auto allPlay : *entities::all()) { 
-                        XP* all = allPlay->get<XP>(); // gets xp of entity that collided
-                        if (all->has<XP>()) {
+                        if (allPlay->has<XP>()) {
+                            XP* all = allPlay->get<XP>(); // gets xp of entity that collided
                             all->currXP += 1;
                         }
                     }
                 }
+                std::cout << "level " << xpt->level << "needed XP " << xpt->neededXP << "current XP " << xpt->currXP;
             }
             entities::remove(this);
             break;
