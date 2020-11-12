@@ -9,12 +9,3 @@ namespace camera {
     void bind(Alignment* a);
     void unbind(Alignment* a);
 }
-
-/**
- * INTENRAL USE ONLY
- * methods for engine internal uses of camera updates
- */
-namespace camera_i {
-
-    void update();
-}

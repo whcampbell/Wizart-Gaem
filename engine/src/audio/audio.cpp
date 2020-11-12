@@ -1,10 +1,10 @@
 #include <iostream>
-#include "import.h"
+#include "internal/import.h"
 #include<unordered_map>
-#include "audio.h"
-#include "resource.h"
+#include "internal/resource.h"
 #include <string>
 #include "handler.h"
+#include "internal/audio.h"
 
 static std::unordered_map<std::string, Mix*>* soundMap = new std::unordered_map<std::string, Mix*>();
 
@@ -18,7 +18,7 @@ Mix* getMix(std::string name) {
 }
 
 void imp::importAudio(std::string path) {
-    imp_i::SoundData data = imp_i::parseSound(path);
+    imp::SoundData data = imp::parseSound(path);
 
     std::cout << "\tcollecting data" << std::endl;
     
@@ -116,7 +116,7 @@ Sound* AudioSource::loop(std::string name, int loops, AudioContext ctx) {
     return sound;
 }
 
-void sfx_i::clean() {
+void sfx::clean() {
 	for (auto iterator = soundMap->begin(); iterator != soundMap->end(); iterator++) {
 		iterator->second->update();
 	}
@@ -142,7 +142,7 @@ void Sound::stop() {
         Mix_HaltChannel(channel);
 }
 
-void sfx_i::init() {
+void sfx::init() {
     int audio_rate = 44100;
     Uint16 audio_format = AUDIO_S16; /* 16-bit stereo */
     int audio_channels = 8;

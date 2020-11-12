@@ -6,6 +6,7 @@
 #include <bitset>
 #include "component.h"
 #include <iostream>
+#include <vector>
 
 static int id_source;
 static const int component_size = 128;
@@ -65,6 +66,13 @@ template <typename T> T* get() {
 template <typename T> void del() {
 	bitset[component_i::getCID<T>()] = 0;
 }
+};
+
+namespace entities {
+    std::vector<Entity*>* all();
+    void add(Entity* e);
+    void remove(Entity* e);
+    void clear();
 };
 
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "sprite.h"
-#include "Alignment.h"
+#include "alignment.h"
 
 struct ParticleSource {
 private:

@@ -1,6 +1,5 @@
 #include "entities/projectile.h"
 #include "camera.h"
-#include "entitymanager.h"
 #include "components/hitpoints.h"
 #include "components/entitylist.h"
 #include <iostream>

@@ -5,13 +5,9 @@ namespace imp {
 
     void importSprite(std::string path);
 
-
-
     void importAudio(std::string path);
-}
 
-namespace imp_i {
-    struct SpriteData {
+        struct SpriteData {
         int frames;
         std::string path;
         std::string name;

@@ -1,5 +1,5 @@
-#include "renderrequest.h"
-#include "screen.h"
+#include "internal/renderrequest.h"
+#include "internal/screen.h"
 
 SDL_sem* textsync;
 

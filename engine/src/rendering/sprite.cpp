@@ -1,15 +1,15 @@
 #include <SDL.h>
 #include <SDL_image.h>
-#include "screen.h"
-#include "import.h"
+#include "internal/screen.h"
+#include "internal/import.h"
 #include "sprite.h"
 #include <unordered_map>
-#include "resource.h"
+#include "internal/resource.h"
 #include <iostream>
 #include <string>
 #include "globals.h"
 #include <vector>
-#include "renderrequest.h"
+#include "internal/renderrequest.h"
 #include <algorithm>
 #include <SDL_ttf.h>
 
@@ -29,7 +29,7 @@ Texture* getTexture(std::string name) {
 
 void imp::importSprite(std::string path) {
 	
-	imp_i::SpriteData data = imp_i::parseSprite(path);
+	imp::SpriteData data = imp::parseSprite(path);
 	Texture* texture = new Texture(data.path);
 	
 	std::cout << "\tcollecting data" << std::endl;
@@ -161,11 +161,11 @@ void Sprite::render(int x, int y, int w, int h, int z) {
 }
 
 
-void spr_i::update() {
+void spr::update() {
 	RenderTime = SDL_GetTicks();
 }
 
-void spr_i::clean() {
+void spr::clean() {
 	for (auto iterator = spriteMap->begin(); iterator != spriteMap->end(); iterator++) {
 		iterator->second->update();
 	}
@@ -321,13 +321,13 @@ bool compareRequest(RenderRequest r1, RenderRequest r2) {
 	return r1.z < r2.z || (r1.z == r2.z && r1.request.y < r2.request.y);
 }
 
-void spr_i::push() {
+void spr::push() {
 	std::sort(requests.begin(), requests.end(), compareRequest);
 	for (unsigned int i = 0; i < requests.size(); i++)
 		drawRequest(&requests[i]);
 	requests.clear();
 }
 
-void spr_i::init() {
+void spr::init() {
 	initRequestSystem();
 }
