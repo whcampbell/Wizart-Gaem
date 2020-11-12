@@ -1,7 +1,7 @@
 #include "scenes/test.h"
 #include "entities/player.h"
 #include "entities/healthdrop.h"
-#include "entitymanager.h"
+#include "entity.h"
 #include "camera.h"
 #include "globals.h"
 #include "entities/crate.h"

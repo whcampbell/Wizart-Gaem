@@ -1,7 +1,6 @@
 #include "entities/healthdrop.h"
 #include "components/hitpoints.h"
 #include "camera.h"
-#include "entitymanager.h"
 
 HealthDrop::HealthDrop() {
     activeSprite = new Sprite("life_drop");

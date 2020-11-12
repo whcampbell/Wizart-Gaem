@@ -1,11 +1,13 @@
 #include "handler.h"
+#include "internal/handler.h"
 #include <vector>
-#include "audio.h"
+#include "internal/audio.h"
 #include <string>
 #include <unordered_map>
-#include <EventPump.h>
-#include "camera.h"
-#include "entitymanager.h"
+#include "internal/eventpump.h"
+#include "internal/camera.h"
+#include "internal/entitymanager.h"
+#include "internal/particle.h"
 
 static Scene* activeScene = nullptr;
 
@@ -14,17 +16,19 @@ static std::vector<Sound*> scene_sounds;
 
 static std::unordered_map<std::string, AudioSource*>* audio_sources = new std::unordered_map<std::string, AudioSource*>();
 
-void hnd_i::render() {
+void hnd::render() {
     if (activeScene != nullptr)
         activeScene->render();
-    entity_i::render();
+    particle::render();
+    entities::render();
 }
 
-void hnd_i::update() {
-    entity_i::update();
+void hnd::update() {
+    particle::update();
+    entities::update();
     if (activeScene != nullptr)
         activeScene->update();
-    camera_i::update();
+    camera::update();
     key::update();
     gamepad::update();
 }

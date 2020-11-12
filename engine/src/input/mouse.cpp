@@ -1,4 +1,4 @@
-#include "eventpump.h"
+#include "internal/eventpump.h"
 #include "input.h" 
 
 static int X = 0, Y = 0;

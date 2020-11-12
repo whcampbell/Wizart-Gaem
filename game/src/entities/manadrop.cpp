@@ -1,7 +1,6 @@
 #include "entities/manadrop.h"
 #include "components/mana.h"
 #include "camera.h"
-#include "entitymanager.h"
 
 ManaDrop::ManaDrop() {
     activeSprite = new Sprite("mana_drop");

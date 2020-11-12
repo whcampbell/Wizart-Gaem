@@ -1,5 +1,4 @@
 #include "entities/player.h"
-#include "entitymanager.h"
 #include "input.h"
 #include "audio.h"
 #include "camera.h"
