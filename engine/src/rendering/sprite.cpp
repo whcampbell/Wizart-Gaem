@@ -331,3 +331,7 @@ void spr::push() {
 void spr::init() {
 	initRequestSystem();
 }
+
+Renderable::~Renderable() {
+
+}

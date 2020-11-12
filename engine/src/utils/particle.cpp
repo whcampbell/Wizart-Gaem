@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include "internal/particle.h"
+#include "camera.h"
 
 static std::vector<ParticleSource*> all_particle;
 static std::vector<ParticleSource*> to_add;
@@ -46,7 +47,7 @@ void particle::flush() {
 
 
 
-ParticleSource::ParticleSource(int size, int z, Sprite* sprite, int (*lifetime)(), void (*behavior)(Vector2*, int t)) {
+ParticleSource::ParticleSource(int size, int z, Renderable* sprite, int (*lifetime)(), void (*behavior)(Vector2*, int t)) {
     this->size = size;
     this->loops = 0;
     this->sprite = sprite;
@@ -55,7 +56,7 @@ ParticleSource::ParticleSource(int size, int z, Sprite* sprite, int (*lifetime)(
     this->z = z;
 }
 
-ParticleSource::ParticleSource(int size, int z, Sprite* sprite, int (*lifetime)(), void (*behavior)(Vector2*, int t), int loops) {
+ParticleSource::ParticleSource(int size, int z, Renderable* sprite, int (*lifetime)(), void (*behavior)(Vector2*, int t), int loops) {
     this->size = size;
     this->loops = loops;
     this->sprite = sprite;
@@ -70,6 +71,7 @@ void ParticleSource::update() {
         if (particles[i].lifetime) {
             behavior(&particles[i].align.pos, particles[i].lifetime);
             dead = false;
+            particles[i].lifetime--;
         }
     }
 
@@ -86,14 +88,31 @@ void ParticleSource::update() {
 }
 
 void ParticleSource::render() {
-    for (int i = 0; i < size; i++) {
-        if (particles[i].lifetime)
-            sprite->render(&particles[i].align, z);
-    }
+    if (offset)
+        for (int i = 0; i < size; i++) {
+            if (particles[i].lifetime)
+                sprite->render(&particles[i].align, camera::x, camera::y, z);
+        }
+    else
+        for (int i = 0; i < size; i++) {
+            if (particles[i].lifetime)
+                sprite->render(&particles[i].align, z);
+        }
 }
 
 void ParticleSource::bind(Alignment* align) {
+    if (falign)
+        delete(align);
     this->align = align;
+    falign = false;
+}
+
+void ParticleSource::bind(Vector2 vec) {
+    if (falign)
+        delete(align); 
+    align = new Alignment();
+    align->pos = vec;
+    falign = true;
 }
 
 void ParticleSource::start() {
@@ -113,17 +132,36 @@ void ParticleSource::init() {
         for (int i = 0; i < size; i++) {
             particles[i].align.pos.x = 0;
             particles[i].align.pos.y = 0;
+            
+            particles[i].align.theta = 0;
+            *particles[i].align.x_internal = 0;
+            *particles[i].align.y_internal = 0;
+            particles[i].align.flip = SDL_FLIP_NONE;
+
             particles[i].lifetime = lifetime();
         }
     } else {
         for (int i = 0; i < size; i++) {
             particles[i].align.pos = align->pos;
+
+            particles[i].align.theta = 0;
+            *particles[i].align.x_internal = 0;
+            *particles[i].align.y_internal = 0;
+            particles[i].align.flip = SDL_FLIP_NONE;
+
             particles[i].lifetime = lifetime();
         }
     }
 }
 
+void ParticleSource::toggleCameraOffset() {
+    offset = !offset;
+}
+
 ParticleSource::~ParticleSource() {
     if (particles != nullptr)
         delete(particles);
+    if (falign)
+        delete(align);
+    delete(sprite);
 }

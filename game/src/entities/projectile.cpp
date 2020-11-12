@@ -4,6 +4,7 @@
 #include "components/entitylist.h"
 #include <iostream>
 #include <cmath>
+#include "particle.h"
 
     AttackProjectile::AttackProjectile() {
         Hitbox* box = registerHitbox("hitbox");
@@ -14,6 +15,15 @@
         ticks = 12;
         EntityList hit;
         *set<EntityList>() = hit;
+    }
+
+
+    static int lifetime() {
+        return 60;
+    }
+
+    static void behavior(Vector2* vec, int t) {
+        vec->y--;
     }
 
     void AttackProjectile::update() {
@@ -28,6 +38,14 @@
                 hit->list.push_back(iterator);
                 Hitpoints* hp = iterator->get<Hitpoints>();
                 hp->health--;
+
+                // damage number particle
+                Text* dmgnumber = new Text("1", 16, {255, 0, 0});
+                ParticleSource* source = new ParticleSource(1, 10, dmgnumber, lifetime, behavior);
+                source->bind(align->pos);
+                source->start();
+                // end damage number particle
+
                 if (hp->health <= 0)
                     entities::remove(iterator);
                 entities::remove(this);

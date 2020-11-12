@@ -8,6 +8,7 @@ public:
     virtual void render(int x, int y, int z) = 0;
     virtual void render(Alignment* align, int z) = 0;
     virtual void render(Alignment* align, int xoff, int yoff, int z) = 0;
+    virtual ~Renderable() = 0;
 };
 
 struct Sprite : public Renderable {
