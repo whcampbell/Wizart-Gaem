@@ -25,5 +25,5 @@ namespace controller {
     bool down(Gamepad* gamepad, SDL_GameControllerButton button);
     bool press(Gamepad* gamepad, SDL_GameControllerButton button);
     bool release(Gamepad* gamepad, SDL_GameControllerButton button);
-    Vector axis(Gamepad* gamepad, const char* name);
+    Vector2 axis(Gamepad* gamepad, const char* name);
 }

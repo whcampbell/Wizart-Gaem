@@ -10,7 +10,7 @@ struct Alignment
 private:
 	SDL_Point point;
 public:
-	Vector pos;
+	Vector2 pos;
 	int* x_internal = &point.x;
 	int* y_internal = &point.y;
 	double theta;

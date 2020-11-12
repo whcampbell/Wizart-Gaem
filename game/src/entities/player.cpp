@@ -58,6 +58,7 @@ Player::Player() {
     void Player::move_keyboard() {
         activeSprite = idle;
         float speed = get<Movespeed>()->speed;
+        
         if (key::down(SDL_SCANCODE_W) || key::down(SDL_SCANCODE_UP)) {
             align->pos.y -= speed;
             activeSprite = run;
@@ -129,7 +130,7 @@ Player::Player() {
             else
                 ;
         }
-        activeSprite->render(align, camera::x, camera::y,  1);
+        activeSprite->render(align, camera::x, camera::y,  4);
     }
 
     Player::~Player() {
