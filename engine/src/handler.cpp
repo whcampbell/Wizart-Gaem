@@ -7,6 +7,7 @@
 #include "internal/eventpump.h"
 #include "internal/camera.h"
 #include "internal/entitymanager.h"
+#include "internal/particle.h"
 
 static Scene* activeScene = nullptr;
 
@@ -18,10 +19,12 @@ static std::unordered_map<std::string, AudioSource*>* audio_sources = new std::u
 void hnd::render() {
     if (activeScene != nullptr)
         activeScene->render();
+    particle::render();
     entities::render();
 }
 
 void hnd::update() {
+    particle::update();
     entities::update();
     if (activeScene != nullptr)
         activeScene->update();

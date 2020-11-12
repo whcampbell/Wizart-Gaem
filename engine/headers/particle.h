@@ -25,3 +25,7 @@ public:
     void stop();
     ~ParticleSource();
 };
+
+namespace particle {
+    void flush();
+}

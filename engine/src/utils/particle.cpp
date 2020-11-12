@@ -1,4 +1,50 @@
 #include "particle.h"
+#include <vector>
+#include <algorithm>
+#include "internal/particle.h"
+
+static std::vector<ParticleSource*> all_particle;
+static std::vector<ParticleSource*> to_add;
+static std::vector<ParticleSource*> to_remove;
+
+void particle::update() {
+    for (unsigned int i = 0; i < all_particle.size(); i++) 
+        all_particle[i]->update();
+
+    if (to_add.size()) {
+        all_particle.insert(all_particle.end(), to_add.begin(), to_add.end());
+        to_add.clear();
+    }
+
+    if (to_remove.size()) {
+        for (unsigned int i = 0; i < to_remove.size(); i++) {
+            all_particle.erase(std::remove(all_particle.begin(), all_particle.end(), to_remove[i]));
+            delete(to_remove[i]);
+        }
+        to_remove.clear();
+    }
+
+}
+
+void particle::render() {
+    for (unsigned int i = 0; i < all_particle.size(); i++) 
+        all_particle[i]->render();
+}
+
+void particle::add(ParticleSource* p) {
+    to_add.push_back(p);
+}
+
+void particle::remove(ParticleSource* p) {
+    if (std::find(to_remove.begin(), to_remove.end(), p) == to_remove.end())
+        to_remove.push_back(p);
+}
+
+void particle::flush() {
+    to_remove.insert(to_remove.end(), all_particle.begin(), all_particle.end());
+}
+
+
 
 ParticleSource::ParticleSource(int size, int z, Sprite* sprite, int (*lifetime)(), void (*behavior)(Vector2*, int t)) {
     this->size = size;
@@ -52,11 +98,11 @@ void ParticleSource::bind(Alignment* align) {
 
 void ParticleSource::start() {
     init();
-    //add to particle manager
+    particle::add(this);
 }
 
 void ParticleSource::stop() {
-    //remove from particle manager and free
+    particle::remove(this);
 }
 
 void ParticleSource::init() {

@@ -3,9 +3,9 @@
 #include <vector>
 #include <algorithm>
 
-std::vector<Entity*> all_entity;
-std::vector<Entity*> to_add;
-std::vector<Entity*> to_remove;
+static std::vector<Entity*> all_entity;
+static std::vector<Entity*> to_add;
+static std::vector<Entity*> to_remove;
 
 void entities::update() {
     for (unsigned int i = 0; i < all_entity.size(); i++) {
