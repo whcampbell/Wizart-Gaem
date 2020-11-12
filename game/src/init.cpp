@@ -3,7 +3,7 @@
 #include "scenes/test.h"
 
 void init() { 
-    scene::Test* scene = new scene::Test();
+    scene::World* scene = new scene::World();
     hnd::initScene(scene);
 }
 

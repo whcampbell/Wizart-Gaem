@@ -8,17 +8,23 @@
 
 Player* player;
 
-Sprite* tile_test;
 Text* words;
 int tile_size;
+int map_size;
+std::vector<Sprite*> map;
 
 void initTiles() {
+    map_size = 10;
+    map.resize(map_size*map_size);
     tile_size = 16;
-    tile_test = new Sprite("tile_test");
+    // assume square map
+    for (int i = 0; i < map_size*map_size; i++) {
+        map[i] = new Sprite("tile_test");
+    }
 }
 
 
-void scene::Test::init() {
+void scene::World::init() {
     initTiles();
     Player* player = new Player();
     entities::add(player);
@@ -30,7 +36,7 @@ void scene::Test::init() {
 }
 
 
-void scene::Test::update() {
+void scene::World::update() {
     static int i = 0;
 
     if (!(i % 300)) {
@@ -43,9 +49,9 @@ void scene::Test::update() {
     i++;
 }
 
-void scene::Test::render() {
+void scene::World::render() {
     words->render(0, 0, 4);
-    for (int y = 0; y < 10; y++)
-        for (int x = 0; x < 10; x++)
-            tile_test->render(x * tile_size - camera::x, y * tile_size - camera::y, 0);
+    for (int y = 0; y < map_size; y++)
+        for (int x = 0; x < map_size; x++)
+            map[y*map_size + x]->render(x * tile_size - camera::x, y * tile_size - camera::y, 0);
 }

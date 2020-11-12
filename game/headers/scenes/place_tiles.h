@@ -2,7 +2,7 @@
 #include "scene.h"
 
 namespace scene {
-    class Test : public Scene {
+    class World : public Scene {
         
     public:
         void init();
