@@ -90,8 +90,8 @@ bool controller::release(Gamepad* gamepad, SDL_GameControllerButton button) {
     return gamepad->key0[button] && !gamepad->key[button];
 }
 
-Vector controller::axis(Gamepad* gamepad, const char* name) {
-    Vector pos = {0, 0};
+Vector2 controller::axis(Gamepad* gamepad, const char* name) {
+    Vector2 pos = {0, 0};
     if (gamepad == nullptr)
         return pos;
     if (!strcmp(name, "left")) {
