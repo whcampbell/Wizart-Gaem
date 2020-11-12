@@ -7,23 +7,10 @@
 #include "component.h"
 #include <iostream>
 #include <vector>
+#include "internal/entity.h"
 
 static int id_source;
 static const int component_size = 128;
-
-namespace component_i {
-    using CID = std::size_t;
-
-inline CID getCID() {
-	static CID last = 0;
-	return last++;
-}
-
-template <typename T> inline CID getCID() noexcept {
-	static CID typeID = getCID();
-	return typeID;
-}
-};
 
 class Entity {
 private:
@@ -46,7 +33,7 @@ public:
     Hitbox* registerHitbox(std::string name, int w, int h, Alignment* alignment);
     
 template <typename T> T* set() {
-    int CID = component_i::getCID<T>();
+    int CID = INTERNAL_ONLY_COMPONENT::getCID<T>();
 	bitset[CID] = 1;
     
     if (component[CID] == nullptr) {
@@ -56,15 +43,15 @@ template <typename T> T* set() {
 }
 
 template <typename T> bool has() {
-	return bitset[component_i::getCID<T>()];
+	return bitset[INTERNAL_ONLY_COMPONENT::getCID<T>()];
 }
 
 template <typename T> T* get() {
-	return (T*)(component[component_i::getCID<T>()]);
+	return (T*)(component[INTERNAL_ONLY_COMPONENT::getCID<T>()]);
 }
 
 template <typename T> void del() {
-	bitset[component_i::getCID<T>()] = 0;
+	bitset[INTERNAL_ONLY_COMPONENT::getCID<T>()] = 0;
 }
 };
 

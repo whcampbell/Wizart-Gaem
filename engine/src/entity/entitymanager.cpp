@@ -1,4 +1,5 @@
 #include "internal/entitymanager.h"
+#include "entity.h"
 #include <vector>
 #include <algorithm>
 
