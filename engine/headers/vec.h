@@ -86,6 +86,14 @@ struct Vector3 {
         this->y -= v.y;
         this->z -= v.z;
     }
+
+    Vector3 operator^(const Vector3& v) {
+        Vector3 vec;
+        vec.x = this->y * v.z - this->z * v.y;
+        vec.y = this->z * v.x - this->x * v.z;
+        vec.z = this->x * v.y - this->y * v.x;
+        return vec;
+    }
 };
 
 struct Vector4 {
