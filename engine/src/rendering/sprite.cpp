@@ -14,6 +14,7 @@
 #include <SDL_ttf.h>
 
 static unsigned int RenderTime;
+static std::vector<SDL_Texture*> toFree;
 
 static std::unordered_map<std::string, Texture*>*  spriteMap = new std::unordered_map<std::string, Texture*>();
 static std::vector<RenderRequest> requests;
@@ -207,11 +208,6 @@ void Texture::ping() {
 }
 
 Text::Text(std::string text, int size, SDL_Color color) {
-	valid = new bool;
-	reading = new int;
-	*reading = 0;
-	*valid = true;
-
 	update(text);
 	update(size);
 	update(color);
@@ -251,17 +247,14 @@ void Text::refresh() {
 
 void Text::render(int x, int y, int z){
 	refresh();
-	(*reading)++;
 
 	RenderRequest req;
 	req.text.h = h;
 	req.text.point = {w/2, h/2};
-	req.text.reading = reading;
 	req.text.scale = GAME_SCALE;
 	req.text.texture = texture;
 	req.text.theta = 0;
 	req.text.type = REQ_TEXT;
-	req.text.valid = valid;
 	req.text.flip = SDL_FLIP_NONE;
 	req.text.w = w;
 	req.text.x = x;
@@ -271,17 +264,14 @@ void Text::render(int x, int y, int z){
 }
 void Text::render(Alignment* align, int z){
 	refresh();
-	(*reading)++;
 
 	RenderRequest req;
 	req.text.h = h;
 	req.text.point = {w/2, h/2};
-	req.text.reading = reading;
 	req.text.scale = GAME_SCALE;
 	req.text.texture = texture;
 	req.text.theta = align->theta;
 	req.text.type = REQ_TEXT;
-	req.text.valid = valid;
 	req.text.flip = align->flip;
 	req.text.w = w;
 	req.text.x = align->pos.x - w/2;
@@ -291,17 +281,14 @@ void Text::render(Alignment* align, int z){
 }
 void Text::render(Alignment* align, int xoff, int yoff, int z) {
 	refresh();
-	(*reading)++;
 
 	RenderRequest req;
 	req.text.h = h;
 	req.text.point = {w/2, h/2};
-	req.text.reading = reading;
 	req.text.scale = GAME_SCALE;
 	req.text.texture = texture;
 	req.text.theta = align->theta;
 	req.text.type = REQ_TEXT;
-	req.text.valid = valid;
 	req.text.flip = align->flip;
 	req.text.w = w;
 	req.text.x = align->pos.x - w/2 - xoff;
@@ -311,14 +298,19 @@ void Text::render(Alignment* align, int xoff, int yoff, int z) {
 }
 
 Text::~Text() {
-	SDL_SemWait(textsync);
-	*valid = false;
-	SDL_DestroyTexture(texture);
-	SDL_SemPost(textsync);
+	toFree.push_back(texture);
 }
 
 bool compareRequest(RenderRequest r1, RenderRequest r2) {
 	return r1.z < r2.z || (r1.z == r2.z && r1.request.y < r2.request.y);
+}
+
+void cleanText() {
+	for (unsigned int i = 0; i < toFree.size(); i++) {
+		SDL_DestroyTexture(toFree[i]);
+		toFree.erase(toFree.begin() + i);
+		i--;
+	}
 }
 
 void spr::push() {
@@ -326,10 +318,11 @@ void spr::push() {
 	for (unsigned int i = 0; i < requests.size(); i++)
 		drawRequest(&requests[i]);
 	requests.clear();
+	cleanText();
 }
 
-void spr::init() {
-	initRequestSystem();
+void spr::init() { 
+	
 }
 
 Renderable::~Renderable() {

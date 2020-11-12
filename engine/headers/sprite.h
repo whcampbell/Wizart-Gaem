@@ -28,8 +28,6 @@ public:
 struct Text : public Renderable {
 private:
     int w, h;
-    bool* valid;
-    int* reading;
     std::string text;
     int size;
     SDL_Color color;
@@ -45,4 +43,4 @@ public:
     void render(int x, int y, int z);
     void render(Alignment* align, int z);
     void render(Alignment* align, int xoff, int yoff, int z);
-};
+}; 
