@@ -43,7 +43,6 @@
     
 #include "entity.h"
 
-#include "entitymanager.h"
 #include "fastmath.h"
 #include "globals.h"
 #include "handler.h"

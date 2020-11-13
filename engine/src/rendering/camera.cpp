@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "internal/camera.h"
 #include <vector>
 #include <algorithm>
 #include "globals.h"
@@ -17,7 +18,7 @@ void camera::unbind(Alignment* a) {
     targets.erase(std::remove(targets.begin(), targets.end(), a));
 }
 
-void camera_i::update() {
+void camera::update() {
     int dx = 0, dy = 0;
 
     if (targets.size()) {

@@ -3,7 +3,7 @@
 #include "entities/healthdrop.h"
 #include "components/hitpoints.h"
 #include "entities/speeddrop.h"
-#include "entitymanager.h"
+#include "entity.h"
 #include "camera.h"
 #include "globals.h"
 #include "entities/crate.h"

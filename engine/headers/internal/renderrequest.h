@@ -1,8 +1,6 @@
 #pragma once
 #include "sprite.h"
 
-extern SDL_sem* textsync;
-
 enum RenderType {
     REQ_IMAGE, REQ_SPRITE, REQ_TEXT
 };
@@ -45,8 +43,6 @@ struct TextRequest {
     double theta;
     SDL_Point point;
     SDL_RendererFlip flip;
-    bool* valid;
-    int* reading;
     SDL_Texture* texture;
 };
 

@@ -1,12 +1,13 @@
-#include "entitymanager.h"
+#include "internal/entitymanager.h"
+#include "entity.h"
 #include <vector>
 #include <algorithm>
 
-std::vector<Entity*> all_entity;
-std::vector<Entity*> to_add;
-std::vector<Entity*> to_remove;
+static std::vector<Entity*> all_entity;
+static std::vector<Entity*> to_add;
+static std::vector<Entity*> to_remove;
 
-void entity_i::update() {
+void entities::update() {
     for (unsigned int i = 0; i < all_entity.size(); i++) {
         all_entity[i]->tick();
         all_entity[i]->update();
@@ -27,7 +28,7 @@ void entity_i::update() {
 
 }
 
-void entity_i::render() {
+void entities::render() {
     for (unsigned int i = 0; i < all_entity.size(); i++) 
         all_entity[i]->render();
 }

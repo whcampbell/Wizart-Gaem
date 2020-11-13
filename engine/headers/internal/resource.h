@@ -1,11 +1,11 @@
 #pragma once
 
-namespace sfx_i {
+namespace sfx {
     void clean();
     void init();
 }
 
-namespace spr_i {
+namespace spr {
     void update();
     void clean();
     void push();
