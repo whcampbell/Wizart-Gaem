@@ -13,6 +13,7 @@
 #include "components/hitpoints.h"
 #include "components/mana.h"
 #include "components/movespeed.h"
+#include "components/bufftimers.h"
 
 
 Player::Player() {
@@ -49,15 +50,29 @@ Player::Player() {
         Movespeed move;
         move.speed = 1;
         *set<Movespeed>() = move;
+
+        BuffTimers buff;
+        buff.speedBoost = 0;
+        *set<BuffTimers>() = buff;
     }
 
     void Player::update() {
         move_keyboard();
+
+        // update speed boost buff timer
+        if (get<BuffTimers>()->speedBoost > 0) 
+            get<BuffTimers>()->speedBoost--;
     }
 
     void Player::move_keyboard() {
         activeSprite = idle;
+
+        // if the speedboost timer is active, speed is set higher
         float speed = get<Movespeed>()->speed;
+        if (get<BuffTimers>()->speedBoost > 0) {
+            speed = 2;
+        }
+        
         
         if (key::down(SDL_SCANCODE_W) || key::down(SDL_SCANCODE_UP)) {
             align->pos.y -= speed;
