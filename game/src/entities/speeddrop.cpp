@@ -3,7 +3,7 @@
 #include "components/bufftimers.h"
 #include "camera.h"
 
-SpeedDrop:: SpeedDrop() {
+SpeedDrop::SpeedDrop() {
     activeSprite = new Sprite("speed_drop");
     *align->x_internal = 16;
     *align->y_internal = 16;
@@ -13,14 +13,12 @@ SpeedDrop:: SpeedDrop() {
     hit->h = 16;
 }
 
-void SpeedDrop:: update() {
+void SpeedDrop::update() {
     for (auto iterator : *entities:: all()) {
         if (hitbox::collision(iterator->hitbox("pickupbox"), hitbox("hitbox"))) {
             if (iterator->has<Movespeed>() && iterator->has<BuffTimers>()) {
-
                 // picking up a new speed drop will always refresh timer
                 // to ten seconds (600 updates)
-                Movespeed* sp = iterator->get<Movespeed>();
                 BuffTimers* buff = iterator->get<BuffTimers>();
                 buff->speedBoost = 600;
                 entities::remove(this);
@@ -30,8 +28,10 @@ void SpeedDrop:: update() {
     }
 }
 
-void SpeedDrop:: render() {
+void SpeedDrop::render() {
     activeSprite->render(align, camera::x, camera::y, 2);
 }
 
-SpeedDrop:: ~SpeedDrop() {}
+SpeedDrop::~SpeedDrop() {
+    delete(activeSprite);
+}

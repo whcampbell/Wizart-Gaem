@@ -305,7 +305,7 @@ bool compareRequest(RenderRequest r1, RenderRequest r2) {
 	return r1.z < r2.z || (r1.z == r2.z && r1.request.y < r2.request.y);
 }
 
-void cleanText() {
+void spr::flush() {
 	for (unsigned int i = 0; i < toFree.size(); i++) {
 		SDL_DestroyTexture(toFree[i]);
 		toFree.erase(toFree.begin() + i);
@@ -318,7 +318,6 @@ void spr::push() {
 	for (unsigned int i = 0; i < requests.size(); i++)
 		drawRequest(&requests[i]);
 	requests.clear();
-	cleanText();
 }
 
 void spr::init() { 

@@ -10,6 +10,7 @@ namespace spr {
     void clean();
     void push();
     void init();
+    void flush();
 }
 
 namespace res {

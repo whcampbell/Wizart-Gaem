@@ -13,7 +13,7 @@
         - AUDIOCTX_engine
     Includes the Sound struct, which represents a currently playing sound
     Sound has these members
-        - int setVolume(int vol): sets the volume of the sound, independent of the audio source
+        - int setVolume(int vol): sets the volume of the sound, independent of the audio source, then returns the current volume
         - void play(int loops): plays the sound and loops it equal to the number of times
         - void stop(): stops the sound if it is currently playing
     Includes the AudioSource struct, which is used to represent a specific audio player, and holds values associated

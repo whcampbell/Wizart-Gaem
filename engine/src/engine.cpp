@@ -121,6 +121,8 @@ void render() {
         spr::push();
 
 		SDL_RenderPresent(getRenderer());
+
+        spr::flush();
 		fps++;
 }
 

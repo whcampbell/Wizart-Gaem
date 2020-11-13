@@ -34,4 +34,6 @@ void HealthDrop::render() {
     activeSprite->render(align, camera::x, camera::y, 2);
 }
 
-HealthDrop::~HealthDrop() {}
+HealthDrop::~HealthDrop() {
+    delete(activeSprite);
+}

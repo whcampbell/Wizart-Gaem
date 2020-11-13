@@ -64,5 +64,5 @@
     }
 
     AttackProjectile::~AttackProjectile() {
-        
+        delete(activeSprite);
     }

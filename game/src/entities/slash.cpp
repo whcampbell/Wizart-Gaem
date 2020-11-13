@@ -59,5 +59,5 @@
     }
 
     AttackSlash::~AttackSlash() {
-        
+        delete(activeSprite);
     }

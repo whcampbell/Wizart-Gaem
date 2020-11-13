@@ -35,5 +35,6 @@
         ManaDrop* drop = new ManaDrop();
         drop->pos()->pos = align->pos;
         entities::add(drop);
+        delete(activeSprite);
     }
 

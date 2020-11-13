@@ -148,6 +148,6 @@ Player::Player() {
     }
 
     Player::~Player() {
-
+        delete(activeSprite);
     }
 
