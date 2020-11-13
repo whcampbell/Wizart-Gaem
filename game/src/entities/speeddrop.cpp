@@ -2,7 +2,6 @@
 #include "components/movespeed.h"
 #include "components/bufftimers.h"
 #include "camera.h"
-#include "entitymanager.h"
 
 SpeedDrop:: SpeedDrop() {
     activeSprite = new Sprite("speed_drop");
