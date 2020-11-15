@@ -28,7 +28,7 @@
     void Crate::update() {}
 
     void Crate::render() {
-        activeSprite->render(align, camera::x, camera::y, 1);
+        activeSprite->render(align, camera::x, camera::y, 4);
     }
 
     Crate::~Crate() {
