@@ -1,5 +1,5 @@
 #include <SDL.h>
-#include "eventpump.h"
+#include "internal/eventpump.h"
 #include "input.h"
 #include <string.h>
 

@@ -1,36 +1,14 @@
 #pragma once
 #include "alignment.h"
 #include <string>
-#include <memory>
-
-struct Texture {
-private:
-	std::string path;
-    int loaded;
-
-    void lazyload();
-    void unload();
-    
-public:
-	int w, h, frames, delta;
-	SDL_Texture* sheet;
-	SDL_Rect** clips;
-
-	Texture(std::string path) : path(path) {
-        loaded = 0;
-    }
-
-    Texture() : path(NULL) {}
-
-    void update();
-    void ping();
-};
+#include <internal/renderable.h>
 
 struct Renderable {
 public:
     virtual void render(int x, int y, int z) = 0;
     virtual void render(Alignment* align, int z) = 0;
     virtual void render(Alignment* align, int xoff, int yoff, int z) = 0;
+    virtual ~Renderable() = 0;
 };
 
 struct Sprite : public Renderable {
@@ -50,8 +28,6 @@ public:
 struct Text : public Renderable {
 private:
     int w, h;
-    bool* valid;
-    int* reading;
     std::string text;
     int size;
     SDL_Color color;
@@ -67,4 +43,4 @@ public:
     void render(int x, int y, int z);
     void render(Alignment* align, int z);
     void render(Alignment* align, int xoff, int yoff, int z);
-};
+}; 

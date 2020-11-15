@@ -1,84 +1,21 @@
 #pragma once
 #include <SDL_mixer.h>
 #include <string>
-#include <iostream>
+#include <internal/mix.h>
 
 const int LOOP_INFINITELY = -1;
 
 /**
- * 
+ * represents the context which audio should play relative to. Any sounds with scene context will
+ * stop playing on scene switch. Any sound with engine context will always play until stopped
+ * manually
  */
 enum AudioContext {
     ADUIOCTX_scene, ADUIOCTX_engine
 };
 
 /**
- * INTENRAL USE ONLY
- * generic audio data, virtual class
- */
-struct Mix {
-private:
-    int* loaded;
-protected:
-    std::string path;
-    virtual void unload() = 0;
-    virtual void lazyload() = 0;
-public:
-    Mix(std::string path) : path(path) {
-        loaded = new int;
-        *loaded = 0;
-    }
-    
-    /**
-    * 
-    */
-    void update();
-
-    /**
-    * 
-    */
-    void ping();
-    virtual int play(int loops) = 0;
-};
-
-/**
- * INTENRAL USE ONLY
- * Audio data representing music
- */
-struct Mus : Mix {
-protected:
-    void unload();   
-    void lazyload();
-public:
-    Mus(std::string path) : Mix(path) {}
-    Mix_Music* data = nullptr;
-
-    /**
-    * 
-    */
-    int play(int loops);
-};
-
-/**
- * INTENRAL USE ONLY
- * Audio data representing a sound effect
- */
-struct Sfx : Mix{
-protected:
-    void unload();
-    void lazyload();
-public:
-    Sfx(std::string path) : Mix(path) {}
-    Mix_Chunk* data = nullptr;
-
-    /**
-    * 
-    */
-    int play(int loops);
-};
-
-/**
-* 
+* Structure representing a single playable sound or musical effect
 */
 struct Sound {
 private:
@@ -88,12 +25,12 @@ public:
     Sound(std::string name);
 
     /**
-    * 
+    * Sets the volume that this sound will play at
     */
     int setVolume(int vol);
 
     /**
-    * 
+    * plays this sound, looping an additional number of times equal to the input value
     */
     void play(int loops);
 
@@ -131,18 +68,6 @@ public:
     Sound* loop(std::string str, int loops, AudioContext ctx);
 
 };
-
-/**
- * INTENRAL USE ONLY
- * adds a sound to the list of playing sounds
- */
-namespace hnd_sfx {
-
-    /**
-    * 
-    */
-    void addSound(Sound* sound, AudioContext ctx);
-}
 
 /**
 * 
