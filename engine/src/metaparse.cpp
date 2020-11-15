@@ -1,5 +1,5 @@
-#include "import.h"
-#include "resource.h"
+#include "internal/import.h"
+#include "internal/resource.h"
 #include <filesystem>
 #include <fstream>
 #include <string>
@@ -10,7 +10,7 @@ using ios = std::ifstream;
 
 
 
-imp_i::SpriteData imp_i::parseSprite(std::string path) {
+imp::SpriteData imp::parseSprite(std::string path) {
     SpriteData data;
     std::ifstream stream(path, ios::in|ios::binary);
     stream.read(reinterpret_cast<char*>(&(data.frames)), sizeof(int));
@@ -27,7 +27,7 @@ imp_i::SpriteData imp_i::parseSprite(std::string path) {
     return data;
 }
 
-imp_i::SoundData imp_i::parseSound(std::string path) {
+imp::SoundData imp::parseSound(std::string path) {
     SoundData data;
     std::ifstream stream(path, ios::in|ios::binary);
     stream.read(reinterpret_cast<char*>(&data.isMus), sizeof(bool));
@@ -62,10 +62,10 @@ void recurseDir(std::string path) {
 }
 
 void res::init() {
-    sfx_i::init();
+    sfx::init();
     std::cout << "starting resource import" << std::endl;
     std::string path = "./res";
-    spr_i::init();
+    spr::init();
     recurseDir(path);
     std::cout << "finished resource import" << std::endl;
 }

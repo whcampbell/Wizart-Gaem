@@ -1,11 +1,11 @@
-#include "screen.h"
+#include "internal/screen.h"
 #include <iostream>
 #include "engine.h"
 #include <SDL_thread.h>
 #include <SDL.h>
-#include "resource.h"
-#include "handler.h"
-#include "eventpump.h"
+#include "internal/resource.h"
+#include "internal/handler.h"
+#include "internal/eventpump.h"
 
 float GAME_SCALE = 3;
 
@@ -62,13 +62,13 @@ static void checkEvents() {
 }
 
 void update() {
-    hnd_i::update();
-    spr_i::update();
+    hnd::update();
+    spr::update();
 }
 
 void manageResources() {
-    spr_i::clean();
-    sfx_i::clean();
+    spr::clean();
+    sfx::clean();
 }
 
 bool flag_reswait = true;
@@ -117,10 +117,12 @@ int run(void* data) {
 void render() {
 		SDL_RenderClear(getRenderer());
 
-        hnd_i::render();
-        spr_i::push();
+        hnd::render();
+        spr::push();
 
 		SDL_RenderPresent(getRenderer());
+
+        spr::flush();
 		fps++;
 }
 
