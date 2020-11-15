@@ -25,7 +25,8 @@ debug : $(SRC)
 	-rm -r res
 	cp -r ../../res .
 	find ./res -type f -name '*.aseprite' -exec rm {} +
-	@echo "Build successful!"
+	@echo "Build successful! starting debug. run 'source debugsettings' to configure debug settings"
+	gdb game.exe
 
 optimize : $(SRC)
 	g++ -std=c++17 $(SRC) $(GAME_SRC) $(INCLUDE) $(LIBS) $(LINK) $(FLAGS) -O3 -o $(OBJ_NAME)
