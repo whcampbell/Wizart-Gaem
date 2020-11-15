@@ -1,4 +1,4 @@
-#include "scenes/test.h"
+#include "scenes/place_tiles.h"
 #include "entities/player.h"
 #include "entities/healthdrop.h"
 #include "entitymanager.h"

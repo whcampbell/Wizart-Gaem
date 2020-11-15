@@ -1,6 +1,6 @@
 #include "engine.h"
 #include "handler.h"
-#include "scenes/test.h"
+#include "scenes/place_tiles.h"
 
 void init() { 
     scene::World* scene = new scene::World();
