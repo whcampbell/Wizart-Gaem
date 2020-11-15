@@ -1,7 +1,6 @@
 #include "entities/xpdrop.h"
 #include "components/xp.h"
 #include "camera.h"
-#include "entitymanager.h"
 #include <iostream>
 
 
@@ -20,6 +19,7 @@ void XPDrop::update() {
         if (hitbox::collision(iterator->hitbox("pickupbox"), hitbox("hitbox"))) { // if the entity has collided with an XP pickup
             if (iterator->has<XP>()) { // if this is an entity that accepts XP
                 XP* xpt = iterator->get<XP>(); // gets xp of entity that collided
+                //std::cout << "level " << xpt->level << "needed XP " << xpt->neededXP << "current XP " << xpt->currXP;
                 if (xpt->currXP == (xpt->neededXP-1)) { // are they ready to level up?
                     for (auto allPlay : *entities::all()) { // levels up all players
                         if (allPlay->has<XP>()) {
@@ -37,7 +37,6 @@ void XPDrop::update() {
                         }
                     }
                 }
-                std::cout << "level " << xpt->level << "needed XP " << xpt->neededXP << "current XP " << xpt->currXP;
             }
             entities::remove(this);
             break;
