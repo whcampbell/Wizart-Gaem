@@ -44,3 +44,9 @@ public:
     void render(Alignment* align, int z);
     void render(Alignment* align, int xoff, int yoff, int z);
 }; 
+
+namespace render {
+    void drawRect(int x, int y, int w, int h, SDL_Color color, int z);
+    void fillRect(int x, int y, int w, int h, SDL_Color color, int z);
+    void outlineRect(int x, int y, int w, int h, SDL_Color color1, SDL_Color color2, int z);
+}

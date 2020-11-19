@@ -6,14 +6,14 @@
 #include "handler.h"
 #include "internal/audio.h"
 
-static std::unordered_map<std::string, Mix*>* soundMap = new std::unordered_map<std::string, Mix*>();
+static std::unordered_map<std::string, Mix*> soundMap;
 
 Mix* getMix(std::string name) {
-    if (soundMap->find(name) == soundMap->end()) {
+    if (soundMap.find(name) == soundMap.end()) {
         std::cout << name << " is not present in the sound map" << std::endl;
         exit(1);
     }
-    Mix* ptr = (*soundMap)[name];
+    Mix* ptr = soundMap[name];
     return ptr;
 }
 
@@ -26,11 +26,11 @@ void imp::importAudio(std::string path) {
     
     if (data.isMus) {
         Mus* sound = new Mus(data.path);
-        (*soundMap)[name] = sound;
+        soundMap[name] = sound;
         std::cout << "\tmapping music at " << name << std::endl;
     } else {
         Sfx* sound = new Sfx(data.path);
-        (*soundMap)[name] = sound;
+        soundMap[name] = sound;
         std::cout << "\tmapping sound at " << name << std::endl;
     }
 
@@ -117,7 +117,7 @@ Sound* AudioSource::loop(std::string name, int loops, AudioContext ctx) {
 }
 
 void sfx::clean() {
-	for (auto iterator = soundMap->begin(); iterator != soundMap->end(); iterator++) {
+	for (auto iterator = soundMap.begin(); iterator != soundMap.end(); iterator++) {
 		iterator->second->update();
 	}
 }

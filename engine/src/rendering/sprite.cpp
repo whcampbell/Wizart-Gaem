@@ -16,15 +16,17 @@
 static unsigned int RenderTime;
 static std::vector<SDL_Texture*> toFree;
 
-static std::unordered_map<std::string, Texture*>*  spriteMap = new std::unordered_map<std::string, Texture*>();
+SDL_sem* loadsync;
+
+static std::unordered_map<std::string, Texture*>  spriteMap;
 static std::vector<RenderRequest> requests;
 
 Texture* getTexture(std::string name) {
-	if (spriteMap->find(name) == spriteMap->end()) {
+	if (spriteMap.find(name) == spriteMap.end()) {
         std::cout << name << " is not present in the sprite map" << std::endl;
         exit(1);
     }
-	Texture* ptr = (*spriteMap)[name];
+	Texture* ptr = spriteMap[name];
 	return ptr;
 }
 
@@ -64,10 +66,10 @@ void imp::importSprite(std::string path) {
 	std::cout << "\tcreating frame data" << std::endl;
 
 	SDL_DestroyTexture(texture->sheet);
-
+	texture->sheet = nullptr;
 
 	
-	(*spriteMap)[name] = texture;
+	spriteMap[name] = texture;
 
 	std::cout << "\tmapping texture at " << name << std::endl;
 	
@@ -167,44 +169,53 @@ void spr::update() {
 }
 
 void spr::clean() {
-	for (auto iterator = spriteMap->begin(); iterator != spriteMap->end(); iterator++) {
+	for (auto iterator = spriteMap.begin(); iterator != spriteMap.end(); iterator++) {
 		iterator->second->update();
 	}
 }
 
 
 void Texture::lazyload() {
+	SDL_SemWait(loadsync);
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	if (surface == NULL) {
+		std::cout << "error loading surface for sprite at " << path << std::endl;
 		return;
 	}
 
 	sheet = SDL_CreateTextureFromSurface(getRenderer(), surface);
 	if (sheet == NULL) {
+		std::cout << "error generating texture for sprite at " << path << std::endl;
 		return;
 	}
 	SDL_FreeSurface(surface);
 	std::cout << "lazyloaded sprite at " << path << std::endl;
+	SDL_SemPost(loadsync);
 }
 
 void Texture::update() {
 	if(loaded) {
-		(loaded)--;
-		if (!(loaded))
+		loaded--;
+		if (!loaded)
 			unload();
 	}
 }
 
 void Texture::unload() {
-	SDL_DestroyTexture(sheet);
+	SDL_SemWait(loadsync);
+	if (sheet != nullptr) {
+		SDL_DestroyTexture(sheet);
+		sheet = nullptr;
+	}
 	std::cout << "unloaded sprite at " << path << std::endl;
+	SDL_SemPost(loadsync);
 }
 
 void Texture::ping() {
-	if (!(loaded)) {
+	if (!loaded) {
 		lazyload();
 	}
-	loaded = 30;
+	loaded = -1; //TODO reset to 30 sec timeout
 }
 
 Text::Text(std::string text, int size, SDL_Color color) {
@@ -321,9 +332,50 @@ void spr::push() {
 }
 
 void spr::init() { 
-	
+	loadsync = SDL_CreateSemaphore(1);
 }
 
 Renderable::~Renderable() {
 
+}
+
+void render::drawRect(int x, int y, int w, int h, SDL_Color color, int z) {
+	RenderRequest req;
+	req.rect.h = h;
+	req.rect.scale = GAME_SCALE;
+	req.rect.type = REQ_RECT;
+	req.rect.w = w;
+	req.rect.x = x;
+	req.rect.y = y;
+	req.rect.z = z;
+	req.rect.color1 = color;
+	requests.push_back(req);
+}
+
+void render::fillRect(int x, int y, int w, int h, SDL_Color color, int z) {
+	RenderRequest req;
+	req.rect.h = h;
+	req.rect.scale = GAME_SCALE;
+	req.rect.type = REQ_FRECT;
+	req.rect.w = w;
+	req.rect.x = x;
+	req.rect.y = y;
+	req.rect.z = z;
+	req.rect.color1 = color;
+	req.rect.color2 = color;
+	requests.push_back(req);
+}
+
+void render::outlineRect(int x, int y, int w, int h, SDL_Color color1, SDL_Color color2, int z) {
+	RenderRequest req;
+	req.rect.h = h;
+	req.rect.scale = GAME_SCALE;
+	req.rect.type = REQ_FRECT;
+	req.rect.w = w;
+	req.rect.x = x;
+	req.rect.y = y;
+	req.rect.z = z;
+	req.rect.color1 = color1;
+	req.rect.color2 = color2;
+	requests.push_back(req);
 }
