@@ -2,7 +2,7 @@
 #include "sprite.h"
 
 enum RenderType {
-    REQ_IMAGE, REQ_SPRITE, REQ_TEXT
+    REQ_IMAGE, REQ_SPRITE, REQ_TEXT, REQ_RECT, REQ_FRECT
 };
 
 struct Request {
@@ -34,6 +34,15 @@ struct SpriteRequest {
     Texture* texture;
 };
 
+struct RectRequest {
+    int z;
+    RenderType type;
+    int y;
+    int x, w, h;
+    float scale;
+    SDL_Color color1, color2;
+};
+
 struct TextRequest {
     int z;
     RenderType type;
@@ -54,6 +63,7 @@ union RenderRequest {
     ImageRequest image;
     SpriteRequest sprite;
     TextRequest text;
+    RectRequest rect;
 };
 
 void drawRequest(RenderRequest* request);

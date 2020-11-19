@@ -115,7 +115,9 @@ int run(void* data) {
 }
 
 void render() {
-		SDL_RenderClear(getRenderer());
+		if (SDL_RenderClear(getRenderer())){
+            std::cout << "error clearing renderer: " << SDL_GetError() << std::endl;
+        }
 
         hnd::render();
         spr::push();
