@@ -13,6 +13,7 @@
 #include "components/mana.h"
 #include "components/movespeed.h"
 #include "components/bufftimers.h"
+#include "components/physics.h"
 
 
 Player::Player() {
@@ -53,10 +54,31 @@ Player::Player() {
         BuffTimers buff;
         buff.speedBoost = 0;
         *set<BuffTimers>() = buff;
+
+        Physics physics;
+        physics.velocity = {0, 0};
+        physics.acceleration = {0, 0};
+        physics.physicsActive = false;
+        *set<Physics>() = physics;
     }
 
     void Player::update() {
-        move_keyboard();
+        activeSprite = idle;
+        if (!get<Physics>()->physicsActive) {
+            move_keyboard();
+        } else {
+            Physics* physics = get<Physics>();
+            align->pos.x += physics->velocity.x;
+            align->pos.y += physics->velocity.y;
+            physics->velocity.x += physics->acceleration.x;
+            physics->velocity.y += physics->acceleration.y;
+            if (abs(physics->velocity.x) - .1 <= 0 && abs(physics->velocity.y) - .1 <= 0) {
+                physics->physicsActive = false;
+                physics->acceleration.x = 0;
+                physics->acceleration.y = 0;
+            }
+        }
+        
 
         // update speed boost buff timer
         if (get<BuffTimers>()->speedBoost > 0) 
