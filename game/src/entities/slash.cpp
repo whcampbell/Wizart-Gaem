@@ -5,6 +5,7 @@
 #include "components/physics.h"
 #include <iostream>
 #include "particle.h"
+#include <cmath>
 
 
     AttackSlash::AttackSlash() {
