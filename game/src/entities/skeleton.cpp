@@ -11,6 +11,7 @@
 #include "components/bufftimers.h"
 #include "components/physics.h"
 
+
 Skeleton::Skeleton() {
     run = new Sprite("skelly_run");
     // hurt = new Sprite("skeleton_hurt");
@@ -49,6 +50,7 @@ Skeleton::Skeleton() {
 
 void Skeleton::update() {
     activeSprite = run;
+  
     if (!get<Physics>()->physicsActive) {
         float speed = get<Movespeed>()->speed;
         align->pos.x += speed;
@@ -64,6 +66,7 @@ void Skeleton::update() {
             physics->acceleration.y = 0;
         }
     }
+
 
 }
 

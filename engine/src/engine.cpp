@@ -66,11 +66,6 @@ void update() {
     spr::update();
 }
 
-void manageResources() {
-    spr::clean();
-    sfx::clean();
-}
-
 bool flag_reswait = true;
 
 int run(void* data) {
@@ -99,7 +94,7 @@ int run(void* data) {
             avgu += SDL_GetTicks() - startu;
 
             if ((pdel = SDL_GetTicks() - lastp) >= deltap) {
-                manageResources();
+                sfx::clean();
 
                 std::cout << pdel << "ms since last update" << "\n\tFPS: " << (int)(fps * ((float)deltap / pdel))
                  << "\n\tUPS: " << (int)(ups * ((float)deltap / pdel)) << "\n\tAvg utime: " << (avgu / ups) << "ms" << std::endl;
@@ -129,9 +124,17 @@ void render() {
 }
 
 int runSDL(void* data) {
+    unsigned int curr;
+    unsigned int last = SDL_GetTicks();
+    unsigned int delta = 1000;
 	while (running) {
+        curr = SDL_GetTicks();
         checkEvents();
         render();
+        if (curr - last >= delta) {
+            last = SDL_GetTicks();
+            spr::clean();
+        }
 	}
     return 0;
 }
