@@ -1,5 +1,6 @@
 #include "scenes/test.h"
 #include "entities/player.h"
+#include "entities/skeleton.h"
 #include "entities/healthdrop.h"
 #include "components/hitpoints.h"
 #include "entities/speeddrop.h"
@@ -24,6 +25,9 @@ void scene::Test::init() {
     initTiles();
     Player* player = new Player();
     entities::add(player);
+
+    Skeleton* skeleton = new Skeleton();
+    entities::add(skeleton);
 
     // lower player health and test health drop
     Hitpoints* hp = player->get<Hitpoints>();
