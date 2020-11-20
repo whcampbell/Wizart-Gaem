@@ -2,6 +2,7 @@
 #include "camera.h"
 #include "components/hitpoints.h"
 #include "components/entitylist.h"
+#include "components/physics.h"
 #include <iostream>
 #include "particle.h"
 
@@ -31,6 +32,16 @@
 
         for (auto iterator : *entities::all()) {
             if (!(hit->contains(iterator)) && hitbox::collision(iterator->hitbox("hurtbox"), hitbox("hitbox"))) {
+
+                if (iterator->has<Physics>()) {
+                    Physics* physics = iterator->get<Physics>();
+                    physics->physicsActive = true;
+                    physics->velocity.x = 2 * cos(align->theta * M_PI / 180);
+                    physics->velocity.y = 2 * sin(align->theta * M_PI / 180);
+                    physics->acceleration.x = -.08 * cos(align->theta * M_PI / 180);
+                    physics->acceleration.y = -.08 * sin(align->theta * M_PI / 180);
+                }
+
                 if (iterator->has<Hitpoints>()) {
                 hit->list.push_back(iterator);
                 Hitpoints* hp = iterator->get<Hitpoints>();
