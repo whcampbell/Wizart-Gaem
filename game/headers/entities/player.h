@@ -11,6 +11,8 @@ private:
 
     Sprite* hp_icon;
     Sprite* mp_icon;
+    Sprite* hp_back;
+    Sprite* mp_back;
 
     Sprite* activeSprite;
     enum animstates {

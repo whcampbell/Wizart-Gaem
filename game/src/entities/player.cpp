@@ -20,7 +20,9 @@ Player::Player() {
         idle = new Sprite("player1_idle");
         run = new Sprite("player1_run");
         hp_icon = new Sprite("health_icon");
+        hp_back = new Sprite("health_back");
         mp_icon = new Sprite("mana_icon");
+        mp_back = new Sprite("mana_back");
 
         *align->x_internal = 16;
         *align->y_internal = 16;
@@ -140,16 +142,13 @@ Player::Player() {
         Mana* mana = get<Mana>();
         for (int i = 0; i < health->healthMax; i++) {
             if (i < health->health)
-                hp_icon->render(16 * i, 0, 5);
-            else
-                ;
-            
+                hp_icon->render(7 * i, 0, 6 + i);
+            hp_back->render(7 * i, 0, 5);
         }
         for (int i = 0; i < mana->manaMax; i++) {
             if (i < mana->mana)
-                mp_icon->render(16 * i, 16, 5);
-            else
-                ;
+                mp_icon->render(7 * i, 16, 6 + i);
+            mp_back->render(7 * i, 16, 5);
         }
         activeSprite->render(align, camera::x, camera::y,  4);
     }

@@ -210,7 +210,7 @@ void Texture::ping() {
 	if (!loaded) {
 		lazyload();
 	}
-	loaded = 5; //TODO reset to 30 sec timeout
+	loaded = 30;
 }
 
 Text::Text(std::string text, int size, SDL_Color color) {
