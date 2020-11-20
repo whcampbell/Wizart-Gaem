@@ -8,6 +8,7 @@
 #include "camera.h"
 #include "globals.h"
 #include "entities/crate.h"
+#include "entities/xpdrop.h"
 
 Player* player;
 
@@ -57,6 +58,13 @@ void scene::Test::update() {
     crate->pos()->pos.x = 64;
     crate->pos()->pos.y = 64;
     entities::add(crate);
+    }
+
+    if (!(i % 360)) {
+    XPDrop* xpd = new XPDrop();
+    xpd->pos()->pos.x = 96;
+    xpd->pos()->pos.y = 96;
+    entities::add(xpd);
     }
 
     i++;

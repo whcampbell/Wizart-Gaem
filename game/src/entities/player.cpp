@@ -13,6 +13,7 @@
 #include "components/mana.h"
 #include "components/movespeed.h"
 #include "components/bufftimers.h"
+#include "components/xp.h"
 
 
 Player::Player() {
@@ -40,6 +41,12 @@ Player::Player() {
         hp.healthMax = 3;
         hp.health = hp.healthMax;
         *set<Hitpoints>() = hp;
+
+        XP xp;
+        xp.neededXP = 5; // starts as 5 XP needed to advance to level 1
+        xp.level = 0;
+        xp.currXP = 0;
+        *set<XP>() = xp;
 
         Mana mp;
         mp.manaMax = 3;
