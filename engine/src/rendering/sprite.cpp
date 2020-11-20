@@ -16,8 +16,6 @@
 static unsigned int RenderTime;
 static std::vector<SDL_Texture*> toFree;
 
-SDL_sem* loadsync;
-
 static std::unordered_map<std::string, Texture*>  spriteMap;
 static std::vector<RenderRequest> requests;
 
@@ -176,7 +174,6 @@ void spr::clean() {
 
 
 void Texture::lazyload() {
-	SDL_SemWait(loadsync);
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	if (surface == NULL) {
 		std::cout << "error loading surface for sprite at " << path << std::endl;
@@ -190,7 +187,6 @@ void Texture::lazyload() {
 	}
 	SDL_FreeSurface(surface);
 	std::cout << "lazyloaded sprite at " << path << std::endl;
-	SDL_SemPost(loadsync);
 }
 
 void Texture::update() {
@@ -202,20 +198,19 @@ void Texture::update() {
 }
 
 void Texture::unload() {
-	SDL_SemWait(loadsync);
+	std::cout << "started unload ... ";
 	if (sheet != nullptr) {
 		SDL_DestroyTexture(sheet);
 		sheet = nullptr;
 	}
 	std::cout << "unloaded sprite at " << path << std::endl;
-	SDL_SemPost(loadsync);
 }
 
 void Texture::ping() {
 	if (!loaded) {
 		lazyload();
 	}
-	loaded = -1; //TODO reset to 30 sec timeout
+	loaded = 5; //TODO reset to 30 sec timeout
 }
 
 Text::Text(std::string text, int size, SDL_Color color) {
@@ -332,7 +327,7 @@ void spr::push() {
 }
 
 void spr::init() { 
-	loadsync = SDL_CreateSemaphore(1);
+	
 }
 
 Renderable::~Renderable() {
