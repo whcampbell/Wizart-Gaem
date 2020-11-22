@@ -9,29 +9,23 @@ private:
         bool (*to[states])();
     };
     StateData list[states];
-    int state;
+    int state = 0;
 public:
     StateMachine() {
         for (int i = 0; i < states; i++) {
                 list[i].state = i;
-                this->list[i].data = i;
                 for (int j = 0; j < states; j++) {
                 list[i].to[j] = nullptr;
             }
         }
     }
 
-    StateMachine(T data[]) {
-        for (int i = 0; i < states; i++) {
-            list[i].state = i;
+    void init(T data[]) {
+        for (int i = 0; i < states; i++)
             this->list[i].data = data[i];
-            for (int j = 0; j < states; j++) {
-                list[i].to[j] = nullptr;
-            }
-        }
     }
 
-    void link(int from, int to, bool* condition) {
+    void link(int from, int to, bool(*condition)()) {
         list[from].to[to] = condition;
     }
 
@@ -49,7 +43,7 @@ public:
 
     void update() {
         for (int i = 0; i < states; i++) {
-            if (list[state].to[i]()) {
+            if (list[state].to[i] != nullptr && list[state].to[i]()) {
                 state = i;
                 return;
             }
