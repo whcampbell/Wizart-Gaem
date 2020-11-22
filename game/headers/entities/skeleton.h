@@ -6,14 +6,12 @@
 
 class Skeleton : public Entity {
     private :
-        Sprite* run;
-        Sprite* hurt;
-
         Sprite* activeSprite;
         enum animstates {
-            anim_run, anim_hurt, ANIM_MAX
+            anim_run, ANIM_MAX
         };
-        StateMachine<ANIM_MAX> animator;
+        Sprite** sprites = new Sprite*[ANIM_MAX]{new Sprite("skelly_run")};
+        StateMachine<ANIM_MAX, Sprite*> animator;
         void move();
     public :
         Skeleton();
