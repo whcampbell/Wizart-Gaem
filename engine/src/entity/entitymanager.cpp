@@ -10,7 +10,8 @@ static std::vector<Entity*> to_remove;
 void entities::update() {
     for (unsigned int i = 0; i < all_entity.size(); i++) {
         all_entity[i]->tick();
-        all_entity[i]->update();
+        if (all_entity[i]->isActive())
+            all_entity[i]->update();
     }
 
     if (to_add.size()) {

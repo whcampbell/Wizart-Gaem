@@ -61,6 +61,10 @@
                 camera::screenshake(2, 9);
                 //end screenshake
 
+                //do hitpause (target only)
+                iterator->pause(3);
+                //end hitpause
+
                 if (hp->health <= 0)
                     entities::remove(iterator);
                 entities::remove(this);

@@ -17,6 +17,7 @@ private:
     Component* component[component_size];
     std::bitset<component_size> bitset;
     std::unordered_map<std::string, Hitbox*> hitboxes;
+    int inactive = 0;
 protected:
     int id = ++id_source;
     Alignment* align;
@@ -31,6 +32,14 @@ public:
     Hitbox* hitbox(std::string name);
     Hitbox* registerHitbox(std::string name);
     Hitbox* registerHitbox(std::string name, int w, int h, Alignment* alignment);
+
+    
+    bool isActive() {
+        return !inactive;
+    }
+    void pause(int ticks) {
+        inactive = ticks;
+    }
     
 template <typename T> T* set() {
     int CID = INTERNAL_ONLY_COMPONENT::getCID<T>();

@@ -7,7 +7,8 @@ Entity::Entity() {
 }
 
 void Entity::tick() {
-
+    if (inactive)
+        inactive--;
 }
 
 Alignment* Entity::pos() {
