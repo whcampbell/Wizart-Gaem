@@ -3,6 +3,7 @@
 #include "components/hitpoints.h"
 #include "components/entitylist.h"
 #include "components/physics.h"
+#include "components/entitytracker.h"
 #include <iostream>
 #include "particle.h"
 #include <cmath>
@@ -58,6 +59,12 @@
                 //do screenshake
                 camera::screenshake(2, 9);
                 //end screenshake
+
+                //do hitpause (target and source)
+                iterator->pause(4);
+                if (has<EntityTracker>())
+                    get<EntityTracker>()->target->pause(4);
+                //end hitpause
 
                 if (hp->health <= 0)
                     entities::remove(iterator);

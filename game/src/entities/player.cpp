@@ -9,14 +9,13 @@
 #include "fastmath.h"
 #include "hitbox.h"
 
+#include "components/entitytracker.h"
 #include "components/hitpoints.h"
 #include "components/mana.h"
 #include "components/movespeed.h"
 #include "components/bufftimers.h"
 #include "components/physics.h"
 #include "components/xp.h"
-#include <array>
-
 
 static bool a_running;
 static bool f_running() {return a_running;}
@@ -144,6 +143,9 @@ Player::Player() {
             *align_attack->x_internal = 16;
             *align_attack->y_internal = 16;
             align_attack->theta = angle(dx, dy);
+            EntityTracker source;
+            source.target = this;
+            *(attack->set<EntityTracker>()) = source;
             entities::add(attack);
         }
 
