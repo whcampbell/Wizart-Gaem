@@ -55,6 +55,10 @@
                 source->start();
                 // end damage number particle
 
+                //do screenshake
+                camera::screenshake(2, 9);
+                //end screenshake
+
                 if (hp->health <= 0)
                     entities::remove(iterator);
                 }
