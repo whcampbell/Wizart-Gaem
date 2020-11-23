@@ -8,4 +8,5 @@ namespace camera {
     extern int x, y, x_raw, y_raw, x_adj, y_adj;
     void bind(Alignment* a);
     void unbind(Alignment* a);
+    void screenshake(int intensity, int duration);
 }
