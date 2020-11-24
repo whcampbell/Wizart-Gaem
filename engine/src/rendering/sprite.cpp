@@ -374,3 +374,7 @@ void render::outlineRect(int x, int y, int w, int h, SDL_Color color1, SDL_Color
 	req.rect.color2 = color2;
 	requests.push_back(req);
 }
+
+void Sprite::setFrame(int f) {
+	frame = f % texture->frames;
+}
