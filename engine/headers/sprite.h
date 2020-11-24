@@ -23,6 +23,7 @@ public:
     void render(Alignment* align, int z);
     void render(Alignment* align, int xoff, int yoff, int z);
     void render(int x, int y, int w, int h, int z);
+    void setFrame(int f);
 };
 
 struct Text : public Renderable {
