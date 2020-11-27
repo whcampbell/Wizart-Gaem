@@ -3,7 +3,6 @@
 #include "components/hitpoints.h"
 #include "components/entitylist.h"
 #include "components/physics.h"
-#include <iostream>
 #include <cmath>
 #include "particle.h"
 

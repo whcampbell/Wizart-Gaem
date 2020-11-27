@@ -5,7 +5,6 @@
 #include "globals.h"
 #include "entities/slash.h"
 #include "entities/projectile.h"
-#include <iostream>
 #include "fastmath.h"
 #include "hitbox.h"
 

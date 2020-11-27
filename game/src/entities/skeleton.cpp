@@ -2,7 +2,6 @@
 #include "audio.h"
 #include "camera.h"
 #include "globals.h"
-#include <iostream>
 #include "fastmath.h"
 #include "hitbox.h"
 

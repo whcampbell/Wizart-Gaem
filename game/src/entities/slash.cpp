@@ -4,7 +4,6 @@
 #include "components/entitylist.h"
 #include "components/physics.h"
 #include "components/entitytracker.h"
-#include <iostream>
 #include "particle.h"
 #include <cmath>
 

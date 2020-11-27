@@ -1,13 +1,17 @@
 #include "internal/screen.h"
-#include <iostream>
+#include "log.h"
 #include "engine.h"
 #include <SDL_thread.h>
 #include <SDL.h>
 #include "internal/resource.h"
 #include "internal/handler.h"
 #include "internal/eventpump.h"
+#include <climits>
 
 float GAME_SCALE = 3;
+int ENGINE_Z = INT_MAX;
+bool ENGINE_DEV_MODE = false;
+unsigned int ENGINE_UPS = 0, ENGINE_FPS = 0, ENGINE_MS = 0;
 
 static bool running = false;
 static unsigned int fps, ups;
@@ -73,7 +77,7 @@ int run(void* data) {
 
     unsigned int lastu = SDL_GetTicks();
     unsigned int lastp = SDL_GetTicks();
-    std::cout << "Starting game" << std::endl;
+    log::out << log::alert << "Starting game" << log::endl;
 
     unsigned int startu = 0;
     unsigned int pdel = 0;
@@ -95,9 +99,12 @@ int run(void* data) {
 
             if ((pdel = SDL_GetTicks() - lastp) >= deltap) {
                 sfx::clean();
+                ENGINE_FPS = (int)(fps * ((float)deltap / pdel));
+                ENGINE_UPS = (int)(ups * ((float)deltap / pdel));
+                ENGINE_MS = (avgu / ups);
+                log::out << pdel << "ms since last update" << "\n\tFPS: " << ENGINE_FPS
+                 << "\n\tUPS: " << ENGINE_UPS << "\n\tAvg utime: " << ENGINE_MS << "ms" << log::endl;
 
-                std::cout << pdel << "ms since last update" << "\n\tFPS: " << (int)(fps * ((float)deltap / pdel))
-                 << "\n\tUPS: " << (int)(ups * ((float)deltap / pdel)) << "\n\tAvg utime: " << (avgu / ups) << "ms" << std::endl;
                 ups = 0;
                 fps = 0;
                 avgu = 0;
@@ -111,7 +118,7 @@ int run(void* data) {
 
 void render() {
 		if (SDL_RenderClear(getRenderer())){
-            std::cout << "error clearing renderer: " << SDL_GetError() << std::endl;
+            log::out << log::err << "error clearing renderer: " << SDL_GetError() << log::endl;
         }
 
         hnd::render();
@@ -141,7 +148,7 @@ int runSDL(void* data) {
 
 void engine::start(void (*initfunc)()) {
     if (!initWindow()) {
-        std::cout << "Window initialization failed" << std::endl;
+        log::out << log::err << "Window initialization failed" << log::endl;
         return;
     }
     gamepad::locateControllers();
@@ -155,7 +162,7 @@ void engine::start(void (*initfunc)()) {
 }
 
 void engine::stop() {
-    std::cout << "Closing game" << std::endl;
+    log::out << log::alert << "Closing game" << log::endl;
     running = false;
     int threadReturn;
     SDL_WaitThread(eThread, &threadReturn);
