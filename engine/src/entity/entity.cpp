@@ -46,10 +46,10 @@ Hitbox* Entity::registerHitbox(std::string name, int w, int h, Alignment* alignm
 }
 
 void Entity::renderDevMode() {
-    renderHitboxes();
+    renderHitboxes(camera::x, camera::y);
 }
 
-void Entity::renderHitboxes() {
+void Entity::renderHitboxes(int xoff, int yoff) {
     for (auto iterator = hitboxes.begin(); iterator != hitboxes.end(); iterator++)
-        hitbox::render(iterator->second, camera::x, camera::y);
+        hitbox::render(iterator->second, xoff, yoff);
 }

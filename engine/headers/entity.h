@@ -22,7 +22,13 @@ protected:
     int id = ++id_source;
     Alignment* align;
 
-    void renderHitboxes();
+    /**
+     * draws this entity's hitboxes to screen at a given offset
+     * 
+     * int xoff -   the x offset to subtract from the hitbox position
+     * int yoff -   the y offset to subtract from the hitbox position
+     */ 
+    void renderHitboxes(int xoff, int yoff);
 public:
     Entity();
 

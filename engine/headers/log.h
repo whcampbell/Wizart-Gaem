@@ -42,13 +42,44 @@ public:
 };
 
 
-
+/**
+ * contains a number of values for outputting runtime logs to console and file
+ */ 
 namespace log {
+    
+    /**
+     * use log::out to output to just the console. Format is log::out << data << data << ...;
+     */ 
     extern EngineLog out;
+
+    /**
+     * use log::fout to output to console and a file. Format is log::fout << data << data << ...;
+     */ 
     extern EngineLog fout;
+
+     /**
+     * use << log::warn to trigger a warning output to the console. end the warning with log::endl
+     */ 
     extern EngineLogWarning warn;
+
+     /**
+     * use << log::err to trigger a error output to the console. end the error with log::endl
+     */ 
     extern EngineLogError err;
+
+    /**
+     * use << log::newl to create a new line without ending the current alert/warning/error
+     */ 
     extern EngineLogNewline newl;
+
+    /**
+     * use << log::endl to create a new line and end the current alert/warning/error
+     */ 
     extern EngineLogEndlog endl;
+
+     /**
+     * use << log::alert to trigger an alert output to the console. end the alert with log::endl
+     */ 
     extern EngineLogAlert alert;
+
 }
