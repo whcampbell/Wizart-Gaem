@@ -222,7 +222,7 @@ namespace log {
     }
 
     EngineLog EngineLog::operator<<(EngineLogWarning const& s) {
-        std::cout << "\x1b[0m[\x1b[33mWARNING\x1b[0m]: ";
+        std::cout << "\x1b[0m[\x1b[33;1mWARNING\x1b[0m]: ";
         if (printing){
             output.open(file, std::ofstream::out | std::ofstream::app);
             output << "[WARNING]: ";
@@ -250,7 +250,7 @@ namespace log {
         return *this;
     }
     EngineLog EngineLog::operator<<(EngineLogAlert const& s) {
-        std::cout << "\x1b[0m[\x1b[34mALERT\x1b[0m]: ";
+        std::cout << "\x1b[0m[\x1b[34;1mALERT\x1b[0m]: ";
         if (printing) {
             output.open(file, std::ofstream::out | std::ofstream::app);
             output << "[ALERT]: ";
