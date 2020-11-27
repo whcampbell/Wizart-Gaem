@@ -9,6 +9,13 @@ struct Hitbox
 };
 
 namespace hitbox {
+    /**
+     * checks if the input hitboxes overlap
+     * 
+     * Hitbox* a1   -   the first hitbox
+     * Hitbox* a2   -   the second hitbox
+     * returns      -   true if the hitboxes overlap, and false otherwise
+     */ 
     bool collision(Hitbox* a1, Hitbox* a2);
 }
  

@@ -1,5 +1,5 @@
 #include "internal/screen.h"
-#include <iostream>
+#include "log.h"
 #include "engine.h"
 #include <SDL_thread.h>
 #include <SDL.h>
@@ -73,7 +73,7 @@ int run(void* data) {
 
     unsigned int lastu = SDL_GetTicks();
     unsigned int lastp = SDL_GetTicks();
-    std::cout << "Starting game" << std::endl;
+    log::out << log::alert << "Starting game" << log::endl;
 
     unsigned int startu = 0;
     unsigned int pdel = 0;
@@ -96,8 +96,8 @@ int run(void* data) {
             if ((pdel = SDL_GetTicks() - lastp) >= deltap) {
                 sfx::clean();
 
-                std::cout << pdel << "ms since last update" << "\n\tFPS: " << (int)(fps * ((float)deltap / pdel))
-                 << "\n\tUPS: " << (int)(ups * ((float)deltap / pdel)) << "\n\tAvg utime: " << (avgu / ups) << "ms" << std::endl;
+                log::out << pdel << "ms since last update" << "\n\tFPS: " << (int)(fps * ((float)deltap / pdel))
+                 << "\n\tUPS: " << (int)(ups * ((float)deltap / pdel)) << "\n\tAvg utime: " << (avgu / ups) << "ms" << log::endl;
                 ups = 0;
                 fps = 0;
                 avgu = 0;
@@ -111,7 +111,7 @@ int run(void* data) {
 
 void render() {
 		if (SDL_RenderClear(getRenderer())){
-            std::cout << "error clearing renderer: " << SDL_GetError() << std::endl;
+            log::out << log::err << "error clearing renderer: " << SDL_GetError() << log::endl;
         }
 
         hnd::render();
@@ -141,7 +141,7 @@ int runSDL(void* data) {
 
 void engine::start(void (*initfunc)()) {
     if (!initWindow()) {
-        std::cout << "Window initialization failed" << std::endl;
+        log::out << log::err << "Window initialization failed" << log::endl;
         return;
     }
     gamepad::locateControllers();
@@ -155,7 +155,7 @@ void engine::start(void (*initfunc)()) {
 }
 
 void engine::stop() {
-    std::cout << "Closing game" << std::endl;
+    log::out << log::alert << "Closing game" << log::endl;
     running = false;
     int threadReturn;
     SDL_WaitThread(eThread, &threadReturn);

@@ -3,3 +3,9 @@
 *.ase
 *.aseprite
 *.exe
+build/build_win/res/
+build/build_win/logs/
+build/build_win/game.exe
+build/build_mac/res/
+build/build_mac/logs/
+build/build_mac/game
