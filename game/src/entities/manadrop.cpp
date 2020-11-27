@@ -31,7 +31,7 @@ void ManaDrop::update() {
 }
 
 void ManaDrop::render() {
-    activeSprite->render(align, camera::x, camera::y, 2);
+    activeSprite->render(align, camera::x, camera::y, 4);
 }
 ManaDrop::~ManaDrop() {
     delete(activeSprite);
