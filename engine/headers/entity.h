@@ -21,6 +21,8 @@ private:
 protected:
     int id = ++id_source;
     Alignment* align;
+
+    void renderHitboxes();
 public:
     Entity();
 
@@ -39,6 +41,11 @@ public:
      * Virtual method, when extending entity, all render calls should be handled in this method
      */ 
     virtual void render() {}
+
+    /**
+     * Only draws while in dev mode. By default, calls renderHitboxes
+     */ 
+    void renderDevMode();
 
     /**
      * returns - a pointer to this entity's alignment

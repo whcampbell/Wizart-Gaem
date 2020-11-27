@@ -6,8 +6,12 @@
 #include "internal/resource.h"
 #include "internal/handler.h"
 #include "internal/eventpump.h"
+#include <climits>
 
 float GAME_SCALE = 3;
+int ENGINE_Z = INT_MAX;
+bool ENGINE_DEV_MODE = false;
+unsigned int ENGINE_UPS = 0, ENGINE_FPS = 0, ENGINE_MS = 0;
 
 static bool running = false;
 static unsigned int fps, ups;
@@ -95,9 +99,12 @@ int run(void* data) {
 
             if ((pdel = SDL_GetTicks() - lastp) >= deltap) {
                 sfx::clean();
+                ENGINE_FPS = (int)(fps * ((float)deltap / pdel));
+                ENGINE_UPS = (int)(ups * ((float)deltap / pdel));
+                ENGINE_MS = (avgu / ups);
+                log::out << pdel << "ms since last update" << "\n\tFPS: " << ENGINE_FPS
+                 << "\n\tUPS: " << ENGINE_UPS << "\n\tAvg utime: " << ENGINE_MS << "ms" << log::endl;
 
-                log::out << pdel << "ms since last update" << "\n\tFPS: " << (int)(fps * ((float)deltap / pdel))
-                 << "\n\tUPS: " << (int)(ups * ((float)deltap / pdel)) << "\n\tAvg utime: " << (avgu / ups) << "ms" << log::endl;
                 ups = 0;
                 fps = 0;
                 avgu = 0;

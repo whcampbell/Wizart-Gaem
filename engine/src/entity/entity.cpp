@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "camera.h"
 
 Entity::Entity() {
     align = new Alignment();
@@ -44,4 +45,11 @@ Hitbox* Entity::registerHitbox(std::string name, int w, int h, Alignment* alignm
     return hitbox;
 }
 
-//void Entity::renderDevMode() {}
+void Entity::renderDevMode() {
+    renderHitboxes();
+}
+
+void Entity::renderHitboxes() {
+    for (auto iterator = hitboxes.begin(); iterator != hitboxes.end(); iterator++)
+        hitbox::render(iterator->second, camera::x, camera::y);
+}
