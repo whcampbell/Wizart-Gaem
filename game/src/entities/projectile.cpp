@@ -3,7 +3,6 @@
 #include "components/hitpoints.h"
 #include "components/entitylist.h"
 #include "components/physics.h"
-#include <iostream>
 #include <cmath>
 #include "particle.h"
 
@@ -56,6 +55,14 @@
                 source->bind(align->pos);
                 source->start();
                 // end damage number particle
+
+                //do screenshake
+                camera::screenshake(2, 9);
+                //end screenshake
+
+                //do hitpause (target only)
+                iterator->pause(3);
+                //end hitpause
 
                 if (hp->health <= 0)
                     entities::remove(iterator);

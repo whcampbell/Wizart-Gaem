@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "globals.h"
 #include "handler.h"
 #include "scenes/test.h"
 
@@ -8,6 +9,7 @@ void init() {
 }
 
 int main(int argv, char** args) {
+    ENGINE_DEV_MODE = true;
     engine::start(init);
     engine::stop();
     return 0;

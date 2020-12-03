@@ -13,12 +13,11 @@
 Player* player;
 
 Sprite* tile_test;
-Text* words;
 int tile_size;
 
 void initTiles() {
     tile_size = 16;
-    tile_test = new Sprite("tile_test");
+    tile_test = new Sprite("tileset_dungeon");
 }
 
 
@@ -46,7 +45,7 @@ void scene::Test::init() {
 
 
 
-    words = new Text("hello there", 28, {255, 255, 255});
+
 }
 
 
@@ -71,8 +70,7 @@ void scene::Test::update() {
 }
 
 void scene::Test::render() {
-    words->render(0, 0, 4);
     for (int y = 0; y < 10; y++)
         for (int x = 0; x < 10; x++)
-            tile_test->render(x * tile_size - camera::x, y * tile_size - camera::y, 0);
+            tile_test->render(x * tile_size - camera::x, y * tile_size - camera::y, 16, 0, 16, 16, 0);
 }

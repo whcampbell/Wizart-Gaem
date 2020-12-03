@@ -2,7 +2,6 @@
 #include "audio.h"
 #include "camera.h"
 #include "globals.h"
-#include <iostream>
 #include "fastmath.h"
 #include "hitbox.h"
 
@@ -13,12 +12,11 @@
 
 
 Skeleton::Skeleton() {
-    run = new Sprite("skelly_run");
-    // hurt = new Sprite("skeleton_hurt");
+    animator.init(sprites);
 
     *align->x_internal = 16;
     *align->y_internal = 16;
-    activeSprite = run;
+    activeSprite = sprites[0];
     align->pos.y = 100;
     align->pos.x = 0;
 
@@ -49,8 +47,6 @@ Skeleton::Skeleton() {
 }
 
 void Skeleton::update() {
-    activeSprite = run;
-  
     if (!get<Physics>()->physicsActive) {
         float speed = get<Movespeed>()->speed;
         align->pos.x += speed;
@@ -67,7 +63,8 @@ void Skeleton::update() {
         }
     }
 
-
+    animator.update();
+    activeSprite = animator.read();
 }
 
 void Skeleton::render() {
@@ -75,5 +72,7 @@ void Skeleton::render() {
 }
 
 Skeleton::~Skeleton() {
-    delete(activeSprite);
+    for (int i = 0; i < ANIM_MAX; i++)
+        delete(sprites[i]);
+    delete [] sprites;
 }

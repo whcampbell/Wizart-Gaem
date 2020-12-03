@@ -9,7 +9,10 @@ void drawRequest(RenderRequest* request) {
     case REQ_IMAGE:
         SDL_RenderSetScale(getRenderer(), request->image.scale, request->image.scale);
         quad = {request->image.x, request->image.y, request->image.w, request->image.h};
-        SDL_RenderCopy(getRenderer(), request->image.texture->sheet, request->image.texture->clips[request->image.frame], &quad);
+        texquad = {request->image.x0 + request->image.texture->clips[request->image.frame]->x,
+        request->image.y0 + request->image.texture->clips[request->image.frame]->y,
+        request->image.w, request->image.h};
+        SDL_RenderCopy(getRenderer(), request->image.texture->sheet, &texquad, &quad);
         break;
     case REQ_SPRITE:
         SDL_RenderSetScale(getRenderer(), request->sprite.scale, request->sprite.scale);

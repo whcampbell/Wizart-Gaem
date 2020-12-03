@@ -1,5 +1,8 @@
 #pragma once
 
+/**
+ * struct representing any two dimensional position or transformation
+ */ 
 struct Vector2 {
     float x, y;
 
@@ -31,6 +34,11 @@ struct Vector2 {
     }
 };
 
+/**
+ * struct representing any three dimensional position or transformation.
+ * the ^ operator is overloaded to act as the cross product between
+ * two Vector3 objects
+ */
 struct Vector3 {
     float x, y, z;
 
@@ -100,6 +108,9 @@ struct Vector3 {
     }
 };
 
+/**
+ * struct representing any four dimensional position or transformation
+ */
 struct Vector4 {
     float x, y, z, w;
 

@@ -1,7 +1,6 @@
 #include "entities/xpdrop.h"
 #include "components/xp.h"
 #include "camera.h"
-#include <iostream>
 
 
 XPDrop::XPDrop() {
