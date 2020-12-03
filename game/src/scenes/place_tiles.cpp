@@ -9,40 +9,42 @@
 #include "globals.h"
 #include "entities/crate.h"
 #include "entities/xpdrop.h"
+#include "log.h"
 
 Player* player;
 
-<<<<<<< HEAD:game/src/scenes/place_tiles.cpp
-Text* words;
-=======
 Sprite* tile_test;
->>>>>>> master:game/src/scenes/test.cpp
 int tile_size;
 int room_size;
-std::vector<Sprite*> room;
+std::vector<int> room;
 int map_size;
-std::vector<std::vector<Sprite*>> map;
+std::vector<std::vector<int>> map;
+std::vector<Sprite*> floor_tiles;
+std::vector<Sprite*> wall_tiles;
 
 void initTiles() {
     room_size = 10;
-    room.resize(map_size*map_size);
+    map_size = 4;
+    room.resize(room_size*room_size);
     tile_size = 16;
-<<<<<<< HEAD:game/src/scenes/place_tiles.cpp
-    // assume square map
+    floor_tiles.resize(1);
+    wall_tiles.resize(1);
+    floor_tiles[0] = new Sprite("tile_test2");
+    wall_tiles[0] = new Sprite("tile_test");
+    // assume square map and generate identical rooms
     for (int i = 0; i < room_size*room_size; i++) {
         int row = (int)(i / room_size);
         int col = i % room_size;
         if (row == 0 || col == 0 || row == room_size-1 || col == room_size-1) {
-            room[i] = new Sprite("tile_test");
+            room[i] = 1;
         } else {
-            room[i] = new Sprite("tile_test2");
+            room[i] = 0;
         }
     }
-    map.resize(1);
-    map[0] = room;
-=======
-    tile_test = new Sprite("tileset_dungeon");
->>>>>>> master:game/src/scenes/test.cpp
+    map.resize(map_size*map_size);
+    for (int i = 0; i < map_size*map_size; i++) {
+        map[i] = room;
+    }
 }
 
 
@@ -94,16 +96,17 @@ void scene::World::update() {
     i++;
 }
 
-<<<<<<< HEAD:game/src/scenes/place_tiles.cpp
 void scene::World::render() {
-    words->render(0, 0, 4);
-    for (int y = 0; y < room_size; y++)
-        for (int x = 0; x < room_size; x++)
-            map[0][y*room_size + x]->render(x * tile_size - camera::x, y * tile_size - camera::y, 0);
-=======
-void scene::Test::render() {
-    for (int y = 0; y < 10; y++)
-        for (int x = 0; x < 10; x++)
-            tile_test->render(x * tile_size - camera::x, y * tile_size - camera::y, 16, 0, 16, 16, 0);
->>>>>>> master:game/src/scenes/test.cpp
+    Sprite* sprite;
+    for (int i = 0; i < map_size*map_size; i++) {
+        for (int y = 0; y < room_size; y++) {
+            for (int x = 0; x < room_size; x++) {
+                int row = (int)(i/map_size);
+                int col = i % map_size;
+                sprite = map[i][y*room_size + x] == 0 ? floor_tiles[0] : wall_tiles[0];
+                sprite->render(x * tile_size - camera::x + tile_size*room_size*row, 
+                    y * tile_size - camera::y + tile_size*room_size*col, 0);
+            }
+        }
+    }
 }
