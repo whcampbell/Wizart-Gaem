@@ -9,15 +9,24 @@
 #include "globals.h"
 #include "entities/crate.h"
 #include "entities/xpdrop.h"
+#include "tileset.h"
 
 Player* player;
 
-Sprite* tile_test;
-int tile_size;
+Tileset* tile_dungeon;
+int map[100] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 0, 0, 0, 0, 0, 0, 1, 1,
+                1, 1, 0, 0, 0, 0, 0, 0, 1, 1,
+                1, 1, 0, 0, 0, 0, 0, 0, 1, 1,
+                1, 1, 0, 0, 0, 0, 0, 0, 1, 1,
+                1, 1, 0, 0, 0, 0, 0, 0, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
 void initTiles() {
-    tile_size = 16;
-    tile_test = new Sprite("tileset_dungeon");
+    tile_dungeon = new Tileset("tileset_dungeon", 16);
 }
 
 
@@ -72,5 +81,6 @@ void scene::Test::update() {
 void scene::Test::render() {
     for (int y = 0; y < 10; y++)
         for (int x = 0; x < 10; x++)
-            tile_test->render(x * tile_size - camera::x, y * tile_size - camera::y, 16, 0, 16, 16, 0);
+            tile_dungeon->render(x * 16 - camera::x, y * 16 - camera::y,
+             tileset::defaultmap(map, x, y, 10, 10));
 }
