@@ -17,7 +17,7 @@ int tile_size;
 
 void initTiles() {
     tile_size = 16;
-    tile_test = new Sprite("tile_test");
+    tile_test = new Sprite("tileset_dungeon");
 }
 
 
@@ -72,5 +72,5 @@ void scene::Test::update() {
 void scene::Test::render() {
     for (int y = 0; y < 10; y++)
         for (int x = 0; x < 10; x++)
-            tile_test->render(x * tile_size - camera::x, y * tile_size - camera::y, 0);
+            tile_test->render(x * tile_size - camera::x, y * tile_size - camera::y, 16, 0, 16, 16, 0);
 }

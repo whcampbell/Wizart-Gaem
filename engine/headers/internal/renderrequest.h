@@ -19,6 +19,7 @@ struct ImageRequest {
     int frame;
     float scale;
     Texture* texture;
+    int x0, y0;
 };
 
 struct SpriteRequest {
