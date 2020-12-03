@@ -84,6 +84,8 @@ void  Sprite::render(int x, int y, int z) {
 	req.image.z = z;
 	req.image.w = texture->w;
 	req.image.h = texture->h;
+	req.image.x0 = 0;
+	req.image.y0 = 0;
 	req.image.texture = texture;
 	req.image.type = REQ_IMAGE;
 	req.image.scale = GAME_SCALE;
@@ -150,6 +152,30 @@ void Sprite::render(int x, int y, int w, int h, int z) {
 	req.image.z = z;
 	req.image.w = w;
 	req.image.h = h;
+	req.image.x0 = 0;
+	req.image.y0 = 0;
+	req.image.texture = texture;
+	req.image.type = REQ_IMAGE;
+	req.image.scale = GAME_SCALE;
+	requests.push_back(req);
+}
+
+void Sprite::render(int x, int y, int x0, int y0, int w, int h, int z) {
+	if (RenderTime - anim_time >= animDelta) {
+		frame++;
+		frame %= texture->frames;
+		anim_time = RenderTime;
+	}
+	texture->ping();
+	RenderRequest req;
+	req.image.frame = frame;
+	req.image.x = x;
+	req.image.y = y;
+	req.image.z = z;
+	req.image.w = w;
+	req.image.h = h;
+	req.image.x0 = x0;
+	req.image.y0 = y0;
 	req.image.texture = texture;
 	req.image.type = REQ_IMAGE;
 	req.image.scale = GAME_SCALE;

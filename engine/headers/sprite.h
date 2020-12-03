@@ -96,7 +96,7 @@ public:
 
     /**
      * Draws a part of the given sprite at the specified x and y
-     * coordinates, with the given z sorting
+     * coordinates starting at the top left, with the given z sorting
      * 
      * int x    -   x position to draw at
      * int y    -   y position to draw at
@@ -107,6 +107,22 @@ public:
      * int z    -   z layer for sorting
      */ 
     void render(int x, int y, int w, int h, int z);
+
+        /**
+     * Draws a part of the given sprite at the specified x and y
+     * coordinates starting at a given position, with the given z sorting
+     * 
+     * int x    -   x position to draw at
+     * int y    -   y position to draw at
+     * int x0   -   x position relative to the sprite to draw from
+     * int y0   -   y position relative to the sprite to draw from
+     * int w    -   starting at the sprite's top left corner, how
+     *              far to draw in the x direction
+     * int h    -   starting at the sprite's top left corner, how
+     *              far to draw in the y direction
+     * int z    -   z layer for sorting
+     */ 
+    void render(int x, int y, int x0, int y0, int w, int h, int z);
 
     /**
      * sets the current frame for this sprite
