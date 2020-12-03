@@ -12,17 +12,27 @@ Player* player;
 
 Text* words;
 int tile_size;
+int room_size;
+std::vector<Sprite*> room;
 int map_size;
-std::vector<Sprite*> map;
+std::vector<std::vector<Sprite*>> map;
 
 void initTiles() {
-    map_size = 10;
-    map.resize(map_size*map_size);
+    room_size = 10;
+    room.resize(map_size*map_size);
     tile_size = 16;
     // assume square map
-    for (int i = 0; i < map_size*map_size; i++) {
-        map[i] = new Sprite("tile_test");
+    for (int i = 0; i < room_size*room_size; i++) {
+        int row = (int)(i / room_size);
+        int col = i % room_size;
+        if (row == 0 || col == 0 || row == room_size-1 || col == room_size-1) {
+            room[i] = new Sprite("tile_test");
+        } else {
+            room[i] = new Sprite("tile_test2");
+        }
     }
+    map.resize(1);
+    map[0] = room;
 }
 
 
@@ -55,10 +65,10 @@ void scene::World::update() {
     static int i = 0;
 
     if (!(i % 300)) {
-    Crate* crate = new Crate();
-    crate->pos()->pos.x = 64;
-    crate->pos()->pos.y = 64;
-    entities::add(crate);
+        Crate* crate = new Crate();
+        crate->pos()->pos.x = 64;
+        crate->pos()->pos.y = 64;
+        entities::add(crate);
     }
 
     i++;
@@ -66,7 +76,7 @@ void scene::World::update() {
 
 void scene::World::render() {
     words->render(0, 0, 4);
-    for (int y = 0; y < map_size; y++)
-        for (int x = 0; x < map_size; x++)
-            map[y*map_size + x]->render(x * tile_size - camera::x, y * tile_size - camera::y, 0);
+    for (int y = 0; y < room_size; y++)
+        for (int x = 0; x < room_size; x++)
+            map[0][y*room_size + x]->render(x * tile_size - camera::x, y * tile_size - camera::y, 0);
 }
