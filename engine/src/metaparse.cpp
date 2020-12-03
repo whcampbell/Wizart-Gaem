@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
-#include <iostream>
+#include "log.h"
 
 namespace fs = std::filesystem;
 using ios = std::ifstream;
@@ -50,7 +50,7 @@ void recurseDir(std::string path) {
             recurseDir(entry.path().string());
         } else {
             if (!entry.path().extension().string().compare(".meta")) {
-                std::cout << "importing resource at " << entry.path().string().substr(0, entry.path().string().length() - 5) << std::endl;
+                log::out << "importing resource at " << entry.path().string().substr(0, entry.path().string().length() - 5) << log::endl;
                 if (entry.path().filename().string().find(".png") != std::string::npos) {
                     imp::importSprite(entry.path().string().c_str());
                 } else {
@@ -63,11 +63,11 @@ void recurseDir(std::string path) {
 
 void res::init() {
     sfx::init();
-    std::cout << "starting resource import" << std::endl;
+    log::out << "starting resource import" << log::endl;
     std::string path = "./res";
     spr::init();
     recurseDir(path);
-    std::cout << "finished resource import" << std::endl;
+    log::out << "finished resource import" << log::endl;
 }
 
 void res::close() {

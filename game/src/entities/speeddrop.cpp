@@ -29,7 +29,7 @@ void SpeedDrop::update() {
 }
 
 void SpeedDrop::render() {
-    activeSprite->render(align, camera::x, camera::y, 2);
+    activeSprite->render(align, camera::x, camera::y, 4);
 }
 
 SpeedDrop::~SpeedDrop() {

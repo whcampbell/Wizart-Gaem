@@ -2,7 +2,7 @@
 #include "camera.h"
 #include "components/hitpoints.h"
 #include "components/entitylist.h"
-#include <iostream>
+#include "components/physics.h"
 #include <cmath>
 #include "particle.h"
 
@@ -34,6 +34,16 @@
 
         for (auto iterator : *entities::all()) {
             if (!(hit->contains(iterator)) && hitbox::collision(iterator->hitbox("hurtbox"), hitbox("hitbox"))) {
+
+                if (iterator->has<Physics>()) {
+                    Physics* physics = iterator->get<Physics>();
+                    physics->physicsActive = true;
+                    physics->velocity.x = 2 * cos(align->theta * M_PI / 180);
+                    physics->velocity.y = 2 * sin(align->theta * M_PI / 180);
+                    physics->acceleration.x = -.08 * cos(align->theta * M_PI / 180);
+                    physics->acceleration.y = -.08 * sin(align->theta * M_PI / 180);
+                }
+
                 if (iterator->has<Hitpoints>()) {
                 hit->list.push_back(iterator);
                 Hitpoints* hp = iterator->get<Hitpoints>();
@@ -45,6 +55,14 @@
                 source->bind(align->pos);
                 source->start();
                 // end damage number particle
+
+                //do screenshake
+                camera::screenshake(2, 9);
+                //end screenshake
+
+                //do hitpause (target only)
+                iterator->pause(3);
+                //end hitpause
 
                 if (hp->health <= 0)
                     entities::remove(iterator);

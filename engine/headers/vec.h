@@ -1,7 +1,13 @@
 #pragma once
 
+/**
+ * struct representing any two dimensional position or transformation
+ */ 
 struct Vector2 {
     float x, y;
+
+    Vector2() : x(0), y(0) {}
+    Vector2(int x, int y) : x(x), y(y) {}
 
     Vector2 operator+(const Vector2& v) {
         Vector2 vec = *this;
@@ -14,7 +20,6 @@ struct Vector2 {
         this->x += v.x;
         this->y += v.y;
     }
-
     
     Vector2 operator-(const Vector2& v) {
         Vector2 vec = *this;
@@ -29,8 +34,16 @@ struct Vector2 {
     }
 };
 
+/**
+ * struct representing any three dimensional position or transformation.
+ * the ^ operator is overloaded to act as the cross product between
+ * two Vector3 objects
+ */
 struct Vector3 {
     float x, y, z;
+
+    Vector3() : x(0), y(0), z(0) {}
+    Vector3(int x, int y, int z) : x(x), y(y), z(z) {}
 
     Vector3 operator+(const Vector2& v) {
         Vector3 vec = *this;
@@ -95,8 +108,14 @@ struct Vector3 {
     }
 };
 
+/**
+ * struct representing any four dimensional position or transformation
+ */
 struct Vector4 {
     float x, y, z, w;
+
+    Vector4() : x(0), y(0), z(0), w(0) {}
+    Vector4(int x, int y, int z, int w) : x(x), y(y), z(z), w(w) {}
 
     Vector4 operator+(const Vector2& v) {
         Vector4 vec = *this;

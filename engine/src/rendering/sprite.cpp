@@ -5,7 +5,7 @@
 #include "sprite.h"
 #include <unordered_map>
 #include "internal/resource.h"
-#include <iostream>
+#include "log.h"
 #include <string>
 #include "globals.h"
 #include <vector>
@@ -16,15 +16,15 @@
 static unsigned int RenderTime;
 static std::vector<SDL_Texture*> toFree;
 
-static std::unordered_map<std::string, Texture*>*  spriteMap = new std::unordered_map<std::string, Texture*>();
+static std::unordered_map<std::string, Texture*>  spriteMap;
 static std::vector<RenderRequest> requests;
 
 Texture* getTexture(std::string name) {
-	if (spriteMap->find(name) == spriteMap->end()) {
-        std::cout << name << " is not present in the sprite map" << std::endl;
+	if (spriteMap.find(name) == spriteMap.end()) {
+        log::out << log::err << name << " is not present in the sprite map" << log::endl;
         exit(1);
     }
-	Texture* ptr = (*spriteMap)[name];
+	Texture* ptr = spriteMap[name];
 	return ptr;
 }
 
@@ -33,24 +33,21 @@ void imp::importSprite(std::string path) {
 	imp::SpriteData data = imp::parseSprite(path);
 	Texture* texture = new Texture(data.path);
 	
-	std::cout << "\tcollecting data" << std::endl;
 
 	std::string name = data.name;
 
 	SDL_Surface* surface = IMG_Load(data.path.c_str());
 	if (surface == NULL) {
-		std::cout << "\tfailed to generate surface for image at " << data.path << "\n" << SDL_GetError() << std::endl;
+		log::out << log::err << "\tfailed to generate surface for image at " << data.path << "\n" << SDL_GetError() << log::endl;
 		return;
 	}
 
 	texture->sheet = SDL_CreateTextureFromSurface(getRenderer(), surface);
 	if (texture->sheet == NULL) {
-		std::cout << "\tfailed to generate texture for image at " << data.path << "\n" << SDL_GetError() << std::endl;
+		log::out << log::err << "\tfailed to generate texture for image at " << data.path << "\n" << SDL_GetError() << log::endl;
 		return;
 	}
 	SDL_FreeSurface(surface);
-
-	std::cout << "\tgenerating texture" << std::endl;
 
 	texture->frames = data.frames;
 	SDL_QueryTexture(texture->sheet, NULL, NULL, &(texture->w), &(texture->h));
@@ -61,15 +58,13 @@ void imp::importSprite(std::string path) {
 		texture->clips[i] = new SDL_Rect{texture->w * i, 0, texture->w, texture->h};
 	}
 
-	std::cout << "\tcreating frame data" << std::endl;
-
 	SDL_DestroyTexture(texture->sheet);
-
+	texture->sheet = nullptr;
 
 	
-	(*spriteMap)[name] = texture;
+	spriteMap[name] = texture;
 
-	std::cout << "\tmapping texture at " << name << std::endl;
+	log::out << "\tmapping texture at " << name << log::endl;
 	
 }
 
@@ -89,6 +84,8 @@ void  Sprite::render(int x, int y, int z) {
 	req.image.z = z;
 	req.image.w = texture->w;
 	req.image.h = texture->h;
+	req.image.x0 = 0;
+	req.image.y0 = 0;
 	req.image.texture = texture;
 	req.image.type = REQ_IMAGE;
 	req.image.scale = GAME_SCALE;
@@ -155,6 +152,30 @@ void Sprite::render(int x, int y, int w, int h, int z) {
 	req.image.z = z;
 	req.image.w = w;
 	req.image.h = h;
+	req.image.x0 = 0;
+	req.image.y0 = 0;
+	req.image.texture = texture;
+	req.image.type = REQ_IMAGE;
+	req.image.scale = GAME_SCALE;
+	requests.push_back(req);
+}
+
+void Sprite::render(int x, int y, int x0, int y0, int w, int h, int z) {
+	if (RenderTime - anim_time >= animDelta) {
+		frame++;
+		frame %= texture->frames;
+		anim_time = RenderTime;
+	}
+	texture->ping();
+	RenderRequest req;
+	req.image.frame = frame;
+	req.image.x = x;
+	req.image.y = y;
+	req.image.z = z;
+	req.image.w = w;
+	req.image.h = h;
+	req.image.x0 = x0;
+	req.image.y0 = y0;
 	req.image.texture = texture;
 	req.image.type = REQ_IMAGE;
 	req.image.scale = GAME_SCALE;
@@ -167,7 +188,7 @@ void spr::update() {
 }
 
 void spr::clean() {
-	for (auto iterator = spriteMap->begin(); iterator != spriteMap->end(); iterator++) {
+	for (auto iterator = spriteMap.begin(); iterator != spriteMap.end(); iterator++) {
 		iterator->second->update();
 	}
 }
@@ -176,32 +197,37 @@ void spr::clean() {
 void Texture::lazyload() {
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	if (surface == NULL) {
+		log::out << log::err << "error loading surface for sprite at " << path << log::endl;
 		return;
 	}
 
 	sheet = SDL_CreateTextureFromSurface(getRenderer(), surface);
 	if (sheet == NULL) {
+		log::out << log::err << "error generating texture for sprite at " << path << log::endl;
 		return;
 	}
 	SDL_FreeSurface(surface);
-	std::cout << "lazyloaded sprite at " << path << std::endl;
+	log::out << "lazyloaded sprite at " << path << log::endl;
 }
 
 void Texture::update() {
 	if(loaded) {
-		(loaded)--;
-		if (!(loaded))
+		loaded--;
+		if (!loaded)
 			unload();
 	}
 }
 
 void Texture::unload() {
-	SDL_DestroyTexture(sheet);
-	std::cout << "unloaded sprite at " << path << std::endl;
+	if (sheet != nullptr) {
+		SDL_DestroyTexture(sheet);
+		sheet = nullptr;
+	}
+	log::out << "unloaded sprite at " << path << log::endl;
 }
 
 void Texture::ping() {
-	if (!(loaded)) {
+	if (!loaded) {
 		lazyload();
 	}
 	loaded = 30;
@@ -326,4 +352,49 @@ void spr::init() {
 
 Renderable::~Renderable() {
 
+}
+
+void render::drawRect(int x, int y, int w, int h, SDL_Color color, int z) {
+	RenderRequest req;
+	req.rect.h = h;
+	req.rect.scale = GAME_SCALE;
+	req.rect.type = REQ_RECT;
+	req.rect.w = w;
+	req.rect.x = x;
+	req.rect.y = y;
+	req.rect.z = z;
+	req.rect.color1 = color;
+	requests.push_back(req);
+}
+
+void render::fillRect(int x, int y, int w, int h, SDL_Color color, int z) {
+	RenderRequest req;
+	req.rect.h = h;
+	req.rect.scale = GAME_SCALE;
+	req.rect.type = REQ_FRECT;
+	req.rect.w = w;
+	req.rect.x = x;
+	req.rect.y = y;
+	req.rect.z = z;
+	req.rect.color1 = color;
+	req.rect.color2 = color;
+	requests.push_back(req);
+}
+
+void render::outlineRect(int x, int y, int w, int h, SDL_Color color1, SDL_Color color2, int z) {
+	RenderRequest req;
+	req.rect.h = h;
+	req.rect.scale = GAME_SCALE;
+	req.rect.type = REQ_FRECT;
+	req.rect.w = w;
+	req.rect.x = x;
+	req.rect.y = y;
+	req.rect.z = z;
+	req.rect.color1 = color1;
+	req.rect.color2 = color2;
+	requests.push_back(req);
+}
+
+void Sprite::setFrame(int f) {
+	frame = f % texture->frames;
 }

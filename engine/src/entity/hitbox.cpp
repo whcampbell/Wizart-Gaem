@@ -1,4 +1,6 @@
 #include "hitbox.h"
+#include "sprite.h"
+#include "internal/globals.h"
 
 bool hitbox::collision(Hitbox* a1, Hitbox* a2) {
     if (!a1 || !a2)
@@ -25,4 +27,9 @@ bool hitbox::collision(Hitbox* a1, Hitbox* a2) {
     }
 
     return true;
+}
+
+static SDL_Color color =  {255, 0, 255};
+void hitbox::render(Hitbox* h, int xoff, int yoff) {
+    render::drawRect(h->align->pos.x - *h->align->x_internal - xoff + h->xoff, h->align->pos.y - *h->align->y_internal - yoff + h->yoff, h->w, h->h, color, ENGINE_Z);
 }
