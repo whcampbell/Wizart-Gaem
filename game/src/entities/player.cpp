@@ -11,6 +11,7 @@
 #include "components/entitytracker.h"
 #include "components/hitpoints.h"
 #include "components/mana.h"
+#include "components/score.h"
 #include "components/movespeed.h"
 #include "components/bufftimers.h"
 #include "components/physics.h"
@@ -61,6 +62,11 @@ Player::Player() {
         mp.manaMax = 3;
         mp.mana = mp.manaMax;
         *set<Mana>() = mp;
+
+        Score sco;
+        sco.score = 0;
+        sco.dropAmount = 1;
+        *set<Score>() = sco;
 
         Movespeed move;
         move.speed = 1;

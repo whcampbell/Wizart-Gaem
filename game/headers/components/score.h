@@ -2,7 +2,6 @@
 #include "component.h"
 
 struct Score : public Component {
-    int dropLvl;
+    int dropAmount;
     int score;
-    int scoreMax;
 };

@@ -2,16 +2,8 @@
 #include "components/score.h"
 #include "camera.h"
 
-//ADD TO PLAYER WHEN YOU KNOW THIS WORKS
-//Score sco;
-//sco.scoreMax = 10000;
-//sco.score = 0;
-//sco.dropLvl = 1;
-//*set<Score>() = sco;
-//
-
 ScoreDrop::ScoreDrop() {
-    activeSprite = new Sprite("score_drop");
+    activeSprite = new Sprite("silver_drop");
     *align->x_internal = 16;
     *align->y_internal = 16;
     Hitbox* hit = registerHitbox("hitbox");
@@ -26,7 +18,7 @@ void ScoreDrop:: update() {
             if (iterator->has<Score>()) {
 
                 Score* sco = iterator->get<Score>();
-                sco->score += 2 * this->dropLvl;
+                sco->score += 2 ;
                 entities::remove(this);
                 break;
             }
