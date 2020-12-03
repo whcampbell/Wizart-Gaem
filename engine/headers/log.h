@@ -45,7 +45,7 @@ public:
 /**
  * contains a number of values for outputting runtime logs to console and file
  */ 
-namespace log {
+namespace flog {
     
     /**
      * use log::out to output to just the console. Format is log::out << data << data << ...;

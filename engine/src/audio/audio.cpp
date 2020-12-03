@@ -10,7 +10,7 @@ static std::unordered_map<std::string, Mix*> soundMap;
 
 Mix* getMix(std::string name) {
     if (soundMap.find(name) == soundMap.end()) {
-        log::out << log::err << name << " is not present in the sound map" << log::endl;
+        flog::out << flog::err << name << " is not present in the sound map" << flog::endl;
         exit(1);
     }
     Mix* ptr = soundMap[name];
@@ -20,18 +20,18 @@ Mix* getMix(std::string name) {
 void imp::importAudio(std::string path) {
     imp::SoundData data = imp::parseSound(path);
 
-    log::out << "\tcollecting data" << log::endl;
+    flog::out << "\tcollecting data" << flog::endl;
     
     std::string name = data.name;
     
     if (data.isMus) {
         Mus* sound = new Mus(data.path);
         soundMap[name] = sound;
-        log::out << "\tmapping music at " << name << log::endl;
+        flog::out << "\tmapping music at " << name << flog::endl;
     } else {
         Sfx* sound = new Sfx(data.path);
         soundMap[name] = sound;
-        log::out << "\tmapping sound at " << name << log::endl;
+        flog::out << "\tmapping sound at " << name << flog::endl;
     }
 
     
@@ -39,12 +39,12 @@ void imp::importAudio(std::string path) {
 
 void Mus::lazyload() {
     data = Mix_LoadMUS(path.c_str());
-    log::out << "lazyloaded music at " << path << log::endl;
+    flog::out << "lazyloaded music at " << path << flog::endl;
 }
 
 void Mus::unload() {
     Mix_FreeMusic(data);
-    log::out << "unloaded music at " << path << log::endl;
+    flog::out << "unloaded music at " << path << flog::endl;
 }
 
 int Mus::play(int loops) {
@@ -55,12 +55,12 @@ int Mus::play(int loops) {
 
 void Sfx::lazyload() {
     data = Mix_LoadWAV(path.c_str());
-    log::out << "lazyloaded sound at " << path << log::endl;
+    flog::out << "lazyloaded sound at " << path << flog::endl;
 }
 
 void Sfx::unload() {
     Mix_FreeChunk(data);
-    log::out << "unloaded sound at " << path << log::endl;
+    flog::out << "unloaded sound at " << path << flog::endl;
 }
 
 int Sfx::play(int loops) {
@@ -149,10 +149,10 @@ void sfx::init() {
     int audio_buffers = 4096;
 
     if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) < 0) {
-        log::out << log::err << "Unable to open audio!\n" << log::endl;
+        flog::out << flog::err << "Unable to open audio!\n" << flog::endl;
         exit(1);
     }
 
     if(Mix_Init(MIX_INIT_MOD) != MIX_INIT_MOD)
-        log::out << log::err << "error initializing sdl mixer" << log::endl;
+        flog::out << flog::err << "error initializing sdl mixer" << flog::endl;
 }

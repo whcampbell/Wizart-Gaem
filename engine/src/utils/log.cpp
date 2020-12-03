@@ -3,7 +3,7 @@
     #include <filesystem>
     #include "log.h"
 
-namespace log {
+namespace flog {
     EngineLog out;
     EngineLog fout(true);
     EngineLogWarning warn;
@@ -227,11 +227,11 @@ namespace log {
             output.open(file, std::ofstream::out | std::ofstream::app);
             output << "[WARNING]: ";
             output.close();
-            log::fout.normal = false;
+            flog::fout.normal = false;
             this->normal = false;
             return *this;
         }
-        log::out.normal = false;
+        flog::out.normal = false;
         this->normal = false;
         return *this;
     }
@@ -241,11 +241,11 @@ namespace log {
             output.open(file, std::ofstream::out | std::ofstream::app);
             output << "[ERROR]: ";
             output.close();
-            log::fout.normal = false;
+            flog::fout.normal = false;
             this->normal = false;
             return *this;
         }
-        log::out.normal = false;
+        flog::out.normal = false;
         this->normal = false;
         return *this;
     }
@@ -255,11 +255,11 @@ namespace log {
             output.open(file, std::ofstream::out | std::ofstream::app);
             output << "[ALERT]: ";
             output.close();
-            log::fout.normal = false;
+            flog::fout.normal = false;
             this->normal = false;
             return *this;
         }
-        log::out.normal = false;
+        flog::out.normal = false;
         this->normal = false;
         return *this;
     }
@@ -279,11 +279,11 @@ namespace log {
             output.open(file, std::ofstream::out | std::ofstream::app);
             output << "\n";
             output.close();
-            log::fout.normal = true;
+            flog::fout.normal = true;
             this->normal = true;
             return *this;
         }
-        log::out.normal = true;
+        flog::out.normal = true;
         this->normal = true;
         return *this;
     }

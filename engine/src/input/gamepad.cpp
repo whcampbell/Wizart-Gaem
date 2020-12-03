@@ -22,10 +22,10 @@ void gamepad::locateControllers() {
         Gamepad* gamepad = new Gamepad();
         gamepad -> controller = SDL_GameControllerOpen(i);
         if (gamepad -> controller == NULL)
-            log::out << log::err << "Failed to initialize controller at index " << i << log::endl;
+            flog::out << flog::err << "Failed to initialize controller at index " << i << flog::endl;
         gamepad ->haptics = SDL_HapticOpenFromJoystick(SDL_GameControllerGetJoystick(gamepad->controller));
         if (gamepad ->haptics == NULL)
-            log::out  << log::err << "No haptics found for controller at index " << i << log::endl;
+            flog::out  << flog::err << "No haptics found for controller at index " << i << flog::endl;
         gamepad->id = i;
         controllers.push_back(gamepad);
     }
