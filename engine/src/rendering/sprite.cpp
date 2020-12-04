@@ -21,7 +21,7 @@ static std::vector<RenderRequest> requests;
 
 Texture* getTexture(std::string name) {
 	if (spriteMap.find(name) == spriteMap.end()) {
-        log::out << log::err << name << " is not present in the sprite map" << log::endl;
+        flog::out << flog::err << name << " is not present in the sprite map" << flog::endl;
         exit(1);
     }
 	Texture* ptr = spriteMap[name];
@@ -38,13 +38,13 @@ void imp::importSprite(std::string path) {
 
 	SDL_Surface* surface = IMG_Load(data.path.c_str());
 	if (surface == NULL) {
-		log::out << log::err << "\tfailed to generate surface for image at " << data.path << "\n" << SDL_GetError() << log::endl;
+		flog::out << flog::err << "\tfailed to generate surface for image at " << data.path << "\n" << SDL_GetError() << flog::endl;
 		return;
 	}
 
 	texture->sheet = SDL_CreateTextureFromSurface(getRenderer(), surface);
 	if (texture->sheet == NULL) {
-		log::out << log::err << "\tfailed to generate texture for image at " << data.path << "\n" << SDL_GetError() << log::endl;
+		flog::out << flog::err << "\tfailed to generate texture for image at " << data.path << "\n" << SDL_GetError() << flog::endl;
 		return;
 	}
 	SDL_FreeSurface(surface);
@@ -64,7 +64,7 @@ void imp::importSprite(std::string path) {
 	
 	spriteMap[name] = texture;
 
-	log::out << "\tmapping texture at " << name << log::endl;
+	flog::out << "\tmapping texture at " << name << flog::endl;
 	
 }
 
@@ -197,17 +197,17 @@ void spr::clean() {
 void Texture::lazyload() {
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	if (surface == NULL) {
-		log::out << log::err << "error loading surface for sprite at " << path << log::endl;
+		flog::out << flog::err << "error loading surface for sprite at " << path << flog::endl;
 		return;
 	}
 
 	sheet = SDL_CreateTextureFromSurface(getRenderer(), surface);
 	if (sheet == NULL) {
-		log::out << log::err << "error generating texture for sprite at " << path << log::endl;
+		flog::out << flog::err << "error generating texture for sprite at " << path << flog::endl;
 		return;
 	}
 	SDL_FreeSurface(surface);
-	log::out << "lazyloaded sprite at " << path << log::endl;
+	flog::out << "lazyloaded sprite at " << path << flog::endl;
 }
 
 void Texture::update() {
@@ -223,7 +223,7 @@ void Texture::unload() {
 		SDL_DestroyTexture(sheet);
 		sheet = nullptr;
 	}
-	log::out << "unloaded sprite at " << path << log::endl;
+	flog::out << "unloaded sprite at " << path << flog::endl;
 }
 
 void Texture::ping() {
