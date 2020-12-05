@@ -70,52 +70,15 @@ void imp::importSprite(std::string path) {
 
 Sprite::Sprite(std::string name) : texture(getTexture(name)), frame{0}, anim_time{SDL_GetTicks()} {}
 
-void  Sprite::render(int x, int y, int z) {
-	if (RenderTime - anim_time >= animDelta) {
-		frame++;
-		frame %= texture->frames;
-		anim_time = RenderTime;
-	}
-	texture->ping();
-	RenderRequest req;
-	req.image.frame = frame;
-	req.image.x = x;
-	req.image.y = y;
-	req.image.z = z;
-	req.image.w = texture->w;
-	req.image.h = texture->h;
-	req.image.x0 = 0;
-	req.image.y0 = 0;
-	req.image.texture = texture;
-	req.image.type = REQ_IMAGE;
-	req.image.scale = GAME_SCALE;
-	requests.push_back(req);
+void  Sprite::render(int x, int y, int z, float scale) {
+	render(x, y, 0, 0, texture->w, texture->h, z, scale);
 }
 
-void  Sprite::render(Alignment* align, int z) {
-	if (RenderTime - anim_time >= animDelta) {
-		frame++;
-		frame %= texture->frames;
-		anim_time = RenderTime;
-	}
-	texture->ping();
-	RenderRequest req;
-	req.sprite.frame = frame;
-	req.sprite.x = align->pos.x - *align->x_internal;
-	req.sprite.y = align->pos.y - *align->y_internal;
-	req.sprite.z = z;
-	req.sprite.w = texture->w;
-	req.sprite.h = texture->h;
-	req.sprite.texture = texture;
-	req.sprite.type = REQ_SPRITE;
-	req.sprite.scale = GAME_SCALE;
-	req.sprite.theta = align->theta;
-	req.sprite.point = *(align->getPoint());
-	req.sprite.flip = align->flip;
-	requests.push_back(req);
+void  Sprite::render(Alignment* align, int z, float scale) {
+	render(align, 0, 0, z, scale);
 }
 
-void  Sprite::render(Alignment* align, int xoff, int yoff, int z) {
+void  Sprite::render(Alignment* align, int xoff, int yoff, int z, float scale) {
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
 		frame %= texture->frames;
@@ -131,36 +94,14 @@ void  Sprite::render(Alignment* align, int xoff, int yoff, int z) {
 	req.sprite.h = texture->h;
 	req.sprite.texture = texture;
 	req.sprite.type = REQ_SPRITE;
-	req.sprite.scale = GAME_SCALE;
+	req.sprite.scale = scale;
 	req.sprite.theta = align->theta;
 	req.sprite.point = *(align->getPoint());
 	req.sprite.flip = align->flip;
 	requests.push_back(req);
 }
 
-void Sprite::render(int x, int y, int w, int h, int z) {
-	if (RenderTime - anim_time >= animDelta) {
-		frame++;
-		frame %= texture->frames;
-		anim_time = RenderTime;
-	}
-	texture->ping();
-	RenderRequest req;
-	req.image.frame = frame;
-	req.image.x = x;
-	req.image.y = y;
-	req.image.z = z;
-	req.image.w = w;
-	req.image.h = h;
-	req.image.x0 = 0;
-	req.image.y0 = 0;
-	req.image.texture = texture;
-	req.image.type = REQ_IMAGE;
-	req.image.scale = GAME_SCALE;
-	requests.push_back(req);
-}
-
-void Sprite::render(int x, int y, int x0, int y0, int w, int h, int z) {
+void Sprite::render(int x, int y, int x0, int y0, int w, int h, int z, float scale) {
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
 		frame %= texture->frames;
@@ -178,7 +119,7 @@ void Sprite::render(int x, int y, int x0, int y0, int w, int h, int z) {
 	req.image.y0 = y0;
 	req.image.texture = texture;
 	req.image.type = REQ_IMAGE;
-	req.image.scale = GAME_SCALE;
+	req.image.scale = scale;
 	requests.push_back(req);
 }
 
@@ -271,13 +212,13 @@ void Text::refresh() {
 	}
 }
 
-void Text::render(int x, int y, int z){
+void Text::render(int x, int y, int z, float scale){
 	refresh();
 
 	RenderRequest req;
 	req.text.h = h;
 	req.text.point = {w/2, h/2};
-	req.text.scale = GAME_SCALE;
+	req.text.scale = scale;
 	req.text.texture = texture;
 	req.text.theta = 0;
 	req.text.type = REQ_TEXT;
@@ -288,30 +229,16 @@ void Text::render(int x, int y, int z){
 	req.text.z = z;
 	requests.push_back(req);
 }
-void Text::render(Alignment* align, int z){
-	refresh();
-
-	RenderRequest req;
-	req.text.h = h;
-	req.text.point = {w/2, h/2};
-	req.text.scale = GAME_SCALE;
-	req.text.texture = texture;
-	req.text.theta = align->theta;
-	req.text.type = REQ_TEXT;
-	req.text.flip = align->flip;
-	req.text.w = w;
-	req.text.x = align->pos.x - w/2;
-	req.text.y = align->pos.y - h/2;
-	req.text.z = z;
-	requests.push_back(req);
+void Text::render(Alignment* align, int z, float scale){
+	render(align, 0, 0, z);
 }
-void Text::render(Alignment* align, int xoff, int yoff, int z) {
+void Text::render(Alignment* align, int xoff, int yoff, int z, float scale) {
 	refresh();
 
 	RenderRequest req;
 	req.text.h = h;
 	req.text.point = {w/2, h/2};
-	req.text.scale = GAME_SCALE;
+	req.text.scale = scale;
 	req.text.texture = texture;
 	req.text.theta = align->theta;
 	req.text.type = REQ_TEXT;

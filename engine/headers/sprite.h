@@ -1,5 +1,6 @@
 #pragma once
 #include "alignment.h"
+#include "globals.h"
 #include <string>
 #include <internal/renderable.h>
 
@@ -17,7 +18,7 @@ public:
      * int y    -   y position to draw at
      * int z    -   z layer for sorting
      */ 
-    virtual void render(int x, int y, int z) = 0;
+    virtual void render(int x, int y, int z, float scale = GAME_SCALE) = 0;
 
     /**
      * Draws the given renderable using the information contained in
@@ -26,7 +27,7 @@ public:
      * Alignment* align -   a pointer to the alignment to reference
      * int z            -   z layer for sorting
      */ 
-    virtual void render(Alignment* align, int z) = 0;
+    virtual void render(Alignment* align, int z, float scale = GAME_SCALE) = 0;
 
     /**
      * Draws the given renderable using the information contained in
@@ -40,7 +41,7 @@ public:
      *                      alignment y
      * int z            -   z layer for sorting
      */  
-    virtual void render(Alignment* align, int xoff, int yoff, int z) = 0;
+    virtual void render(Alignment* align, int xoff, int yoff, int z, float scale = GAME_SCALE) = 0;
 
     virtual ~Renderable() = 0;
 };
@@ -69,7 +70,7 @@ public:
      * int y    -   y position to draw at
      * int z    -   z layer for sorting
      */ 
-    void render(int x, int y, int z);
+    void render(int x, int y, int z, float scale = GAME_SCALE);
 
     /**
      * Draws the given sprite using the information contained in
@@ -78,7 +79,7 @@ public:
      * Alignment* align -   a pointer to the alignment to reference
      * int z            -   z layer for sorting
      */ 
-    void render(Alignment* align, int z);
+    void render(Alignment* align, int z, float scale = GAME_SCALE);
 
     /**
      * Draws the given sprite using the information contained in
@@ -92,23 +93,9 @@ public:
      *                      alignment y
      * int z            -   z layer for sorting
      */ 
-    void render(Alignment* align, int xoff, int yoff, int z);
+    void render(Alignment* align, int xoff, int yoff, int z, float scale = GAME_SCALE);
 
     /**
-     * Draws a part of the given sprite at the specified x and y
-     * coordinates starting at the top left, with the given z sorting
-     * 
-     * int x    -   x position to draw at
-     * int y    -   y position to draw at
-     * int w    -   starting at the sprite's top left corner, how
-     *              far to draw in the x direction
-     * int h    -   starting at the sprite's top left corner, how
-     *              far to draw in the y direction
-     * int z    -   z layer for sorting
-     */ 
-    void render(int x, int y, int w, int h, int z);
-
-        /**
      * Draws a part of the given sprite at the specified x and y
      * coordinates starting at a given position, with the given z sorting
      * 
@@ -122,7 +109,7 @@ public:
      *              far to draw in the y direction
      * int z    -   z layer for sorting
      */ 
-    void render(int x, int y, int x0, int y0, int w, int h, int z);
+    void render(int x, int y, int w, int h, int z, int x0 = 0, int y0 = 0, float scale = GAME_SCALE);
 
     /**
      * sets the current frame for this sprite
@@ -187,7 +174,7 @@ public:
      * int y    -   y position to draw at
      * int z    -   z layer for sorting
      */ 
-    void render(int x, int y, int z);
+    void render(int x, int y, int z, float scale = 1);
 
     /**
      * Draws the given text using the information contained in
@@ -196,7 +183,7 @@ public:
      * Alignment* align -   a pointer to the alignment to reference
      * int z            -   z layer for sorting
      */ 
-    void render(Alignment* align, int z);
+    void render(Alignment* align, int z, float scale = 1);
 
     /**
      * Draws the given text using the information contained in
@@ -210,7 +197,7 @@ public:
      *                      alignment y
      * int z            -   z layer for sorting
      */ 
-    void render(Alignment* align, int xoff, int yoff, int z);
+    void render(Alignment* align, int xoff, int yoff, int z, float scale = 1);
 }; 
 
 namespace render {
