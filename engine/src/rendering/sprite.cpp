@@ -324,6 +324,10 @@ void render::outlineRect(int x, int y, int w, int h, SDL_Color color1, SDL_Color
 	requests.push_back(req);
 }
 
+void render::drawPixels(PixelMap map, int x, int y, int z) {
+	
+}
+
 void Sprite::setFrame(int f) {
 	frame = f % texture->frames;
 }
