@@ -3,6 +3,8 @@
 #include "internal/screen.h"
 #include "internal/import.h"
 #include "sprite.h"
+#include "text.h"
+#include "pixelmap.h"
 #include <unordered_map>
 #include "internal/resource.h"
 #include "log.h"
