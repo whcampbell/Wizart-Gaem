@@ -58,26 +58,33 @@ Vector3 tileset::defaultmap(int* arr, int x, int y, int w, int h) {
         off = {6 * 16, 3 * 16, 1};
     if (!(m & 0b010111101000)) // pure floor
         off = {2 * 16, 3 * 16, 1};
-    if (m & 0b010111111000 && !(m & 0b000000000111)) // center-bottom ceiling
-        off = {2 * 16, 0 * 16, 1};
-    if (m & 0b010111000000 && !(m & 0b000000111000)) // center wall
-        off = {2 * 16, 1 * 16, 1};
+    if (m & 0b100000000000 && !(m & 0b010111010000)) // topleft edge
+        off = {5 * 16, 5 * 16, 1};
+    if (m & 0b001000000000 && !(m & 0b010111010000)) // topright edge
+        off = {6 * 16, 5 * 16, 1};
+    if (m & 0b000000100000 && !(m & 0b010111010000)) // bottomleft edge
+        off = {5 * 16, 6 * 16, 1};
+    if (m & 0b000000001000 && !(m & 0b010111010000)) // bottomright edge
+        off = {6 * 16, 6 * 16, 1};
+    if (m & 0b110100000000 && !(m & 0b000011010000)) // topleft floor
+        off = {1 * 16, 2 * 16, 1};
+    if (m & 0b011001000000 && !(m & 0b000110010000)) // topright floor
+        off = {3 * 16, 2 * 16, 1};
+    if (m & 0b000001011000 && !(m & 0b010110000000)) // bottomright floor
+        off = {3 * 16, 4 * 16, 1};
+    if (m & 0b000100110000 && !(m & 0b010011000000)) // bottomleft floor
+        off = {1 * 16, 4 * 16, 1};
+    if (m & 0b000100000000 && !(m & 0b010010010000)) // left floor
+        off = {1 * 16, 3 * 16, 1};
     if (m & 0b010000000000 && !(m & 0b000111010000)) // top floor
         off = {2 * 16, 2 * 16, 1};
-    if (m & 0b000000010000 && !(m & 0b010101000000)) // bottom floor
-        off = {2 * 16, 4 * 16, 1};
-    if (m & 0b000111111010 && !(m & 0b010000000000)) // center-bottom ceiling
-        off = {2 * 16, 5 * 16, 1};
-    if (m & 0b000010110010 && !(m & 0b000000001000)) // center-left ceiling
-        off = {3 * 16, 0 * 16, 1};
-    if (m & 0b000100000000 && !(m & 0b010010010000)) // left floor
-        off = {3 * 16, 1 * 16, 1};
     if (m & 0b000001000000 && !(m & 0b010010010000)) // right floor
         off = {3 * 16, 3 * 16, 1};
-    //else if (m & 0b && !(m & 0b))
-    //    off = {3 * 16, 4 * 16, 1};
-    //else if (m & 0b && !(m & 0b))
-    //    off = {0 * 16, 0 * 16, 1};
+    if (m & 0b000000010000 && !(m & 0b010111000000)) // bottom floor
+        off = {2 * 16, 4 * 16, 1};
+    
+
+    
     return off;
 
 }
