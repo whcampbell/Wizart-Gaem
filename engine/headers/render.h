@@ -15,7 +15,7 @@ public:
      * int y    -   y position to draw at
      * int z    -   z layer for sorting
      */ 
-    virtual void render(int x, int y, int z, float scale = GAME_SCALE) = 0;
+    virtual void render(int x, int y, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y) = 0;
 
     /**
      * Draws the given renderable using the information contained in
@@ -24,7 +24,7 @@ public:
      * Alignment* align -   a pointer to the alignment to reference
      * int z            -   z layer for sorting
      */ 
-    virtual void render(Alignment* align, int z, float scale = GAME_SCALE) = 0;
+    virtual void render(Alignment* align, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y) = 0;
 
     /**
      * Draws the given renderable using the information contained in
@@ -38,7 +38,7 @@ public:
      *                      alignment y
      * int z            -   z layer for sorting
      */  
-    virtual void render(Alignment* align, int xoff, int yoff, int z, float scale = GAME_SCALE) = 0;
+    virtual void render(Alignment* align, int xoff, int yoff, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y) = 0;
 
     virtual ~Renderable() = 0;
 };

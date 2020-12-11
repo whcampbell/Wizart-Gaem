@@ -38,7 +38,7 @@ public:
      * int y    -   y position to draw at
      * int z    -   z layer for sorting
      */ 
-    void render(int x, int y, int z, float scale = GAME_SCALE);
+    void render(int x, int y, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
 
     /**
      * Draws the given pixel array using the information contained in
@@ -47,7 +47,7 @@ public:
      * Alignment* align -   a pointer to the alignment to reference
      * int z            -   z layer for sorting
      */ 
-    void render(Alignment* align, int z, float scale = GAME_SCALE);
+    void render(Alignment* align, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
 
     /**
      * Draws the given pixel array using the information contained in
@@ -61,7 +61,7 @@ public:
      *                      alignment y
      * int z            -   z layer for sorting
      */ 
-    void render(Alignment* align, int xoff, int yoff, int z, float scale = GAME_SCALE);
+    void render(Alignment* align, int xoff, int yoff, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
 
 
 };

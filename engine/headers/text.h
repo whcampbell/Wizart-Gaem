@@ -58,7 +58,7 @@ public:
      * int y    -   y position to draw at
      * int z    -   z layer for sorting
      */ 
-    void render(int x, int y, int z, float scale = 1);
+    void render(int x, int y, int z, float scalex = TEXTSCALE_X, float scaley = TEXTSCALE_Y);
 
     /**
      * Draws the given text using the information contained in
@@ -67,7 +67,7 @@ public:
      * Alignment* align -   a pointer to the alignment to reference
      * int z            -   z layer for sorting
      */ 
-    void render(Alignment* align, int z, float scale = 1);
+    void render(Alignment* align, int z, float scalex = TEXTSCALE_X, float scaley = TEXTSCALE_Y);
 
     /**
      * Draws the given text using the information contained in
@@ -81,5 +81,5 @@ public:
      *                      alignment y
      * int z            -   z layer for sorting
      */ 
-    void render(Alignment* align, int xoff, int yoff, int z, float scale = 1);
+    void render(Alignment* align, int xoff, int yoff, int z, float scalex = TEXTSCALE_X, float scaley = TEXTSCALE_Y);
 }; 

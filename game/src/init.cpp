@@ -4,6 +4,7 @@
 #include "scenes/test.h"
 
 void init() { 
+    engine::setGameScale(3);
     scene::Test* scene = new scene::Test();
     hnd::initScene(scene);
 }

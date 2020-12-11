@@ -2,10 +2,14 @@
 #include <iostream>
 #include <SDL_ttf.h>
 #include "log.h"
+#include "engine.h"
 
-
-static const int WIDTH = 1200;
-static const int HEIGHT = 675;
+int SCREEN_WIDTH = 1200;
+int SCREEN_HEIGHT = 675;
+float GAMESCALE_X = 1, GAMESCALE_Y = 1, TEXTSCALE_X = 1, TEXTSCALE_Y = 1;
+int GAME_WIDTH = 1200 / GAMESCALE_X;
+int GAME_HEIGHT = 675 / GAMESCALE_Y;
+static float localGScale = 1, localTScale = 1;
 
 static SDL_Window* window = NULL;
 static SDL_Renderer* renderer = NULL;
@@ -20,7 +24,7 @@ bool initWindow() {
             return false;
         }
 
-        window = SDL_CreateWindow("Wizart Gaem", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+        window = SDL_CreateWindow("Wizart Gaem", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
         if (window == NULL) {
             flog::out << flog::err << "Window creation failed. Error: \n" << SDL_GetError() << flog::endl;
         } else {
@@ -48,3 +52,54 @@ void closeWindow() {
 SDL_Renderer* getRenderer() {
     return renderer;
 }
+
+static void updateScale() {
+    GAMESCALE_X = localGScale * SCREEN_WIDTH / 1200.0;
+    GAMESCALE_Y = localGScale * SCREEN_HEIGHT / 675.0;
+
+    TEXTSCALE_X = localTScale * SCREEN_WIDTH / 1200.0;
+    TEXTSCALE_Y = localTScale * SCREEN_HEIGHT / 675.0;
+
+    GAME_WIDTH = SCREEN_WIDTH / GAMESCALE_X;
+    GAME_HEIGHT = SCREEN_HEIGHT / GAMESCALE_Y;
+}
+
+void parseWindowEvent(SDL_WindowEvent e) {
+    SDL_DisplayMode dm;
+    switch (e.event)
+    {
+        case SDL_WINDOWEVENT_RESIZED:
+            SDL_GetRendererOutputSize(renderer, &SCREEN_WIDTH, &SCREEN_HEIGHT);
+            updateScale();
+            break;
+        case SDL_WINDOWEVENT_SIZE_CHANGED:
+            SDL_GetRendererOutputSize(renderer, &SCREEN_WIDTH, &SCREEN_HEIGHT);
+            updateScale();
+            break;
+        case SDL_WINDOWEVENT_RESTORED:
+            SDL_GetRendererOutputSize(renderer, &SCREEN_WIDTH, &SCREEN_HEIGHT);
+            updateScale();
+            break;
+        case SDL_WINDOWEVENT_MINIMIZED:
+            SDL_GetRendererOutputSize(renderer, &SCREEN_WIDTH, &SCREEN_HEIGHT);
+            updateScale();
+            break;
+        case SDL_WINDOWEVENT_MAXIMIZED:
+            SDL_GetRendererOutputSize(renderer, &SCREEN_WIDTH, &SCREEN_HEIGHT);
+            updateScale();
+            break;
+    default:
+        break;
+    }
+}
+
+void engine::setGameScale(float gamescale) {
+    localGScale = gamescale;
+    updateScale();
+}
+
+void engine::setTextScale(float textscale) {
+    localTScale = textscale;
+    updateScale();
+}
+

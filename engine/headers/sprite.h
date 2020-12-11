@@ -29,7 +29,7 @@ public:
      * int y    -   y position to draw at
      * int z    -   z layer for sorting
      */ 
-    void render(int x, int y, int z, float scale = GAME_SCALE);
+    void render(int x, int y, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
 
     /**
      * Draws the given sprite using the information contained in
@@ -38,7 +38,7 @@ public:
      * Alignment* align -   a pointer to the alignment to reference
      * int z            -   z layer for sorting
      */ 
-    void render(Alignment* align, int z, float scale = GAME_SCALE);
+    void render(Alignment* align, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
 
     /**
      * Draws the given sprite using the information contained in
@@ -52,7 +52,7 @@ public:
      *                      alignment y
      * int z            -   z layer for sorting
      */ 
-    void render(Alignment* align, int xoff, int yoff, int z, float scale = GAME_SCALE);
+    void render(Alignment* align, int xoff, int yoff, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
 
     /**
      * Draws a part of the given sprite at the specified x and y
@@ -68,7 +68,7 @@ public:
      *              far to draw in the y direction
      * int z    -   z layer for sorting
      */ 
-    void render(int x, int y, int w, int h, int z, int x0 = 0, int y0 = 0, float scale = GAME_SCALE);
+    void render(int x, int y, int w, int h, int z, int x0 = 0, int y0 = 0, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
 
     /**
      * sets the current frame for this sprite

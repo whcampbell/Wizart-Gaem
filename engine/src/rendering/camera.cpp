@@ -13,7 +13,6 @@ static int intensity = 0, timer = 0;
 
 namespace camera {
     int x = 0, y = 0, x_raw = 0, y_raw = 0, x_adj = 0, y_adj = 0;
-    const int w_raw = 1200, h_raw = 675, w = w_raw/GAME_SCALE, h = h_raw/GAME_SCALE;
 }
 
 
@@ -58,10 +57,10 @@ void camera::update() {
     
     camera::x_raw += shakex + (dx - camera::x_raw) / 4;
     camera::y_raw += shakey + (dy - camera::y_raw) / 4;
-    camera::x = camera::x_raw - camera::w/2;
-    camera::y = camera::y_raw - camera::h/2;
-    camera::x_adj = camera::x_raw - camera::w_raw/2;
-    camera::y_adj = camera::y_raw - camera::h_raw/2;
+    camera::x = camera::x_raw - GAME_WIDTH/2;
+    camera::y = camera::y_raw - GAME_HEIGHT/2;
+    camera::x_adj = camera::x_raw - SCREEN_WIDTH/2;
+    camera::y_adj = camera::y_raw - SCREEN_HEIGHT/2;
 }
 
 void camera::screenshake(int strength, int duration) {

@@ -72,20 +72,25 @@ void imp::importSprite(std::string path) {
 
 Sprite::Sprite(std::string name) : texture(getTexture(name)), frame{0}, anim_time{SDL_GetTicks()} {}
 
-void  Sprite::render(int x, int y, int z, float scale) {
-	render(x, y, 0, 0, texture->w, texture->h, z, scale);
+void  Sprite::render(int x, int y, int z, float scalex, float scaley) {
+	render(x, y, 0, 0, texture->w, texture->h, z, scalex, scaley);
 }
 
-void  Sprite::render(Alignment* align, int z, float scale) {
-	render(align, 0, 0, z, scale);
+void  Sprite::render(Alignment* align, int z, float scalex, float scaley) {
+	render(align, 0, 0, z, scalex, scaley);
 }
 
-void  Sprite::render(Alignment* align, int xoff, int yoff, int z, float scale) {
+void  Sprite::render(Alignment* align, int xoff, int yoff, int z, float scalex, float scaley) {
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
 		frame %= texture->frames;
 		anim_time = RenderTime;
 	}
+	if (align->pos.x - xoff - *align->x_internal > GAME_WIDTH 
+		|| align->pos.x - xoff - *align->x_internal + texture->w < 0
+		|| align->pos.y - yoff - *align->y_internal > GAME_HEIGHT 
+		|| align->pos.y - yoff - *align->y_internal + texture->h < 0)
+		return;
 	texture->ping();
 	RenderRequest req;
 	req.sprite.frame = frame;
@@ -96,19 +101,23 @@ void  Sprite::render(Alignment* align, int xoff, int yoff, int z, float scale) {
 	req.sprite.h = texture->h;
 	req.sprite.texture = texture;
 	req.sprite.type = REQ_SPRITE;
-	req.sprite.scale = scale;
+	req.sprite.scalex = scalex;
+	req.sprite.scaley = scaley;
 	req.sprite.theta = align->theta;
 	req.sprite.point = *(align->getPoint());
 	req.sprite.flip = align->flip;
 	requests.push_back(req);
 }
 
-void Sprite::render(int x, int y, int x0, int y0, int w, int h, int z, float scale) {
+void Sprite::render(int x, int y, int x0, int y0, int w, int h, int z, float scalex, float scaley) {
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
 		frame %= texture->frames;
 		anim_time = RenderTime;
 	}
+	if (x > GAME_WIDTH || x + w < 0
+		|| y > GAME_HEIGHT || y + h < 0)
+		return;
 	texture->ping();
 	RenderRequest req;
 	req.image.frame = frame;
@@ -121,7 +130,8 @@ void Sprite::render(int x, int y, int x0, int y0, int w, int h, int z, float sca
 	req.image.y0 = y0;
 	req.image.texture = texture;
 	req.image.type = REQ_IMAGE;
-	req.image.scale = scale;
+	req.image.scalex = scalex;
+	req.image.scaley = scaley;
 	requests.push_back(req);
 }
 
@@ -214,13 +224,17 @@ void Text::refresh() {
 	}
 }
 
-void Text::render(int x, int y, int z, float scale){
+void Text::render(int x, int y, int z, float scalex, float scaley){
 	refresh();
+	if (x > GAME_WIDTH || x + w < 0
+		|| y > GAME_HEIGHT || y + h < 0)
+		return;
 
 	RenderRequest req;
 	req.text.h = h;
 	req.text.point = {w/2, h/2};
-	req.text.scale = scale;
+	req.text.scalex = scalex;
+	req.text.scaley = scaley;
 	req.text.texture = texture;
 	req.text.theta = 0;
 	req.text.type = REQ_TEXT;
@@ -231,16 +245,20 @@ void Text::render(int x, int y, int z, float scale){
 	req.text.z = z;
 	requests.push_back(req);
 }
-void Text::render(Alignment* align, int z, float scale){
+void Text::render(Alignment* align, int z, float scalex, float scaley){
 	render(align, 0, 0, z);
 }
-void Text::render(Alignment* align, int xoff, int yoff, int z, float scale) {
+void Text::render(Alignment* align, int xoff, int yoff, int z, float scalex, float scaley) {
 	refresh();
+	if (align->pos.x - w/2 - xoff > GAME_WIDTH || align->pos.x - w/2 - xoff + w < 0
+		|| align->pos.y - h/2 - yoff > GAME_HEIGHT || align->pos.y - h/2 - yoff + h < 0)
+		return;
 
 	RenderRequest req;
 	req.text.h = h;
 	req.text.point = {w/2, h/2};
-	req.text.scale = scale;
+	req.text.scalex = scalex;
+	req.text.scaley = scaley;
 	req.text.texture = texture;
 	req.text.theta = align->theta;
 	req.text.type = REQ_TEXT;
@@ -284,9 +302,14 @@ Renderable::~Renderable() {
 }
 
 void render::drawRect(int x, int y, int w, int h, SDL_Color color, int z) {
+	if (x > GAME_WIDTH || x + w < 0
+		|| y > GAME_HEIGHT || y + h < 0)
+		return;
+
 	RenderRequest req;
 	req.rect.h = h;
-	req.rect.scale = GAME_SCALE;
+	req.rect.scalex = GAMESCALE_X;
+	req.rect.scaley = GAMESCALE_Y;
 	req.rect.type = REQ_RECT;
 	req.rect.w = w;
 	req.rect.x = x;
@@ -297,9 +320,13 @@ void render::drawRect(int x, int y, int w, int h, SDL_Color color, int z) {
 }
 
 void render::fillRect(int x, int y, int w, int h, SDL_Color color, int z) {
+	if (x > GAME_WIDTH || x + w < 0
+		|| y > GAME_HEIGHT || y + h < 0)
+		return;
 	RenderRequest req;
 	req.rect.h = h;
-	req.rect.scale = GAME_SCALE;
+	req.rect.scalex = GAMESCALE_X;
+	req.rect.scaley = GAMESCALE_Y;
 	req.rect.type = REQ_FRECT;
 	req.rect.w = w;
 	req.rect.x = x;
@@ -311,9 +338,13 @@ void render::fillRect(int x, int y, int w, int h, SDL_Color color, int z) {
 }
 
 void render::outlineRect(int x, int y, int w, int h, SDL_Color color1, SDL_Color color2, int z) {
+	if (x > GAME_WIDTH || x + w < 0
+		|| y > GAME_HEIGHT || y + h < 0)
+		return;
 	RenderRequest req;
 	req.rect.h = h;
-	req.rect.scale = GAME_SCALE;
+	req.rect.scalex = GAMESCALE_X;
+	req.rect.scaley = GAMESCALE_Y;
 	req.rect.type = REQ_FRECT;
 	req.rect.w = w;
 	req.rect.x = x;
