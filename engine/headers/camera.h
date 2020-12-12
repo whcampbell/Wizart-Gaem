@@ -13,7 +13,6 @@ namespace camera {
      * modified by the screen width/height
      */ 
     extern int x, y, x_raw, y_raw, x_adj, y_adj;
-    const extern int w_raw, h_raw, w, h;
 
     /** 
      * Attaches an alignment to the camera. The camera will generate
