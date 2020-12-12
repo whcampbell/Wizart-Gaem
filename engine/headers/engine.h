@@ -17,4 +17,18 @@ namespace engine {
      * Stops the engine and cleans up all memory associated with the engine and renderer
      */ 
     void stop();
+
+    /**
+     * Sets the gamescale and adjusts all nessecary screen variables. Note, the value stored
+     * in the GAMESCALE_X/GAMESCALE_Y global may not match the value you set, as it is modified
+     * to ensure that the game is rendered at a constant scale regardless of screen size
+     */ 
+    void setGameScale(float gamescale);
+
+    /**
+     * Sets the textscale and adjusts all nessecary screen variables. Note, the value stored
+     * in the TEXTSCALE_X/TEXTSCALE_Y global may not match the value you set, as it is modified
+     * to ensure that the game is rendered at a constant scale regardless of screen size
+     */ 
+    void setTextScale(float textscale);
 }

@@ -5,6 +5,7 @@
 #include "components/physics.h"
 #include "components/entitytracker.h"
 #include "particle.h"
+#include "text.h"
 #include <cmath>
 
 
