@@ -65,7 +65,6 @@ static void updateScale() {
 }
 
 void parseWindowEvent(SDL_WindowEvent e) {
-    SDL_DisplayMode dm;
     switch (e.event)
     {
         case SDL_WINDOWEVENT_RESIZED:
