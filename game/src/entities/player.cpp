@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "entities/slash.h"
 #include "entities/projectile.h"
+#include "entities/spell_aoe.h"
 #include "fastmath.h"
 #include "hitbox.h"
 
@@ -150,7 +151,14 @@ Player::Player() {
 
         if (mouse::press(SDL_BUTTON_RIGHT)){
             if (get<Mana>()->mana >= 1) {
-                AttackProjectile* attack = new AttackProjectile();
+                Spell_AOE* spell = new Spell_AOE();
+                Alignment* align_spell = spell->pos();
+                *align_spell->x_internal = 0;
+                *align_spell->y_internal = 0;
+                entities::add(spell);
+                get<Mana>()->mana = get<Mana>()->mana - 2;
+
+                /*
                 int dx = mouse::x() + camera::x_adj - align->pos.x;
                 int dy = mouse::y() + camera::y_adj - align->pos.y;
                 Alignment* align_attack = attack->pos();
@@ -161,6 +169,7 @@ Player::Player() {
                 align_attack->theta = angle(dx, dy);
                 entities::add(attack);
                 get<Mana>()->mana--;
+                */
             }
         }
             

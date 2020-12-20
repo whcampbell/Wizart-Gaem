@@ -3,6 +3,7 @@
 #include "components/hitpoints.h"
 #include "components/entitylist.h"
 #include "components/physics.h"
+#include "utilities/combat.h"
 #include <cmath>
 #include "particle.h"
 
@@ -15,15 +16,6 @@
         ticks = 12;
         EntityList hit;
         *set<EntityList>() = hit;
-    }
-
-
-    static int lifetime() {
-        return 60;
-    }
-
-    static void behavior(Vector2* vec, int t) {
-        vec->y--;
     }
 
     void AttackProjectile::update() {
@@ -50,10 +42,7 @@
                 hp->health--;
 
                 // damage number particle
-                Text* dmgnumber = new Text("1", 16, {255, 0, 0});
-                ParticleSource* source = new ParticleSource(1, 10, dmgnumber, lifetime, behavior);
-                source->bind(align->pos);
-                source->start();
+                damagenumber(1, iterator->pos()->pos);
                 // end damage number particle
 
                 //do screenshake
