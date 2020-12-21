@@ -24,6 +24,8 @@ Skeleton::Skeleton() {
     box->align = align;
     box->h = 16;
     box->w = 16;
+    box->xoff = 8;
+    box->yoff = 8;
 
     Hitpoints hp;
     hp.healthMax = 3;

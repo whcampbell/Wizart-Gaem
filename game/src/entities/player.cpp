@@ -40,8 +40,6 @@ Player::Player() {
         align->pos.y = 0;
 
         Hitbox* pickup = registerHitbox("pickupbox");
-        pickup->xoff = -8;
-        pickup->yoff = -8;
         pickup->w = 32;
         pickup->h = 32;
         pickup->align = align;
@@ -153,6 +151,8 @@ Player::Player() {
             if (get<Mana>()->mana >= 2) {
                 Spell_AOE* spell = new Spell_AOE();
                 Alignment* align_spell = spell->pos();
+                align_spell->pos.x = align->pos.x;
+                align_spell->pos.y = align->pos.y;
                 *align_spell->x_internal = 0;
                 *align_spell->y_internal = 0;
                 entities::add(spell);

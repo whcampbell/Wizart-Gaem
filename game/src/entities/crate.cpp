@@ -14,6 +14,8 @@
         box->align = align;
         box->w = 16;
         box->h = 16;
+        box->xoff = 8;
+        box->yoff = 8;
         *align->x_internal = 16;
         *align->y_internal = 16;
         if (i%2)

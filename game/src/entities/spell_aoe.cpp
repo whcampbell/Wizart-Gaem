@@ -12,8 +12,8 @@
 Spell_AOE::Spell_AOE() {
     Hitbox* box = registerHitbox("hitbox");
     box->align = align;
-    // box->xoff = 16;
-    // box->yoff = 16;
+    box->xoff = -64;
+    box->yoff = -64;
     box->w = 128;
     box->h = 128;
 
@@ -43,8 +43,7 @@ void Spell_AOE::update() {
                 // damage number particle
                 damagenumber(2, iterator->pos()->pos);
 
-                // screen shake
-                camera::screenshake(4, 9);
+
 
                 // hitpause for target
                 iterator->pause(6);
@@ -60,6 +59,9 @@ void Spell_AOE::update() {
     life->ticks--;
     if (!life->ticks) 
         entities::remove(this);
+    if (life->ticks == 19) {
+        camera::screenshake(4, 9);
+    }
 }
 
 void Spell_AOE::render() {
