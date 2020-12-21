@@ -5,7 +5,7 @@
 #include "components/physics.h"
 #include "components/lifetime.h"
 #include "utilities/combat.h"
-#include <cmath>
+#include "fastmath.h"
 #include "particle.h"
 #include "sprite.h"
 
@@ -29,12 +29,36 @@ Spell_AOE::Spell_AOE() {
 }
 
 void Spell_AOE::update() {
+    float centerx = align->pos.x + 64;
+    float centery = align->pos.y + 64;
     EntityList* hit = get<EntityList>();
 
     for (auto iterator : *entities::all()) {
        
         if (!(hit->contains(iterator)) && hitbox::collision(iterator->hitbox("hurtbox"), hitbox("hitbox"))) {
             
+            if (iterator->has<Physics>()) {
+                float dx = iterator->pos()->pos.x - centerx;
+                float dy = iterator->pos()->pos.y - centery;
+
+                int ang = angle(dx, dy);
+                float mag = dx * dx + dy * dy;
+                int shove = 0;
+                if (mag < 50) 
+                    shove = 4;
+                else if (mag < 100)
+                    shove = 3;
+                else
+                    shove = 2;
+                
+                Physics* physics = iterator->get<Physics>();
+                physics->physicsActive = true;
+                physics->velocity.x = shove * cos(ang * M_PI / 180);
+                physics->velocity.y = shove * sin(ang * M_PI / 180);
+                physics->acceleration.x = -.08 * cos(ang * M_PI / 180);
+                physics->acceleration.y = -.08 * sin(ang * M_PI / 180);
+            }
+
             if (iterator->has<Hitpoints>()) {
                 hit->list.push_back(iterator);
                 Hitpoints* hp = iterator->get<Hitpoints>();
@@ -42,8 +66,6 @@ void Spell_AOE::update() {
 
                 // damage number particle
                 damagenumber(2, iterator->pos()->pos);
-
-
 
                 // hitpause for target
                 iterator->pause(6);
