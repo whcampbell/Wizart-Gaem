@@ -8,7 +8,7 @@
 #include "internal/eventpump.h"
 #include <climits>
 
-float GAME_SCALE = 3;
+
 int ENGINE_Z = INT_MAX;
 bool ENGINE_DEV_MODE = false;
 unsigned int ENGINE_UPS = 0, ENGINE_FPS = 0, ENGINE_MS = 0;
@@ -59,6 +59,9 @@ static void checkEvents() {
             break;
         case SDL_KEYDOWN:
             key::keydown(e.key);
+            break;
+        case SDL_WINDOWEVENT:
+            parseWindowEvent(e.window);
             break;
 	    default:
 		    break;

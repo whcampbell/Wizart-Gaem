@@ -2,8 +2,8 @@
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 
 #Source files and dependencies
-SRC = $(call rwildcard,../../engine/src,*.cpp)
-GAME_SRC = $(call rwildcard,../../game/src,*.cpp)
+SRC = $(call rwildcard,../../engine/src,*.cpp *.c)
+GAME_SRC = $(call rwildcard,../../game/src,*.cpp *.c)
 INCLUDE = -I../../game/headers -I../../engine/headers -I../../libs/libs_win/include/SDL2 
 LIBS = -L../../libs/libs_win/lib
 LINK = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf

@@ -6,4 +6,6 @@ bool initWindow();
 
 void closeWindow();
 
+void parseWindowEvent(SDL_WindowEvent e);
+
 SDL_Renderer* getRenderer();

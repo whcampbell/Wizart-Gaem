@@ -11,11 +11,10 @@ static std::default_random_engine generator;
 static std::uniform_int_distribution dir_distribution(-1, 1);
 static int intensity = 0, timer = 0;
 
-
 namespace camera {
     int x = 0, y = 0, x_raw = 0, y_raw = 0, x_adj = 0, y_adj = 0;
 }
-static int w = 1200, h = 675;
+
 
 void camera::bind(Alignment* a) {
     targets.push_back(a);
@@ -58,10 +57,10 @@ void camera::update() {
     
     camera::x_raw += shakex + (dx - camera::x_raw) / 4;
     camera::y_raw += shakey + (dy - camera::y_raw) / 4;
-    camera::x = camera::x_raw - w/2/GAME_SCALE;
-    camera::y = camera::y_raw - h/2/GAME_SCALE;
-    camera::x_adj = camera::x_raw - w/2;
-    camera::y_adj = camera::y_raw - h/2;
+    camera::x = camera::x_raw - GAME_WIDTH/2;
+    camera::y = camera::y_raw - GAME_HEIGHT/2;
+    camera::x_adj = camera::x_raw - SCREEN_WIDTH/2;
+    camera::y_adj = camera::y_raw - SCREEN_HEIGHT/2;
 }
 
 void camera::screenshake(int strength, int duration) {

@@ -11,6 +11,7 @@
 #include "globals.h"
 #include "sprite.h"
 #include "internal/globals.h"
+#include "text.h"
 
 static Scene* activeScene = nullptr;
 
