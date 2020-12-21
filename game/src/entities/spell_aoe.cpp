@@ -7,15 +7,18 @@
 #include "utilities/combat.h"
 #include <cmath>
 #include "particle.h"
+#include "sprite.h"
 
 Spell_AOE::Spell_AOE() {
     Hitbox* box = registerHitbox("hitbox");
     box->align = align;
-    box->xoff = 16;
-    box->yoff = 16;
+    // box->xoff = 16;
+    // box->yoff = 16;
     box->w = 128;
     box->h = 128;
-    activeSprite = new Sprite("aoe");
+
+    activeSprite = NULL;
+    // activeSprite = new Sprite("aoe");
 
     EntityList hit;
     *set<EntityList>() = hit;
@@ -29,7 +32,9 @@ void Spell_AOE::update() {
     EntityList* hit = get<EntityList>();
 
     for (auto iterator : *entities::all()) {
+       
         if (!(hit->contains(iterator)) && hitbox::collision(iterator->hitbox("hurtbox"), hitbox("hitbox"))) {
+            
             if (iterator->has<Hitpoints>()) {
                 hit->list.push_back(iterator);
                 Hitpoints* hp = iterator->get<Hitpoints>();
@@ -45,22 +50,20 @@ void Spell_AOE::update() {
                 iterator->pause(6);
 
                 // remove target if dead
-                if (hp->health >= 0) 
+                if (hp->health <= 0) 
                     entities::remove(iterator);
-                break;
             }
         }
     }
 
     Lifetime* life = get<Lifetime>();
-    int ticks = life->ticks;
-    ticks--;
-    if (!ticks) 
+    life->ticks--;
+    if (!life->ticks) 
         entities::remove(this);
 }
 
 void Spell_AOE::render() {
-    activeSprite->render(align, camera::x, camera::y, 2);
+    // activeSprite->render(align, camera::x, camera::y, 2);
 }
 
 Spell_AOE::~Spell_AOE() {

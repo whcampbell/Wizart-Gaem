@@ -150,7 +150,7 @@ Player::Player() {
         }
 
         if (mouse::press(SDL_BUTTON_RIGHT)){
-            if (get<Mana>()->mana >= 1) {
+            if (get<Mana>()->mana >= 2) {
                 Spell_AOE* spell = new Spell_AOE();
                 Alignment* align_spell = spell->pos();
                 *align_spell->x_internal = 0;
