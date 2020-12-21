@@ -25,10 +25,10 @@ void XPDrop::update() {
                             XP* all = allPlay->get<XP>(); // gets xp of entity that collided
                             all->level++; 
                             all->neededXP = all->level*10; 
-                            all->currXP = 0;
+                            all->currXP = 0
                         }
                     }
-                } else { // otherwise, gives player 10 xp on collision
+                } else { // otherwise, gives player 1 xp on collision
                     for (auto allPlay : *entities::all()) { 
                         if (allPlay->has<XP>()) {
                             XP* all = allPlay->get<XP>(); // gets xp of entity that collided
