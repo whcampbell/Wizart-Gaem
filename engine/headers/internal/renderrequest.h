@@ -17,7 +17,7 @@ struct ImageRequest {
     int y;
     int x, w, h;
     int frame;
-    float scale;
+    float scalex, scaley;
     Texture* texture;
     int x0, y0;
 };
@@ -28,7 +28,7 @@ struct SpriteRequest {
     int y;
     int x, w, h;
     int frame;
-    float scale;
+    float scalex, scaley;
     double theta;
     SDL_Point point;
     SDL_RendererFlip flip;
@@ -40,7 +40,7 @@ struct RectRequest {
     RenderType type;
     int y;
     int x, w, h;
-    float scale;
+    float scalex, scaley;
     SDL_Color color1, color2;
 };
 
@@ -49,7 +49,7 @@ struct TextRequest {
     RenderType type;
     int y;
     int x, w, h;
-    float scale;
+    float scalex, scaley;
     double theta;
     SDL_Point point;
     SDL_RendererFlip flip;

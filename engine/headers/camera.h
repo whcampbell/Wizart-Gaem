@@ -8,7 +8,7 @@ namespace camera {
 
     /**
      * x and y are camera offsets for rendering
-     * x_adj and y_adj are camera offsets not adjusted for the current game scale
+     * x_adj and y_adj are camera offsets 
      * x_raw and y_raw are camera offsets not adjusted for gamescale and not
      * modified by the screen width/height
      */ 

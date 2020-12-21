@@ -5,6 +5,7 @@
 #include "components/physics.h"
 #include <cmath>
 #include "particle.h"
+#include "text.h"
 
     AttackProjectile::AttackProjectile() {
         Hitbox* box = registerHitbox("hitbox");

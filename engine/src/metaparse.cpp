@@ -50,7 +50,7 @@ void recurseDir(std::string path) {
             recurseDir(entry.path().string());
         } else {
             if (!entry.path().extension().string().compare(".meta")) {
-                log::out << "importing resource at " << entry.path().string().substr(0, entry.path().string().length() - 5) << log::endl;
+                flog::out << "importing resource at " << entry.path().string().substr(0, entry.path().string().length() - 5) << flog::endl;
                 if (entry.path().filename().string().find(".png") != std::string::npos) {
                     imp::importSprite(entry.path().string().c_str());
                 } else {
@@ -63,11 +63,11 @@ void recurseDir(std::string path) {
 
 void res::init() {
     sfx::init();
-    log::out << "starting resource import" << log::endl;
+    flog::out << "starting resource import" << flog::endl;
     std::string path = "./res";
     spr::init();
     recurseDir(path);
-    log::out << "finished resource import" << log::endl;
+    flog::out << "finished resource import" << flog::endl;
 }
 
 void res::close() {

@@ -8,7 +8,7 @@
 #include "internal/eventpump.h"
 #include <climits>
 
-float GAME_SCALE = 3;
+
 int ENGINE_Z = INT_MAX;
 bool ENGINE_DEV_MODE = false;
 unsigned int ENGINE_UPS = 0, ENGINE_FPS = 0, ENGINE_MS = 0;
@@ -60,6 +60,9 @@ static void checkEvents() {
         case SDL_KEYDOWN:
             key::keydown(e.key);
             break;
+        case SDL_WINDOWEVENT:
+            parseWindowEvent(e.window);
+            break;
 	    default:
 		    break;
 	    }
@@ -77,7 +80,7 @@ int run(void* data) {
 
     unsigned int lastu = SDL_GetTicks();
     unsigned int lastp = SDL_GetTicks();
-    log::out << log::alert << "Starting game" << log::endl;
+    flog::out << flog::alert << "Starting game" << flog::endl;
 
     unsigned int startu = 0;
     unsigned int pdel = 0;
@@ -102,8 +105,8 @@ int run(void* data) {
                 ENGINE_FPS = (int)(fps * ((float)deltap / pdel));
                 ENGINE_UPS = (int)(ups * ((float)deltap / pdel));
                 ENGINE_MS = (avgu / ups);
-                log::out << pdel << "ms since last update" << "\n\tFPS: " << ENGINE_FPS
-                 << "\n\tUPS: " << ENGINE_UPS << "\n\tAvg utime: " << ENGINE_MS << "ms" << log::endl;
+                flog::out << pdel << "ms since last update" << "\n\tFPS: " << ENGINE_FPS
+                 << "\n\tUPS: " << ENGINE_UPS << "\n\tAvg utime: " << ENGINE_MS << "ms" << flog::endl;
 
                 ups = 0;
                 fps = 0;
@@ -118,7 +121,7 @@ int run(void* data) {
 
 void render() {
 		if (SDL_RenderClear(getRenderer())){
-            log::out << log::err << "error clearing renderer: " << SDL_GetError() << log::endl;
+            flog::out << flog::err << "error clearing renderer: " << SDL_GetError() << flog::endl;
         }
 
         hnd::render();
@@ -148,7 +151,7 @@ int runSDL(void* data) {
 
 void engine::start(void (*initfunc)()) {
     if (!initWindow()) {
-        log::out << log::err << "Window initialization failed" << log::endl;
+        flog::out << flog::err << "Window initialization failed" << flog::endl;
         return;
     }
     gamepad::locateControllers();
@@ -162,7 +165,7 @@ void engine::start(void (*initfunc)()) {
 }
 
 void engine::stop() {
-    log::out << log::alert << "Closing game" << log::endl;
+    flog::out << flog::alert << "Closing game" << flog::endl;
     running = false;
     int threadReturn;
     SDL_WaitThread(eThread, &threadReturn);

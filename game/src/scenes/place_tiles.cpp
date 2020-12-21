@@ -10,13 +10,15 @@
 #include "entities/crate.h"
 #include "entities/xpdrop.h"
 #include "log.h"
+#include "utilities/rng.h"
+#include <time.h>
 
 Player* player;
 
 Sprite* tile_test;
 int tile_size;
 int room_size;
-std::vector<int> room;
+std::vector<std::vector<int>> rooms;
 int map_size;
 std::vector<std::vector<int>> map;
 std::vector<Sprite*> floor_tiles;
@@ -25,25 +27,61 @@ std::vector<Sprite*> wall_tiles;
 void initTiles() {
     room_size = 10;
     map_size = 4;
-    room.resize(room_size*room_size);
+    
+    rooms.resize(3);
+
+    for (int i = 0; i < 3; i++) {
+        rooms[i].resize(room_size*room_size);
+    }
     tile_size = 16;
     floor_tiles.resize(1);
     wall_tiles.resize(1);
     floor_tiles[0] = new Sprite("tile_test2");
     wall_tiles[0] = new Sprite("tile_test");
     // assume square map and generate identical rooms
+
+    // ROOM 1
     for (int i = 0; i < room_size*room_size; i++) {
         int row = (int)(i / room_size);
         int col = i % room_size;
         if (row == 0 || col == 0 || row == room_size-1 || col == room_size-1) {
-            room[i] = 1;
+            rooms[0][i] = 1;
         } else {
-            room[i] = 0;
+            rooms[0][i] = 0;
         }
     }
+
+    // ROOM 2
+    for (int i = 0; i < room_size*room_size; i++) {
+        int row = (int)(i / room_size);
+        int col = i % room_size;
+        if (row == 0 || col == 0 || row == room_size-1 || col == room_size-1) {
+            rooms[1][i] = 1;
+        } else if (((col < (int)(room_size/2) && col % 2 == 0) || (col >= (int)(room_size/2) && col % 2 == 1)) && row != 1 && row != room_size-2) {
+            rooms[1][i] = 1;
+        } else {
+            rooms[1][i] = 0;
+        }
+    }
+
+    // ROOM 3
+    for (int i = 0; i < room_size*room_size; i++) {
+        int row = (int)(i / room_size);
+        int col = i % room_size;
+        if (row == 0 || col == 0 || row == room_size-1 || col == room_size-1) {
+            rooms[2][i] = 1;
+        } else if (((row < (int)(room_size/2) && row % 2 == 0) || (row >= (int)(room_size/2) && row % 2 == 1)) && col != 1 && col != room_size-2) {
+            rooms[2][i] = 1;
+        } else {
+            rooms[2][i] = 0;
+        }
+    }
+
+    Noise noise;
+    noise.seed(time(0));
     map.resize(map_size*map_size);
     for (int i = 0; i < map_size*map_size; i++) {
-        map[i] = room;
+        map[i] = rooms[noise.rand()%3];
     }
 }
 
@@ -69,9 +107,6 @@ void scene::World::init() {
     spDrop->pos()->pos.x = 100;
     spDrop->pos()->pos.y = 100;
     entities::add(spDrop);
-
-
-
 
 }
 
