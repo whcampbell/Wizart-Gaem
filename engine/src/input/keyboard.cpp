@@ -1,7 +1,8 @@
 #include <SDL.h>
-#include "eventpump.h"
+#include "internal/eventpump.h"
 #include "input.h"
 #include <string.h>
+#include <climits>
 
 #define MOUSE_SCANCODES 384
 
@@ -34,7 +35,7 @@ Uint16 mouseCode(Uint8 name) {
         return MOUSE_SCANCODES + SDL_BUTTON_X1;
     if (name == SDL_BUTTON_X2)
         return MOUSE_SCANCODES + SDL_BUTTON_X2;
-    return -1;
+    return USHRT_MAX;
 }
 
 void key::update() {
@@ -89,10 +90,10 @@ bool key::release(SDL_Scancode key) {
 
 void key::remap(const char* phys, const char* vir) {
     Uint16 code1 = 0;
-    if ((code1 = mouseCode(phys)) == -1)
+    if ((code1 = mouseCode(phys)) == USHRT_MAX)
         code1 = SDL_GetScancodeFromKey(SDL_GetKeyFromName(phys));
     Uint16 code2;
-    if ((code2 = mouseCode(vir)) == -1)
+    if ((code2 = mouseCode(vir)) == USHRT_MAX)
         code2 = SDL_GetScancodeFromKey(SDL_GetKeyFromName(vir));
     map[code1] = code2;
 }

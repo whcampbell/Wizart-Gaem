@@ -1,37 +1,9 @@
 #pragma once
 #include "alignment.h"
+#include "globals.h"
 #include <string>
-#include <memory>
-
-struct Texture {
-private:
-	std::string path;
-    int loaded;
-
-    void lazyload();
-    void unload();
-    
-public:
-	int w, h, frames, delta;
-	SDL_Texture* sheet;
-	SDL_Rect** clips;
-
-	Texture(std::string path) : path(path) {
-        loaded = 0;
-    }
-
-    Texture() : path(NULL) {}
-
-    void update();
-    void ping();
-};
-
-struct Renderable {
-public:
-    virtual void render(int x, int y, int z) = 0;
-    virtual void render(Alignment* align, int z) = 0;
-    virtual void render(Alignment* align, int xoff, int yoff, int z) = 0;
-};
+#include <internal/renderable.h>
+#include "render.h"
 
 struct Sprite : public Renderable {
 private:
@@ -40,31 +12,68 @@ private:
     unsigned int anim_time;
 public:
     unsigned int animDelta = 100;
-    Sprite(std::string name);
-    void render(int x, int y, int z);
-    void render(Alignment* align, int z);
-    void render(Alignment* align, int xoff, int yoff, int z);
-    void render(int x, int y, int w, int h, int z);
-};
 
-struct Text : public Renderable {
-private:
-    int w, h;
-    bool* valid;
-    int* reading;
-    std::string text;
-    int size;
-    SDL_Color color;
-    bool u_flag = false;
-    SDL_Texture* texture = nullptr;
-    void refresh();
-public:
-    Text(std::string text, int size, SDL_Color color);
-    ~Text();
-    void update(std::string text);
-    void update(int size);
-    void update(SDL_Color color);
-    void render(int x, int y, int z);
-    void render(Alignment* align, int z);
-    void render(Alignment* align, int xoff, int yoff, int z);
+    /**
+     * initializes a sprite, lazyloading the requested texture if nescessary
+     * 
+     * string name  -   the name that the sprite has been registered under
+     *                  (located in the sprite's metafile)
+     */ 
+    Sprite(std::string name);
+ 
+     /**
+     * Draws the given sprite at the specified x and y coordinates,
+     * with the given z sorting
+     * 
+     * int x    -   x position to draw at
+     * int y    -   y position to draw at
+     * int z    -   z layer for sorting
+     */ 
+    void render(int x, int y, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
+
+    /**
+     * Draws the given sprite using the information contained in
+     * an alignment, with the given z sorting
+     * 
+     * Alignment* align -   a pointer to the alignment to reference
+     * int z            -   z layer for sorting
+     */ 
+    void render(Alignment* align, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
+
+    /**
+     * Draws the given sprite using the information contained in
+     * an alignment, subtracting the provided x and y offsets,
+     * with the given z sorting
+     * 
+     * Alignment* align -   a pointer to the alignment to reference
+     * int xoff         -   an x offset which is subtracted from the
+     *                      alignment x
+     * int yoff         -   a y offset which is subtracted from the
+     *                      alignment y
+     * int z            -   z layer for sorting
+     */ 
+    void render(Alignment* align, int xoff, int yoff, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
+
+    /**
+     * Draws a part of the given sprite at the specified x and y
+     * coordinates starting at a given position, with the given z sorting
+     * 
+     * int x    -   x position to draw at
+     * int y    -   y position to draw at
+     * int x0   -   x position relative to the sprite to draw from
+     * int y0   -   y position relative to the sprite to draw from
+     * int w    -   starting at the sprite's top left corner, how
+     *              far to draw in the x direction
+     * int h    -   starting at the sprite's top left corner, how
+     *              far to draw in the y direction
+     * int z    -   z layer for sorting
+     */ 
+    void render(int x, int y, int w, int h, int z, int x0 = 0, int y0 = 0, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
+
+    /**
+     * sets the current frame for this sprite
+     * 
+     * int f    -   the frame to set this sprite to
+     */ 
+    void setFrame(int f);
 };

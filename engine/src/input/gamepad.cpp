@@ -1,8 +1,8 @@
 #include "input.h"
-#include "eventpump.h"
+#include "internal/eventpump.h"
 #include <SDL.h>
 #include <vector>
-#include <iostream>
+#include <log.h>
 #include <string.h>
 
 struct Gamepad {
@@ -22,10 +22,10 @@ void gamepad::locateControllers() {
         Gamepad* gamepad = new Gamepad();
         gamepad -> controller = SDL_GameControllerOpen(i);
         if (gamepad -> controller == NULL)
-            std::cout << "Failed to initialize controller at index " << i << std::endl;
+            flog::out << flog::err << "Failed to initialize controller at index " << i << flog::endl;
         gamepad ->haptics = SDL_HapticOpenFromJoystick(SDL_GameControllerGetJoystick(gamepad->controller));
         if (gamepad ->haptics == NULL)
-            std::cout << "No haptics found for controller at index " << i << std::endl;
+            flog::out  << flog::err << "No haptics found for controller at index " << i << flog::endl;
         gamepad->id = i;
         controllers.push_back(gamepad);
     }

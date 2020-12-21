@@ -6,17 +6,17 @@
 
 class Player : public Entity {
 private:
-    Sprite* idle;
-    Sprite* run;
-
     Sprite* hp_icon;
     Sprite* mp_icon;
+    Sprite* hp_back;
+    Sprite* mp_back;
 
     Sprite* activeSprite;
     enum animstates {
     anim_idle, anim_run, ANIM_MAX  
     };
-    StateMachine<ANIM_MAX> animator;
+    Sprite** sprites = new Sprite*[ANIM_MAX]{new Sprite("player1_idle"), new Sprite("player1_run")};
+    StateMachine<ANIM_MAX, Sprite*> animator;
     void move_keyboard();
     void move_controller();
 public:

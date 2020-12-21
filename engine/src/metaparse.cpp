@@ -1,16 +1,16 @@
-#include "import.h"
-#include "resource.h"
+#include "internal/import.h"
+#include "internal/resource.h"
 #include <filesystem>
 #include <fstream>
 #include <string>
-#include <iostream>
+#include "log.h"
 
 namespace fs = std::filesystem;
 using ios = std::ifstream;
 
 
 
-imp_i::SpriteData imp_i::parseSprite(std::string path) {
+imp::SpriteData imp::parseSprite(std::string path) {
     SpriteData data;
     std::ifstream stream(path, ios::in|ios::binary);
     stream.read(reinterpret_cast<char*>(&(data.frames)), sizeof(int));
@@ -27,7 +27,7 @@ imp_i::SpriteData imp_i::parseSprite(std::string path) {
     return data;
 }
 
-imp_i::SoundData imp_i::parseSound(std::string path) {
+imp::SoundData imp::parseSound(std::string path) {
     SoundData data;
     std::ifstream stream(path, ios::in|ios::binary);
     stream.read(reinterpret_cast<char*>(&data.isMus), sizeof(bool));
@@ -50,7 +50,7 @@ void recurseDir(std::string path) {
             recurseDir(entry.path().string());
         } else {
             if (!entry.path().extension().string().compare(".meta")) {
-                std::cout << "importing resource at " << entry.path().string().substr(0, entry.path().string().length() - 5) << std::endl;
+                flog::out << "importing resource at " << entry.path().string().substr(0, entry.path().string().length() - 5) << flog::endl;
                 if (entry.path().filename().string().find(".png") != std::string::npos) {
                     imp::importSprite(entry.path().string().c_str());
                 } else {
@@ -62,12 +62,12 @@ void recurseDir(std::string path) {
 }
 
 void res::init() {
-    sfx_i::init();
-    std::cout << "starting resource import" << std::endl;
+    sfx::init();
+    flog::out << "starting resource import" << flog::endl;
     std::string path = "./res";
-    spr_i::init();
+    spr::init();
     recurseDir(path);
-    std::cout << "finished resource import" << std::endl;
+    flog::out << "finished resource import" << flog::endl;
 }
 
 void res::close() {
