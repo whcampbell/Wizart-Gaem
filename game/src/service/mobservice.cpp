@@ -1,6 +1,6 @@
 #include <iostream>
-#include <sqlite3.h> 
-#include "mobservice.h"
+#include "service/mobservice.h"
+#include "service/sqlite3.h"
 
 static int callback(void *data, int argc, char **argv, char **azColName){
    Mob *mob = (Mob *)data;

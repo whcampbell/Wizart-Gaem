@@ -9,6 +9,7 @@
 #include "components/movespeed.h"
 #include "components/bufftimers.h"
 #include "components/physics.h"
+#include "service/mobservice.h"
 
 
 Skeleton::Skeleton() {
@@ -47,6 +48,8 @@ Skeleton::Skeleton() {
 }
 
 void Skeleton::update() {
+    Mob mob = getMob(2);
+    std::cout << mob.name << std::endl;
     if (!get<Physics>()->physicsActive) {
         float speed = get<Movespeed>()->speed;
         align->pos.x += speed;
