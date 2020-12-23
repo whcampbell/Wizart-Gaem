@@ -12,8 +12,6 @@
 Spell_AOE::Spell_AOE() {
     Hitbox* box = registerHitbox("hitbox");
     box->align = align;
-    box->xoff = -64;
-    box->yoff = -64;
     box->w = 128;
     box->h = 128;
 
@@ -29,8 +27,8 @@ Spell_AOE::Spell_AOE() {
 }
 
 void Spell_AOE::update() {
-    float centerx = align->pos.x + 64;
-    float centery = align->pos.y + 64;
+    float centerx = align->pos.x;
+    float centery = align->pos.y;
     EntityList* hit = get<EntityList>();
 
     for (auto iterator : *entities::all()) {
@@ -41,7 +39,6 @@ void Spell_AOE::update() {
                 float dx = iterator->pos()->pos.x - centerx;
                 float dy = iterator->pos()->pos.y - centery;
 
-                int ang = angle(dx, dy);
                 float mag = dx * dx + dy * dy;
                 int shove = 0;
                 if (mag < 50) 
@@ -53,10 +50,10 @@ void Spell_AOE::update() {
                 
                 Physics* physics = iterator->get<Physics>();
                 physics->physicsActive = true;
-                physics->velocity.x = shove * cos(ang * M_PI / 180);
-                physics->velocity.y = shove * sin(ang * M_PI / 180);
-                physics->acceleration.x = -.08 * cos(ang * M_PI / 180);
-                physics->acceleration.y = -.08 * sin(ang * M_PI / 180);
+                physics->velocity.x = shove * cos(dx, dy);
+                physics->velocity.y = shove * sin(dx, dy);
+                physics->acceleration.x = -.08 * cos(dx, dy);
+                physics->acceleration.y = -.08 * sin(dx, dy);
             }
 
             if (iterator->has<Hitpoints>()) {

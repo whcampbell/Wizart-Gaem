@@ -133,8 +133,8 @@ Player::Player() {
         
         if (mouse::press(SDL_BUTTON_LEFT)){
             AttackSlash* attack = new AttackSlash();
-            int dx = mouse::x() + camera::x_adj - align->pos.x;
-            int dy = mouse::y() + camera::y_adj - align->pos.y;
+            int dx = mouse::x() + camera::x - align->pos.x;
+            int dy = mouse::y() + camera::y - align->pos.y;
             Alignment* align_attack = attack->pos();
             align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
             align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
@@ -151,16 +151,16 @@ Player::Player() {
             if (get<Mana>()->mana >= 2) {
                 Spell_AOE* spell = new Spell_AOE();
                 Alignment* align_spell = spell->pos();
-                align_spell->pos.x = mouse::x() + camera::x_adj;
-                align_spell->pos.y = mouse::y() + camera::y_adj;
-                *align_spell->x_internal = 0;
-                *align_spell->y_internal = 0;
+                align_spell->pos.x = camera::x + mouse::x();
+                align_spell->pos.y = camera::y + mouse::y();
+                *align_spell->x_internal = 64;
+                *align_spell->y_internal = 64;
                 entities::add(spell);
-                get<Mana>()->mana = get<Mana>()->mana - 2;
+                get<Mana>()->mana = get<Mana>()->mana - 0;
 
                 /*
-                int dx = mouse::x() + camera::x_adj - align->pos.x;
-                int dy = mouse::y() + camera::y_adj - align->pos.y;
+                int dx = mouse::x() + camera::x - align->pos.x;
+                int dy = mouse::y() + camera::y - align->pos.y;
                 Alignment* align_attack = attack->pos();
                 align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
                 align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);

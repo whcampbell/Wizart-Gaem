@@ -1,4 +1,5 @@
 #include "particle.h"
+#include "text.h"
 #include "string"
 
 static int lifetime() {
