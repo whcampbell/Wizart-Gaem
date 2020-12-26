@@ -152,11 +152,11 @@ Player::Player() {
                 Spell_AOE* spell = new Spell_AOE();
                 Alignment* align_spell = spell->pos();
                 align_spell->pos.x = camera::x + mouse::x();
-                align_spell->pos.y = camera::y + mouse::y();
+                align_spell->pos.y = camera::y + mouse::y() - 32;
                 *align_spell->x_internal = 64;
                 *align_spell->y_internal = 64;
                 entities::add(spell);
-                get<Mana>()->mana = get<Mana>()->mana - 0;
+                get<Mana>()->mana = get<Mana>()->mana - 2;
 
                 /*
                 int dx = mouse::x() + camera::x - align->pos.x;

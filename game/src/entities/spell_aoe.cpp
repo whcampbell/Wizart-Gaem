@@ -14,23 +14,25 @@ Spell_AOE::Spell_AOE() {
     box->align = align;
     box->w = 128;
     box->h = 128;
+    box->yoff = 32;
 
     activeSprite = NULL;
-    // activeSprite = new Sprite("aoe");
+    activeSprite = new Sprite("spell_explosion");
 
     EntityList hit;
     *set<EntityList>() = hit;
 
     Lifetime life;
-    life.ticks = 20;
+    life.ticks = 72;
     *set<Lifetime>() = life;
 }
 
 void Spell_AOE::update() {
     float centerx = align->pos.x;
-    float centery = align->pos.y;
+    float centery = align->pos.y + 32;
     EntityList* hit = get<EntityList>();
-
+    Lifetime* life = get<Lifetime>();
+    if (life->ticks > 50)
     for (auto iterator : *entities::all()) {
        
         if (!(hit->contains(iterator)) && hitbox::collision(iterator->hitbox("hurtbox"), hitbox("hitbox"))) {
@@ -74,17 +76,17 @@ void Spell_AOE::update() {
         }
     }
 
-    Lifetime* life = get<Lifetime>();
+    
     life->ticks--;
     if (!life->ticks) 
         entities::remove(this);
-    if (life->ticks == 19) {
-        camera::screenshake(4, 9);
+    if (life->ticks == 71) {
+        camera::screenshake(5, 20);
     }
 }
 
 void Spell_AOE::render() {
-    // activeSprite->render(align, camera::x, camera::y, 2);
+    activeSprite->renderOnce(align, camera::x, camera::y, 4);
 }
 
 Spell_AOE::~Spell_AOE() {

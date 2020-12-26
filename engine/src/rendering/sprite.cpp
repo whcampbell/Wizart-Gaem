@@ -108,6 +108,41 @@ void  Sprite::render(Alignment* align, int xoff, int yoff, int z, float scalex, 
 	requests.push_back(req);
 }
 
+void  Sprite::renderOnce(Alignment* align, int xoff, int yoff, int z, float scalex, float scaley) {
+
+	if (frame == texture->frames)
+		return;
+
+	if (RenderTime - anim_time >= animDelta) {
+		frame++;
+		if (frame == texture->frames)
+			return;
+		frame %= texture->frames;
+		anim_time = RenderTime;
+	}
+	if (align->pos.x - xoff - *align->x_internal > GAME_WIDTH 
+		|| align->pos.x - xoff - *align->x_internal + texture->w < 0
+		|| align->pos.y - yoff - *align->y_internal > GAME_HEIGHT 
+		|| align->pos.y - yoff - *align->y_internal + texture->h < 0)
+		return;
+	texture->ping();
+	RenderRequest req;
+	req.sprite.frame = frame;
+	req.sprite.x = align->pos.x - xoff - *align->x_internal;
+	req.sprite.y = align->pos.y - yoff - *align->y_internal;
+	req.sprite.z = z;
+	req.sprite.w = texture->w;
+	req.sprite.h = texture->h;
+	req.sprite.texture = texture;
+	req.sprite.type = REQ_SPRITE;
+	req.sprite.scalex = scalex;
+	req.sprite.scaley = scaley;
+	req.sprite.theta = align->theta;
+	req.sprite.point = *(align->getPoint());
+	req.sprite.flip = align->flip;
+	requests.push_back(req);
+}
+
 void Sprite::render(int x, int y, int x0, int y0, int w, int h, int z, float scalex, float scaley) {
 	if (RenderTime - anim_time >= animDelta) {
 		frame++;
