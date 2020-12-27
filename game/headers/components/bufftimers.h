@@ -3,4 +3,5 @@
 
 struct BuffTimers : public Component {
     float speedBoost;
+    int onFire;
 };

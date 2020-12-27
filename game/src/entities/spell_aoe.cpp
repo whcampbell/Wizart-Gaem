@@ -4,6 +4,7 @@
 #include "components/entitylist.h"
 #include "components/physics.h"
 #include "components/lifetime.h"
+#include "components/bufftimers.h"
 #include "utilities/combat.h"
 #include "fastmath.h"
 #include "particle.h"
@@ -56,6 +57,11 @@ void Spell_AOE::update() {
                 physics->velocity.y = shove * sin(dx, dy);
                 physics->acceleration.x = -.08 * cos(dx, dy);
                 physics->acceleration.y = -.08 * sin(dx, dy);
+            }
+
+            if (iterator->has<BuffTimers>()) {
+                BuffTimers* buff = iterator->get<BuffTimers>();
+                buff->onFire = 240;
             }
 
             if (iterator->has<Hitpoints>()) {

@@ -9,6 +9,8 @@
 #include "fastmath.h"
 #include "hitbox.h"
 
+#include "utilities/combat.h"
+
 #include "components/entitytracker.h"
 #include "components/hitpoints.h"
 #include "components/mana.h"
@@ -67,6 +69,7 @@ Player::Player() {
 
         BuffTimers buff;
         buff.speedBoost = 0;
+        buff.onFire = 0;
         *set<BuffTimers>() = buff;
 
         Physics physics;
@@ -94,9 +97,22 @@ Player::Player() {
         }
         
 
-        // update speed boost buff timer
+        // update buff timers
+        // speedboost buff
         if (get<BuffTimers>()->speedBoost > 0) 
             get<BuffTimers>()->speedBoost--;
+
+        // on fire buff
+        if (get<BuffTimers>()->onFire > 0) {
+            get<BuffTimers>()->onFire--;
+            if (get<BuffTimers>()->onFire % 120 == 0) {
+                Hitpoints* hp = get<Hitpoints>();
+                hp->health--;
+                damagenumber(1, align->pos);
+                if (hp->health >= 0)
+                    entities::remove(this);
+            }
+        }        
 
         animator.update();
         activeSprite = animator.read();
