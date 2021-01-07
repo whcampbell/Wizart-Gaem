@@ -26,6 +26,22 @@ namespace mouse {
     int y();
 
     /**
+     * gets the real x position of the mouse relative to the screen (not the camera)
+     *
+     * 
+     * returns  -   the x position of the mouse
+     */ 
+    int x_adj();
+
+    /**
+     * gets the real y position of the mouse relative to the screen (not the camera)
+     *
+     * 
+     * returns  -   the y position of the mouse
+     */ 
+    int y_adj();
+
+    /**
      * checks whether the specified mouse button is currently down
      * 
      * Uint8 key    -   SDL_MOUSE_BUTTON representing the mouse button to check

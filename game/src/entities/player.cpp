@@ -5,8 +5,11 @@
 #include "globals.h"
 #include "entities/slash.h"
 #include "entities/projectile.h"
+#include "entities/spell_aoe.h"
 #include "fastmath.h"
 #include "hitbox.h"
+
+#include "utilities/combat.h"
 
 #include "components/entitytracker.h"
 #include "components/hitpoints.h"
@@ -39,8 +42,6 @@ Player::Player() {
         align->pos.y = 0;
 
         Hitbox* pickup = registerHitbox("pickupbox");
-        pickup->xoff = -8;
-        pickup->yoff = -8;
         pickup->w = 32;
         pickup->h = 32;
         pickup->align = align;
@@ -68,6 +69,7 @@ Player::Player() {
 
         BuffTimers buff;
         buff.speedBoost = 0;
+        buff.onFire = 0;
         *set<BuffTimers>() = buff;
 
         Physics physics;
@@ -95,9 +97,22 @@ Player::Player() {
         }
         
 
-        // update speed boost buff timer
+        // update buff timers
+        // speedboost buff
         if (get<BuffTimers>()->speedBoost > 0) 
             get<BuffTimers>()->speedBoost--;
+
+        // on fire buff
+        if (get<BuffTimers>()->onFire > 0) {
+            get<BuffTimers>()->onFire--;
+            if (get<BuffTimers>()->onFire % 120 == 0) {
+                Hitpoints* hp = get<Hitpoints>();
+                hp->health--;
+                damagenumber(1, align->pos);
+                if (hp->health >= 0)
+                    entities::remove(this);
+            }
+        }        
 
         animator.update();
         activeSprite = animator.read();
@@ -134,8 +149,8 @@ Player::Player() {
         
         if (mouse::press(SDL_BUTTON_LEFT)){
             AttackSlash* attack = new AttackSlash();
-            int dx = mouse::x() + camera::x_adj - align->pos.x;
-            int dy = mouse::y() + camera::y_adj - align->pos.y;
+            int dx = mouse::x() + camera::x - align->pos.x;
+            int dy = mouse::y() + camera::y - align->pos.y;
             Alignment* align_attack = attack->pos();
             align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
             align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
@@ -149,10 +164,19 @@ Player::Player() {
         }
 
         if (mouse::press(SDL_BUTTON_RIGHT)){
-            if (get<Mana>()->mana >= 1) {
-                AttackProjectile* attack = new AttackProjectile();
-                int dx = mouse::x() + camera::x_adj - align->pos.x;
-                int dy = mouse::y() + camera::y_adj - align->pos.y;
+            if (get<Mana>()->mana >= 2) {
+                Spell_AOE* spell = new Spell_AOE();
+                Alignment* align_spell = spell->pos();
+                align_spell->pos.x = camera::x + mouse::x();
+                align_spell->pos.y = camera::y + mouse::y() - 32;
+                *align_spell->x_internal = 64;
+                *align_spell->y_internal = 64;
+                entities::add(spell);
+                get<Mana>()->mana = get<Mana>()->mana - 2;
+
+                /*
+                int dx = mouse::x() + camera::x - align->pos.x;
+                int dy = mouse::y() + camera::y - align->pos.y;
                 Alignment* align_attack = attack->pos();
                 align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
                 align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
@@ -161,6 +185,7 @@ Player::Player() {
                 align_attack->theta = angle(dx, dy);
                 entities::add(attack);
                 get<Mana>()->mana--;
+                */
             }
         }
             

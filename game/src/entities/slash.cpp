@@ -14,6 +14,8 @@
         box->align = align;
         box->w = 16;
         box->h = 16;
+        box->xoff = 8;
+        box->yoff = 8;
         activeSprite = new Sprite("slash");
         ticks = 18;
         EntityList hit;

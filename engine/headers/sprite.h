@@ -55,6 +55,20 @@ public:
     void render(Alignment* align, int xoff, int yoff, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
 
     /**
+     * Draws the given sprite using the information contained in
+     * an alignment, subtracting the provided x and y offsets,
+     * with the given z sorting
+     * 
+     * Alignment* align -   a pointer to the alignment to reference
+     * int xoff         -   an x offset which is subtracted from the
+     *                      alignment x
+     * int yoff         -   a y offset which is subtracted from the
+     *                      alignment y
+     * int z            -   z layer for sorting
+     */ 
+    void renderOnce(Alignment* align, int xoff, int yoff, int z, float scalex = GAMESCALE_X, float scaley = GAMESCALE_Y);
+
+    /**
      * Draws a part of the given sprite at the specified x and y
      * coordinates starting at a given position, with the given z sorting
      * 

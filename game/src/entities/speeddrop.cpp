@@ -11,6 +11,8 @@ SpeedDrop::SpeedDrop() {
     hit->align = align;
     hit->w = 16;
     hit->h = 16;
+    hit->xoff = 8;
+    hit->yoff = 8;
 }
 
 void SpeedDrop::update() {

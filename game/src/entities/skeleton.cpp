@@ -5,6 +5,8 @@
 #include "fastmath.h"
 #include "hitbox.h"
 
+#include "utilities/combat.h"
+
 #include "components/hitpoints.h"
 #include "components/movespeed.h"
 #include "components/bufftimers.h"
@@ -24,9 +26,11 @@ Skeleton::Skeleton() {
     box->align = align;
     box->h = 16;
     box->w = 16;
+    box->xoff = 8;
+    box->yoff = 8;
 
     Hitpoints hp;
-    hp.healthMax = 3;
+    hp.healthMax = 5;
     hp.health = hp.healthMax;
     *set<Hitpoints>() = hp;
 
@@ -36,6 +40,7 @@ Skeleton::Skeleton() {
 
     BuffTimers buff;
     buff.speedBoost = 0;
+    buff.onFire = 0;
     *set<BuffTimers>() = buff;
 
     Physics physics;
@@ -60,6 +65,17 @@ void Skeleton::update() {
             physics->physicsActive = false;
             physics->acceleration.x = 0;
             physics->acceleration.y = 0;
+        }
+    }
+
+    if (get<BuffTimers>()->onFire > 0) {
+        get<BuffTimers>()->onFire--;
+        if (get<BuffTimers>()->onFire % 120 == 0) {
+            Hitpoints* hp = get<Hitpoints>();
+            hp->health--;
+            damagenumber(1, align->pos);
+            if (hp->health >= 0)
+                entities::remove(this);
         }
     }
 
