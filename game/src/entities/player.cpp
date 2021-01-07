@@ -33,6 +33,8 @@ Player::Player() {
         hp_back = new Sprite("health_back");
         mp_icon = new Sprite("mana_icon");
         mp_back = new Sprite("mana_back");
+        xp_icon = new Sprite("exp_icon");
+        xp_back = new Sprite("exp_back");
 
         *align->x_internal = 16;
         *align->y_internal = 16;
@@ -199,6 +201,8 @@ Player::Player() {
 
         Hitpoints* health = get<Hitpoints>();
         Mana* mana = get<Mana>();
+        XP* xp = get<XP>();
+
         for (int i = 0; i < health->healthMax; i++) {
             if (i < health->health)
                 hp_icon->render(7 * i, 0, 6 + i);
@@ -208,6 +212,12 @@ Player::Player() {
             if (i < mana->mana)
                 mp_icon->render(7 * i, 16, 6 + i);
             mp_back->render(7 * i, 16, 5);
+        }
+
+        for (int i = 0; i < xp->neededXP; i++) {
+            if (i < xp->currXP) 
+                xp_icon->render(6 * i, 212, 6 + i);
+            xp_back->render(6 * i, 212, 5);
         }
         activeSprite->render(align, camera::x, camera::y,  4);
     }
