@@ -191,8 +191,8 @@ Player::Player() {
 
         for (int i = 0; i < xp->neededXP; i++) {
             if (i < xp->currXP) 
-                xp_icon->render(7 * i, 212, 6 + i);
-            xp_back->render(7 * i, 212, 5);
+                xp_icon->render(6 * i, 212, 6 + i);
+            xp_back->render(6 * i, 212, 5);
         }
         activeSprite->render(align, camera::x, camera::y,  4);
     }
