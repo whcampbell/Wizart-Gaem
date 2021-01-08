@@ -5,6 +5,7 @@
 #include "components/physics.h"
 #include "components/lifetime.h"
 #include "components/bufftimers.h"
+#include "components/element.h"
 #include "utilities/combat.h"
 #include "fastmath.h"
 #include "particle.h"
@@ -26,6 +27,10 @@ Spell_AOE::Spell_AOE() {
     Lifetime life;
     life.ticks = 72;
     *set<Lifetime>() = life;
+
+    Element elm;
+    elm.element = 0;
+    *set<Element>() = elm;
 }
 
 void Spell_AOE::update() {

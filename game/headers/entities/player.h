@@ -21,6 +21,7 @@ private:
     StateMachine<ANIM_MAX, Sprite*> animator;
     void move_keyboard();
     void move_controller();
+    void aoe_spell(int elm);
 public:
     Player();
     void update();

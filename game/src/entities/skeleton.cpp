@@ -41,6 +41,8 @@ Skeleton::Skeleton() {
     BuffTimers buff;
     buff.speedBoost = 0;
     buff.onFire = 0;
+    buff.moist = 0;
+    buff.frozen = 0;
     *set<BuffTimers>() = buff;
 
     Physics physics;

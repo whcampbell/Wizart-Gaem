@@ -2,6 +2,7 @@
 #include "entities/player.h"
 #include "entities/skeleton.h"
 #include "entities/healthdrop.h"
+#include "entities/spelldrop.h"
 #include "components/hitpoints.h"
 #include "entities/speeddrop.h"
 #include "entity.h"
@@ -43,8 +44,11 @@ void scene::Test::init() {
     spDrop->pos()->pos.y = 100;
     entities::add(spDrop);
 
-
-
+    // test spell drop
+    SpellDrop* spellDrop = new SpellDrop();
+    spellDrop->pos()->pos.x = 120;
+    spellDrop->pos()->pos.y = 0;
+    entities::add(spellDrop);
 
 }
 

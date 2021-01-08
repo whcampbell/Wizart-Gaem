@@ -8,6 +8,7 @@
 #include "entities/spell_aoe.h"
 #include "fastmath.h"
 #include "hitbox.h"
+#include "vec.h"
 
 #include "utilities/combat.h"
 
@@ -18,6 +19,8 @@
 #include "components/bufftimers.h"
 #include "components/physics.h"
 #include "components/xp.h"
+#include "components/slots.h"
+#include "components/element.h"
 
 static bool a_running;
 static bool f_running() {return a_running;}
@@ -72,7 +75,20 @@ Player::Player() {
         BuffTimers buff;
         buff.speedBoost = 0;
         buff.onFire = 0;
+        buff.moist = 0;
+        buff.frozen = 0;
         *set<BuffTimers>() = buff;
+
+
+        Slots slot;
+        slot.curr = 1;
+        slot.first.x = 0;
+        slot.first.y = 0;
+        slot.second.x = 0;
+        slot.second.y = 0;
+        slot.third.x = 0;
+        slot.third.y = 0;
+        *set<Slots>() = slot;
 
         Physics physics;
         physics.velocity = {0, 0};
@@ -166,31 +182,66 @@ Player::Player() {
         }
 
         if (mouse::press(SDL_BUTTON_RIGHT)){
-            if (get<Mana>()->mana >= 2) {
-                Spell_AOE* spell = new Spell_AOE();
-                Alignment* align_spell = spell->pos();
-                align_spell->pos.x = camera::x + mouse::x();
-                align_spell->pos.y = camera::y + mouse::y() - 32;
-                *align_spell->x_internal = 64;
-                *align_spell->y_internal = 64;
-                entities::add(spell);
-                get<Mana>()->mana = get<Mana>()->mana - 2;
-
-                /*
-                int dx = mouse::x() + camera::x - align->pos.x;
-                int dy = mouse::y() + camera::y - align->pos.y;
-                Alignment* align_attack = attack->pos();
-                align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
-                align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
-                *align_attack->x_internal = 16;
-                *align_attack->y_internal = 16;
-                align_attack->theta = angle(dx, dy);
-                entities::add(attack);
-                get<Mana>()->mana--;
-                */
+            Slots* slots = get<Slots>();
+            Vector2 type;
+            switch (slots->curr) {
+                case 1:
+                    type = slots->first;
+                    if (type.x == 0 && get<Mana>()->mana > 0) {
+                        AttackProjectile* attack = new AttackProjectile();
+                        int dx = mouse::x() + camera::x - align->pos.x;
+                        int dy = mouse::y() + camera::y - align->pos.y;
+                        Alignment* align_attack = attack->pos();
+                        align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
+                        align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
+                        *align_attack->x_internal = 16;
+                        *align_attack->y_internal = 16;
+                        align_attack->theta = angle(dx, dy);
+                        entities::add(attack);
+                        get<Mana>()->mana--;
+                    }
+                    if (type.x == 1) {
+                        aoe_spell(type.y);
+                    }
+                    break;
+                case 2: 
+                    // do slot->second
+                    break;
+                case 3:
+                    // do slot->third
+                    break;
             }
+            
         }
             
+    }
+
+
+    /**
+     * Carries out the action of the AOE spell
+     * 
+     * params
+     * int elm - which element the spell should take on
+     * 
+     * returns - none
+     */
+    void Player::aoe_spell(int elm) {
+        if (get<Mana>()->mana >= 2) {
+            Spell_AOE* spell = new Spell_AOE();
+            Alignment* align_spell = spell->pos();
+
+
+            Element* tag = spell->get<Element>();
+            tag->element = elm;
+
+
+            align_spell->pos.x = camera::x + mouse::x();
+            align_spell->pos.y = camera::y + mouse::y() - 32;
+            *align_spell->x_internal = 64;
+            *align_spell->y_internal = 64;
+            entities::add(spell);
+            get<Mana>()->mana = get<Mana>()->mana - 2;
+        }
     }
     
     void Player::move_controller() {
