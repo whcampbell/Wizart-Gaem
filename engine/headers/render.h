@@ -1,6 +1,7 @@
 #pragma once
 #include "SDL.h"
 #include "alignment.h"
+#include "globals.h"
 
 /**
  * struct representing every object that can be drawn to the screen

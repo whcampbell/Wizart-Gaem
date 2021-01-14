@@ -2,6 +2,7 @@
 #include "render.h"
 #include "alignment.h"
 #include <string>
+#include "globals.h"
 
 struct Text : public Renderable {
 private:
