@@ -76,7 +76,7 @@ void Skeleton::update() {
             Hitpoints* hp = get<Hitpoints>();
             hp->health--;
             damagenumber(1, align->pos);
-            if (hp->health >= 0)
+            if (hp->health <= 0)
                 entities::remove(this);
         }
     }
