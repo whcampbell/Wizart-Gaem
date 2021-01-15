@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "sprite.h"
 #include "statemachine.h"
+#include "vec.h"
 
 class Player : public Entity {
 private:
@@ -21,7 +22,7 @@ private:
     StateMachine<ANIM_MAX, Sprite*> animator;
     void move_keyboard();
     void move_controller();
-    void aoe_spell(int elm);
+    void spell_reader(Vector2 spell);
 public:
     Player();
     void update();

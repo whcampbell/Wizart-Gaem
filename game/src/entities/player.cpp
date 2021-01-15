@@ -183,11 +183,9 @@ Player::Player() {
 
         if (mouse::press(SDL_BUTTON_RIGHT)){
             Slots* slots = get<Slots>();
-            Vector2 type;
             switch (slots->curr) {
                 case 1:
-                    type = slots->first;
-                    if (type.x == 0 && get<Mana>()->mana > 0) {
+                    if (slots->first.x == 0 && get<Mana>()->mana > 0) {
                         AttackProjectile* attack = new AttackProjectile();
                         int dx = mouse::x() + camera::x - align->pos.x;
                         int dy = mouse::y() + camera::y - align->pos.y;
@@ -199,16 +197,43 @@ Player::Player() {
                         align_attack->theta = angle(dx, dy);
                         entities::add(attack);
                         get<Mana>()->mana--;
-                    }
-                    if (type.x == 1) {
-                        aoe_spell(type.y);
+                    } else {
+                        spell_reader(slots->first);
                     }
                     break;
                 case 2: 
-                    // do slot->second
+                    if (slots->second.x == 0 && get<Mana>()->mana > 0) {
+                        AttackProjectile* attack = new AttackProjectile();
+                        int dx = mouse::x() + camera::x - align->pos.x;
+                        int dy = mouse::y() + camera::y - align->pos.y;
+                        Alignment* align_attack = attack->pos();
+                        align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
+                        align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
+                        *align_attack->x_internal = 16;
+                        *align_attack->y_internal = 16;
+                        align_attack->theta = angle(dx, dy);
+                        entities::add(attack);
+                        get<Mana>()->mana--;
+                    } else {
+                        spell_reader(slots->second);
+                    }
                     break;
                 case 3:
-                    // do slot->third
+                    if (slots->third.x == 0 && get<Mana>()->mana > 0) {
+                        AttackProjectile* attack = new AttackProjectile();
+                        int dx = mouse::x() + camera::x - align->pos.x;
+                        int dy = mouse::y() + camera::y - align->pos.y;
+                        Alignment* align_attack = attack->pos();
+                        align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
+                        align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
+                        *align_attack->x_internal = 16;
+                        *align_attack->y_internal = 16;
+                        align_attack->theta = angle(dx, dy);
+                        entities::add(attack);
+                        get<Mana>()->mana--;
+                    } else {
+                        spell_reader(slots->third);
+                    }
                     break;
             }
             
@@ -218,29 +243,38 @@ Player::Player() {
 
 
     /**
-     * Carries out the action of the AOE spell
+     * Interprets the slot's vector2 and creates the correct spell
      * 
      * params
-     * int elm - which element the spell should take on
+     * Vector2 spell - which spell and element to create
+     * THE ELEMENT IS DEALT WITH WITHIN THE SPELL
+     * ASSIGNING ELEMENT TO THE SPELL IS ALL THAT NEEDS TO HAPPEN HERE
      * 
      * returns - none
      */
-    void Player::aoe_spell(int elm) {
-        if (get<Mana>()->mana >= 2) {
-            Spell_AOE* spell = new Spell_AOE();
-            Alignment* align_spell = spell->pos();
+    void Player::spell_reader(Vector2 spell) {
 
-
-            Element* tag = spell->get<Element>();
-            tag->element = elm;
-
-
-            align_spell->pos.x = camera::x + mouse::x();
-            align_spell->pos.y = camera::y + mouse::y() - 32;
-            *align_spell->x_internal = 64;
-            *align_spell->y_internal = 64;
-            entities::add(spell);
-            get<Mana>()->mana = get<Mana>()->mana - 2;
+        switch ((int)spell.x) {
+            case 1 :
+                if (get<Mana>()->mana >= 2) {
+                    Spell_AOE* aoe = new Spell_AOE();
+                    Alignment* align_aoe = aoe->pos();
+                    Element* tag = aoe->get<Element>();
+                    tag->element = spell.y;
+                    align_aoe->pos.x = camera::x + mouse::x();
+                    align_aoe->pos.y = camera::y + mouse::y() - 32;
+                    *align_aoe->x_internal = 64;
+                    *align_aoe->y_internal = 64;
+                    entities::add(aoe);
+                    get<Mana>()->mana = get<Mana>()->mana - 2;
+                }
+                break;
+            case 2 :
+                //other spell
+                break;
+            case 3 : 
+                // other spell, and so on
+                break;
         }
     }
     
