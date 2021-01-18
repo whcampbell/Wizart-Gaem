@@ -4,6 +4,7 @@
 #include "globals.h"
 #include "fastmath.h"
 #include "hitbox.h"
+#include "log.h"
 
 #include "utilities/combat.h"
 
@@ -12,9 +13,15 @@
 #include "components/bufftimers.h"
 #include "components/physics.h"
 
+static bool a_running = true;
+static bool f_running() {return a_running;}
+static bool f_hurt() {return !a_running;}
 
 Skeleton::Skeleton() {
     animator.init(sprites);
+    animator.set(anim_run);
+    animator.link(anim_run, anim_hurt, f_hurt);
+    animator.link(anim_hurt, anim_run, f_running);
 
     *align->x_internal = 16;
     *align->y_internal = 16;
@@ -54,9 +61,14 @@ Skeleton::Skeleton() {
 }
 
 void Skeleton::update() {
-    if (!get<Physics>()->physicsActive) {
+    if (!get<Physics>()->physicsActive && get<BuffTimers>()->frozen <= 0) {
         float speed = get<Movespeed>()->speed;
         align->pos.x += speed;
+    } else if (get<BuffTimers>()->frozen > 0) {
+        a_running = false;
+        if (get<BuffTimers>()->frozen==1)
+            a_running = true;
+        get<BuffTimers>()->frozen--;
     } else {
         Physics* physics = get<Physics>();
         align->pos.x += physics->velocity.x;
@@ -70,15 +82,22 @@ void Skeleton::update() {
         }
     }
 
-    if (get<BuffTimers>()->onFire > 0) {
-        get<BuffTimers>()->onFire--;
-        if (get<BuffTimers>()->onFire % 120 == 0) {
+    BuffTimers* buff = get<BuffTimers>();
+    if (buff->onFire > 0) {
+        buff->onFire--;
+        if (buff->onFire % 120 == 0) {
             Hitpoints* hp = get<Hitpoints>();
             hp->health--;
             damagenumber(1, align->pos);
             if (hp->health <= 0)
                 entities::remove(this);
         }
+    }
+
+    if (buff->frozen > 0 && buff->onFire > 0) {
+        buff->frozen = 0;
+        buff->onFire = 0;
+        buff->moist = 600;
     }
 
     animator.update();

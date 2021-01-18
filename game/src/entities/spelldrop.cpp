@@ -18,7 +18,7 @@ SpellDrop::SpellDrop() {
     // Currently hard coded to (AOE, fire)
     // should be random-ish eventually
     type.x = 1;
-    type.y = 1;
+    type.y = 3;
 }
 
 void SpellDrop::update() {

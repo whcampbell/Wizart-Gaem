@@ -45,13 +45,13 @@ void Spell_AOE::update() {
         if (!(hit->contains(iterator)) && hitbox::collision(iterator->hitbox("hurtbox"), hitbox("hitbox"))) {
             switch (tag) {
                 case 1: // fire
-                    cast(2, 4, 1, iterator);
+                    cast(2, 3, 1, iterator);
                     break;
                 case 2: // moist
-                    cast(1, 5, 2, iterator);
+                    cast(1, 4, 2, iterator);
                     break;
                 case 3: // froze
-                    cast(2, 2, 3, iterator);
+                    cast(2, 0, 3, iterator);
                     break;
                 case 4: 
                     // other elements should have different constants
@@ -73,7 +73,7 @@ void Spell_AOE::cast(int damage, int knock, int dbuff, Entity* iterator) {
     EntityList* hit = get<EntityList>();
     float centerx = align->pos.x;
     float centery = align->pos.y + 32;
-    if (iterator->has<Physics>()) {
+    if (iterator->has<Physics>() && knock > 0) {
         float dx = iterator->pos()->pos.x - centerx;
         float dy = iterator->pos()->pos.y - centery;
 

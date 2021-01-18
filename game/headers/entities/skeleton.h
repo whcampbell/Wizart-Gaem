@@ -8,9 +8,9 @@ class Skeleton : public Entity {
     private :
         Sprite* activeSprite;
         enum animstates {
-            anim_run, ANIM_MAX
+            anim_run, anim_idle, anim_hurt, ANIM_MAX
         };
-        Sprite** sprites = new Sprite*[ANIM_MAX]{new Sprite("skelly_run")};
+        Sprite** sprites = new Sprite*[ANIM_MAX]{new Sprite("skelly_run"), new Sprite("skelly_idle"), new Sprite("skelly_hurt")};
         StateMachine<ANIM_MAX, Sprite*> animator;
         void move();
     public :
