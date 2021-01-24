@@ -6,7 +6,10 @@
 #include "components/lifetime.h"
 #include "components/bufftimers.h"
 #include "components/element.h"
+
+#include "utilities/elm_enum.h"
 #include "utilities/combat.h"
+
 #include "fastmath.h"
 #include "particle.h"
 #include "sprite.h"
@@ -44,17 +47,20 @@ void Spell_AOE::update() {
        
         if (!(hit->contains(iterator)) && hitbox::collision(iterator->hitbox("hurtbox"), hitbox("hitbox"))) {
             switch (tag) {
-                case 1: // fire
+                case fire:
                     cast(2, 3, 1, iterator);
                     break;
-                case 2: // moist
+                case water:
                     cast(1, 4, 2, iterator);
                     break;
-                case 3: // froze
+                case ice:
                     cast(2, 0, 3, iterator);
                     break;
-                case 4: 
+                case shock: 
                     // other elements should have different constants
+                    break;
+                case vampire:
+                    // yuh
                     break;
             }
 

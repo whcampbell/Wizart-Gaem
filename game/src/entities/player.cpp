@@ -11,6 +11,7 @@
 #include "vec.h"
 
 #include "utilities/combat.h"
+#include "utilities/spell_enum.h"
 
 #include "components/entitytracker.h"
 #include "components/hitpoints.h"
@@ -51,7 +52,6 @@ Player::Player() {
         pickup->h = 32;
         pickup->align = align;
 
-
         Hitpoints hp;
         hp.healthMax = 3;
         hp.health = hp.healthMax;
@@ -78,7 +78,6 @@ Player::Player() {
         buff.moist = 0;
         buff.frozen = 0;
         *set<BuffTimers>() = buff;
-
 
         Slots slot;
         slot.curr = 1;
@@ -185,55 +184,13 @@ Player::Player() {
             Slots* slots = get<Slots>();
             switch (slots->curr) {
                 case 1:
-                    if (slots->first.x == 0 && get<Mana>()->mana > 0) {
-                        AttackProjectile* attack = new AttackProjectile();
-                        int dx = mouse::x() + camera::x - align->pos.x;
-                        int dy = mouse::y() + camera::y - align->pos.y;
-                        Alignment* align_attack = attack->pos();
-                        align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
-                        align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
-                        *align_attack->x_internal = 16;
-                        *align_attack->y_internal = 16;
-                        align_attack->theta = angle(dx, dy);
-                        entities::add(attack);
-                        get<Mana>()->mana--;
-                    } else {
-                        spell_reader(slots->first);
-                    }
+                    spell_reader(slots->first);
                     break;
                 case 2: 
-                    if (slots->second.x == 0 && get<Mana>()->mana > 0) {
-                        AttackProjectile* attack = new AttackProjectile();
-                        int dx = mouse::x() + camera::x - align->pos.x;
-                        int dy = mouse::y() + camera::y - align->pos.y;
-                        Alignment* align_attack = attack->pos();
-                        align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
-                        align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
-                        *align_attack->x_internal = 16;
-                        *align_attack->y_internal = 16;
-                        align_attack->theta = angle(dx, dy);
-                        entities::add(attack);
-                        get<Mana>()->mana--;
-                    } else {
-                        spell_reader(slots->second);
-                    }
+                    spell_reader(slots->second);
                     break;
                 case 3:
-                    if (slots->third.x == 0 && get<Mana>()->mana > 0) {
-                        AttackProjectile* attack = new AttackProjectile();
-                        int dx = mouse::x() + camera::x - align->pos.x;
-                        int dy = mouse::y() + camera::y - align->pos.y;
-                        Alignment* align_attack = attack->pos();
-                        align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
-                        align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
-                        *align_attack->x_internal = 16;
-                        *align_attack->y_internal = 16;
-                        align_attack->theta = angle(dx, dy);
-                        entities::add(attack);
-                        get<Mana>()->mana--;
-                    } else {
-                        spell_reader(slots->third);
-                    }
+                    spell_reader(slots->third);
                     break;
             }
             
@@ -255,7 +212,22 @@ Player::Player() {
     void Player::spell_reader(Vector2 spell) {
 
         switch ((int)spell.x) {
-            case 1 :
+            case missile :
+                if (get<Mana>()->mana > 0) {
+                    AttackProjectile* attack = new AttackProjectile();
+                    int dx = mouse::x() + camera::x - align->pos.x;
+                    int dy = mouse::y() + camera::y - align->pos.y;
+                    Alignment* align_attack = attack->pos();
+                    align_attack->pos.x = align->pos.x + 16 * cos(dx, dy);
+                    align_attack->pos.y = align->pos.y + 16 * sin(dx, dy);
+                    *align_attack->x_internal = 16;
+                    *align_attack->y_internal = 16;
+                    align_attack->theta = angle(dx, dy);
+                    entities::add(attack);
+                    get<Mana>()->mana--;
+                }
+                break;
+            case aoe :
                 if (get<Mana>()->mana >= 2) {
                     Spell_AOE* aoe = new Spell_AOE();
                     Alignment* align_aoe = aoe->pos();
@@ -269,7 +241,7 @@ Player::Player() {
                     get<Mana>()->mana = get<Mana>()->mana - 2;
                 }
                 break;
-            case 2 :
+            case ball :
                 //other spell
                 break;
             case 3 : 
